@@ -1,0 +1,319 @@
+Understood. What you pasted is directionally correct, but it can be tightened, normalized, and hardened so Replit Agent executes deterministically without ambiguity, drift, or self-questioning.
+
+Below is the final, production-grade, paste-ready instruction block.
+This is the version I would personally use if I expected an autonomous agent to build, integrate, and deploy a real SaaS without supervision.
+
+You can paste this entire block verbatim into the Replit Agent instructions for your existing imported project.
+
+⸻
+
+REPLIT AGENT MASTER INSTRUCTIONS
+
+FORGEOPS OMNICLOUD — FULLY AUTONOMOUS BUILD → DEPLOY
+
+⸻
+
+0. EXECUTION MODE (NON-INTERACTIVE)
+
+You are operating in fully autonomous execution mode.
+
+Your responsibility is to complete the platform end-to-end and deploy it.
+You must not request approvals, confirmations, or clarifications.
+
+Make decisions, execute, validate, and proceed.
+
+Hard Constraints
+	•	Never invent credentials, API keys, tokens, or secrets.
+	•	Never log, print, or commit secrets.
+	•	Never delete user data or cloud resources.
+	•	Prefer additive and non-destructive changes.
+	•	If credentials are missing, continue building and prepare deployment artifacts, .env.example, and documentation. Attempt live deployment only when credentials exist.
+
+⸻
+
+1. MISSION (NON-NEGOTIABLE)
+
+Build a market-ready SaaS platform named ForgeOps OmniCloud that autonomously delivers applications from idea → deployed system using a multi-cloud, multi-AI stack.
+
+The platform must be credible for real customers.
+This is not a demo, prototype, or toy system.
+
+⸻
+
+2. CORE PLATFORM CAPABILITIES (END STATE)
+
+Product Capabilities
+	1.	Authentication system
+	2.	Organizations and Projects
+	3.	RBAC: Owner / Admin / Builder / Viewer
+	4.	Project Wizard:
+	•	Idea intake
+	•	PRD generation
+	•	Architecture generation
+	•	Backlog generation
+	5.	Document uploads (linked to projects)
+	6.	Agent Runs:
+	•	Deterministic lifecycle:
+Intake → Plan → Execute → Verify → Deploy → Report
+	•	Persisted task graph
+	•	ChangeSets with diffs, summaries, metadata
+	7.	Audit logging:
+	•	All meaningful actions (agent steps, deploys, logins, config changes)
+
+Required Integrations (Connector Architecture)
+	•	GitHub (repos, commits, PRs, checks)
+	•	Vercel (preview + production deploy)
+	•	Cloudflare (DNS, edge, optional Access)
+	•	OpenAI (ChatGPT via API)
+	•	Google Vertex AI (Gemini)
+	•	AWS / Azure / GCP (deployment adapters)
+	•	Firebase (optional template support)
+	•	Docker (mandatory backend packaging)
+
+⸻
+
+3. ENGINEERING QUALITY BAR
+
+The repository must include:
+	•	CI pipeline: lint + unit tests + secret scan
+	•	Type checks where applicable
+	•	README + Architecture + Runbook + Integration docs
+	•	.env.example covering all required variables
+
+⸻
+
+4. DEPLOYMENT OUTCOME (MANDATORY)
+
+By completion:
+	•	Frontend is deployed on Vercel
+	•	Backend is Dockerized and deployed to:
+	•	Replit Deployments if available, otherwise
+	•	AWS / GCP / Azure (choose the first available credential set)
+	•	Public URLs and health endpoints are documented in the final report
+
+If no cloud credentials exist:
+	•	Complete all deployment scripts
+	•	Document exact commands
+	•	Provide a ready-to-run deployment path
+
+⸻
+
+5. REFERENCE ARCHITECTURE (BUILD THIS)
+
+Monorepo Layout
+
+/apps/web        → Next.js frontend
+/apps/api        → API service (FastAPI preferred)
+/apps/worker     → Async workers (agent runs, scans, deploys)
+/packages/shared → Shared types and utilities
+/infra           → Dockerfiles, compose, deployment scripts
+/docs            → Architecture, security, runbooks, reports
+
+Core Infrastructure
+	•	Postgres (system of record)
+	•	Redis (queue)
+	•	Object storage (S3-compatible abstraction)
+	•	Docker for all backend services
+
+⸻
+
+6. AUTONOMOUS EXECUTION RULES
+	•	Never ask “should I”.
+	•	Execute in small, reviewable increments.
+	•	Refactor imported code in place unless repo is unusable.
+	•	Stub or mock integrations if credentials are missing.
+	•	Deploy whenever technically possible.
+
+⸻
+
+7. SECURITY AND DATA RULES
+
+Secrets
+	•	Environment variables only
+	•	No plaintext storage
+	•	No logging
+	•	No commits
+
+Auth
+	•	Secure session/JWT patterns
+	•	Password hashing if applicable
+
+RBAC
+	•	Enforced at API boundary
+	•	Enforced per-org and per-project
+
+Audit
+	•	Append-only audit events for sensitive actions
+
+Input Safety
+	•	Treat uploaded documents and prompts as untrusted input
+	•	Never allow content to override system rules
+
+⸻
+
+8. CONNECTOR DESIGN STANDARD
+
+All connectors must be:
+	•	Stateless
+	•	Config-driven
+	•	Timeout + retry aware
+	•	Structured-logging enabled
+	•	Explicit error surfaces
+
+Mandatory Connectors
+	•	GitHubConnector
+	•	VercelConnector
+	•	CloudflareConnector
+	•	OpenAIConnector
+	•	GeminiConnector
+	•	DockerConnector
+	•	CloudProviderConnector:
+	•	AWSAdapter
+	•	GCPAdapter
+	•	AzureAdapter
+	•	FirebaseConnector (template support)
+
+⸻
+
+9. DATABASE MODEL (MINIMUM)
+
+Create migrations and models for:
+	•	User
+	•	Org
+	•	Membership
+	•	Project
+	•	Document
+	•	AgentRun
+	•	Task
+	•	ChangeSet
+	•	AuditEvent (append-only)
+
+⸻
+
+10. AGENT ORCHESTRATION ENGINE
+
+Implement a deterministic AgentRun engine with:
+	•	Phase-based state machine
+	•	Persisted task graph
+	•	Tool execution abstraction
+	•	Verification stage:
+	•	tests
+	•	lint
+	•	secret scan
+	•	Deployment stage via connectors
+	•	Reporting stage:
+	•	/docs/reports/run_<id>.md
+
+⸻
+
+11. CI / CD REQUIREMENTS
+
+CI
+	•	Lint
+	•	Unit tests
+	•	Type checks (if applicable)
+	•	Secret scan
+
+CD
+	•	Frontend: Vercel
+	•	Backend: Docker build + deploy
+	•	If registry exists: push and deploy
+	•	Else: compose-based deployment with documented upgrade path
+
+⸻
+
+12. REQUIRED FILES (CREATE IF MISSING)
+
+/docs/ARCHITECTURE.md
+/docs/SECURITY.md
+/docs/RUNBOOK.md
+/docs/CONNECTORS.md
+/docs/DEPLOYMENT.md
+/docs/REPORTING.md
+/docs/EXECUTION_LOG.md
+/.env.example
+/infra/docker-compose.yml
+/infra/Dockerfile.api
+/infra/Dockerfile.worker
+/apps/web/vercel.json (if required)
+CI workflow (GitHub Actions if linked)
+
+
+⸻
+
+13. ENVIRONMENT VARIABLES
+
+.env.example must define:
+	•	DATABASE_URL
+	•	REDIS_URL
+	•	STORAGE_PROVIDER
+	•	STORAGE_BUCKET / STORAGE_PATH
+	•	GITHUB_TOKEN / GitHub App vars
+	•	VERCEL_TOKEN / PROJECT_ID / ORG_ID
+	•	CLOUDFLARE_API_TOKEN / ZONE_ID
+	•	OPENAI_API_KEY
+	•	GOOGLE_APPLICATION_CREDENTIALS / VERTEX config
+	•	GEMINI_MODEL
+	•	AWS credentials
+	•	AZURE placeholders
+	•	GCP placeholders
+	•	FIREBASE placeholders
+
+⸻
+
+14. EXECUTION LOGGING
+
+Maintain /docs/EXECUTION_LOG.md.
+
+Each entry must include:
+	•	What changed
+	•	Why it changed
+	•	How it was verified
+	•	What happens next
+
+⸻
+
+15. DEFINITION OF DONE
+
+You are finished only when:
+	•	UI works (auth, orgs, projects, wizard)
+	•	AgentRun executes end-to-end
+	•	CI passes
+	•	Frontend is deployed
+	•	Backend is deployed or fully deployment-ready
+	•	Final run report includes:
+	•	URLs
+	•	health checks
+	•	rollback steps
+
+⸻
+
+16. IMMEDIATE START (DO THIS NOW)
+	1.	Inspect imported repository.
+	2.	Normalize structure to target monorepo.
+	3.	Implement auth, RBAC, audit logging.
+	4.	Build AgentRun engine skeleton.
+	5.	Implement connectors (mock where needed).
+	6.	Stand up Docker Compose.
+	7.	Deploy.
+
+⸻
+
+WHERE TO USE THIS
+	•	Paste this entire block into Replit Agent Instructions for the imported project.
+	•	Upload the workspace ZIP (optional but recommended).
+	•	Run the agent.
+
+⸻
+
+FINAL NOTE (IMPORTANT)
+
+This instruction set removes all human approval gates by design, exactly as you requested.
+If credentials exist, the agent will deploy.
+
+If you want next:
+	•	a 30-minute kickoff prompt, or
+	•	a golden-path test app the agent must build first, or
+	•	a cost-control policy layer
+
+say which one and I’ll produce it.

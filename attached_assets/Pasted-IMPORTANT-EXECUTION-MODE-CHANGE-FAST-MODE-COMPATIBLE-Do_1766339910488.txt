@@ -1,0 +1,95 @@
+IMPORTANT: EXECUTION MODE CHANGE — FAST MODE COMPATIBLE
+
+Do NOT request Autonomous Mode.
+Do NOT wait for upgrades.
+Do NOT attempt full monorepo restructuring in a single step.
+
+Switch to INCREMENTAL ARCHITECTURAL UPGRADE MODE.
+
+Your role is now:
+- Architect
+- Incremental implementer
+- Verifier
+
+NOT a full refactor executor in one pass.
+
+OBJECTIVE
+Evolve the existing GEM Enterprises codebase into ForgeOps OmniCloud
+using SMALL, FAST-MODE-SAFE vertical slices.
+
+RULES
+1. Preserve all existing functionality at all times.
+2. No large repo-wide restructures.
+3. No multi-service explosions in one step.
+4. Each step must be small, testable, and reversible.
+5. Never ask for approvals.
+6. Never block on missing credentials.
+7. Scaffold first, integrate later.
+
+EXECUTION STRATEGY (MANDATORY)
+Proceed in the following incremental slices. Complete each slice fully
+before moving to the next.
+
+SLICE 1 — FOUNDATION HARDENING
+- Add Org and Project models alongside existing models
+- Introduce minimal RBAC enforcement (Owner/Admin/Viewer)
+- Add an append-only AuditEvent model
+- Wire audit logging into existing request lifecycle
+- No UI overhaul yet
+
+SLICE 2 — AGENT RUN SKELETON
+- Introduce AgentRun table and status lifecycle
+- Implement Intake → Plan → Execute → Report as no-op placeholders
+- Persist task graphs as JSON (no orchestration yet)
+- Add execution logging to /docs/EXECUTION_LOG.md
+
+SLICE 3 — CONNECTOR INTERFACES (NO REAL CALLS)
+- Define connector interfaces only:
+  GitHubConnector
+  VercelConnector
+  CloudflareConnector
+  OpenAIConnector
+  GeminiConnector
+  DockerConnector
+- Stub implementations that log intent instead of executing
+- Add configuration schemas and .env.example entries
+
+SLICE 4 — DEPLOYMENT SCAFFOLDING
+- Add Dockerfile(s) without breaking existing runtime
+- Add docker-compose.yml for local parity
+- Do NOT migrate production yet
+- Validate container build locally
+
+SLICE 5 — CI SAFETY NET
+- Add lint and basic unit test execution
+- Add secret scan placeholder
+- Ensure CI does not fail existing workflows
+
+SLICE 6 — FRONTEND EXTENSION (MINIMAL)
+- Add ForgeOps dashboard views incrementally
+- Do not rewrite the existing UI
+- Extend, don’t replace
+
+SLICE 7 — OPTIONAL REAL INTEGRATIONS
+- Only if credentials exist:
+  - Enable OpenAI or Gemini calls
+  - Enable GitHub or Vercel deploy hooks
+- Otherwise leave stubs documented
+
+DELIVERABLES REQUIRED
+At every slice:
+- Code changes committed
+- Existing app still runs
+- Execution log updated with:
+  - What changed
+  - Why
+  - How verified
+  - What’s next
+
+ABSOLUTE CONSTRAINTS
+- No full monorepo migration
+- No fast-mode-breaking refactors
+- No autonomous-mode requests
+- No “big bang” architecture changes
+
+Proceed immediately with SLICE 1.

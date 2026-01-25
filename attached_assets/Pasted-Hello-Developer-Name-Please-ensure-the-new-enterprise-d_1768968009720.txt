@@ -1,0 +1,29 @@
+Hello [Developer Name],
+
+Please ensure the new enterprise dashboard fully incorporates both the Alliance Trust Realty website (https://shrill-sympathetic-runtimes--analyzer1.replit.app) and the GEM Cybersecurity platform (https://6435d358-41e3-4047-9ec2-c8ed1f4af1c6-00-agexonnx40xt.kirk.replit.dev). The objective is to preserve all existing sections, content and design while enabling cohesive navigation and functionality.
+
+1. Use Both Websites As Canonical Sources
+   • Keep every section from the Alliance Trust site intact—full‑service real estate solutions, the evolution of excellence, enterprise solutions, governance & trust, investment strategies, and the market intelligence modules.
+   • Maintain all GEM Cybersecurity pages, including the hero section, uptime/response/asset metrics and the three core service areas (threat monitoring, incident response, compliance and risk management).
+
+2. Create Bridge Pages for Each Platform
+   • Add a bridge page on the main enterprise site for “Alliance Trust Realty” summarising its real‑estate investment services and linking to the existing site at https://shrill-sympathetic-runtimes--analyzer1.replit.app. 
+   • Add a bridge page for “GEM Cybersecurity & Monitoring Assist” summarising its cybersecurity services and linking to the GEM site at https://6435d358-41e3-4047-9ec2-c8ed1f4af1c6-00-agexonnx40xt.kirk.replit.dev. Each bridge page should have a single call‑to‑action (e.g. “Enter Platform”) that opens the external platform in a new tab.
+
+3. Maintain Navigation Hierarchy
+   • In the enterprise dashboard’s navigation, include entries for “Alliance Trust Realty,” “GEM Cybersecurity & Monitoring Assist,” and any other enterprise platforms. Each entry should link to its bridge page. 
+   • Do not embed the full sites within the dashboard; always launch them externally via the bridge pages.
+
+4. Preserve Content & Style
+   • All copy, images, and layout elements from both sites must remain unchanged during integration. Reuse existing templates for full‑service solutions and service cards.
+   • Retain GEM’s distinct branding (metrics banner, service cards, case studies, and footer) while matching the dashboard’s overall look and feel for cohesion.
+
+5. Ensure Modularity for Future Expansion
+   • Design the integration so that additional platforms (e.g., Sentinel Trust, Online Stress Platform) can be added via the same bridge‑page model without disrupting existing pages.
+   • Document all changes in a version control system and keep a change log to facilitate audits and rollbacks.
+
+By following these guidelines, we can achieve a seamless integration that honors the integrity of both the Alliance Trust and GEM Cyber sites while presenting them as unified enterprise offerings. Thank you for executing this with the highest attention to detail.
+
+Best regards,
+
+[Your Name]

@@ -1,0 +1,73 @@
+DEPLOYMENT TASK — UPDATE AN EXISTING VERCEL PROJECT (NO AUTONOMOUS MODE)
+
+Goal:
+Deploy the CURRENT web frontend to an EXISTING Vercel project to update the system.
+Do not create a new Vercel project. Do not ask for approvals.
+
+Rules:
+- Stay Fast-Mode compatible (small, surgical edits).
+- Do not break the existing GEM app runtime.
+- Never print or commit secrets.
+- If Vercel credentials are missing, fully prepare the repo and provide exact next-step commands.
+
+Step 1 — Detect the frontend to deploy
+1) Identify the correct frontend directory:
+   - If we have Next.js inside /apps/web, deploy that.
+   - Otherwise, find the existing frontend entry (package.json + next.config.* or similar).
+2) Confirm the build command and output by running:
+   - npm run build (or the correct package manager)
+   - ensure it succeeds locally in Replit.
+
+Step 2 — Ensure Vercel compatibility (minimum required)
+1) Add/verify a vercel.json ONLY if needed (keep minimal).
+2) Ensure we have:
+   - correct "build" script
+   - correct "start" script (if required)
+   - framework detection works (Next.js preferred)
+3) Ensure environment variables are referenced via process.env and are documented in:
+   - .env.example
+   - /docs/DEPLOYMENT.md (Vercel section)
+
+Step 3 — Link to the EXISTING Vercel project
+Use Vercel CLI linkage (do not create new project):
+- Require these env vars (read from runtime env; do not print values):
+  VERCEL_TOKEN
+  VERCEL_ORG_ID
+  VERCEL_PROJECT_ID
+
+Actions:
+1) Install Vercel CLI (dev dependency or npx usage).
+2) Run Vercel link non-interactively using org+project:
+   - Create/verify `.vercel/project.json` is present and matches:
+     { "orgId": "${VERCEL_ORG_ID}", "projectId": "${VERCEL_PROJECT_ID}" }
+   - If missing, generate it via script that reads env vars and writes file.
+
+Step 4 — Deploy to update the existing project
+1) Deploy a Preview first:
+   - npx vercel --token $VERCEL_TOKEN --yes
+2) If preview succeeds, deploy to Production:
+   - npx vercel --prod --token $VERCEL_TOKEN --yes
+
+Step 5 — Post-deploy verification
+1) Capture the resulting deployment URL(s) (do not expose secrets).
+2) Verify:
+   - homepage loads
+   - login route loads (if applicable)
+   - ForgeOps views load (if added)
+3) Write results into:
+   - /docs/EXECUTION_LOG.md
+   - /docs/DEPLOYMENT.md (Vercel steps + troubleshooting)
+
+Fallback behavior (if credentials missing)
+If any required Vercel env var is missing:
+- Do NOT stop the project.
+- Implement Steps 1–2 fully.
+- Add a “Vercel Deploy: Exact Commands” section to /docs/DEPLOYMENT.md showing:
+  export VERCEL_TOKEN=...
+  export VERCEL_ORG_ID=...
+  export VERCEL_PROJECT_ID=...
+  npx vercel --token $VERCEL_TOKEN --yes
+  npx vercel --prod --token $VERCEL_TOKEN --yes
+- Confirm build passes and report “deployment ready, credentials required.”
+
+Start now. Execute sequentially. No approval requests.

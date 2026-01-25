@@ -1,0 +1,1160 @@
+import { useState } from ‘react’;
+import { Shield, Menu, X, Phone, Mail, Home, Users, Award, BookOpen, Network, Lock, LayoutDashboard, FileText, TrendingUp, ArrowRight, CheckCircle, Target, Globe, Zap, Building2, Eye, Settings, Download, AlertTriangle, Clock, Search, Cookie, Scale, Layers, Code, Server, Database, UserCheck, Ban, Calendar, Activity, CreditCard, Linkedin } from ‘lucide-react’;
+
+// Router Component
+const Router = () => {
+const [currentPath, setCurrentPath] = useState(’/’);
+const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+const navigate = (path) => {
+setCurrentPath(path);
+setMobileMenuOpen(false);
+window.scrollTo(0, 0);
+};
+
+const NavLink = ({ to, children, icon: Icon }) => (
+<button
+onClick={() => navigate(to)}
+className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${ currentPath === to ? 'bg-cyan-500 text-white' : 'text-slate-300 hover:text-white hover:bg-slate-800' }`}
+>
+{Icon && <Icon className="w-4 h-4" />}
+{children}
+</button>
+);
+
+return (
+<div className="min-h-screen bg-slate-950 text-white">
+{/* Header */}
+<header className="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-sm border-b border-slate-800">
+<div className="container mx-auto px-4">
+<div className="flex items-center justify-between h-20">
+<button onClick={() => navigate(’/’)} className=“flex items-center gap-3”>
+<div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+<Shield className="w-6 h-6 text-white" />
+</div>
+<div className="text-left">
+<div className="font-bold text-lg">GEM CYBER</div>
+<div className="text-xs text-slate-400">Enterprise Security</div>
+</div>
+</button>
+
+```
+        <nav className="hidden lg:flex items-center gap-2">
+          <NavLink to="/" icon={Home}>Home</NavLink>
+          <NavLink to="/about-us" icon={Shield}>About</NavLink>
+          <NavLink to="/teams" icon={Users}>Team</NavLink>
+          <NavLink to="/case-studies" icon={Award}>Cases</NavLink>
+          <NavLink to="/resources" icon={BookOpen}>Resources</NavLink>
+          <NavLink to="/pricing" icon={TrendingUp}>Pricing</NavLink>
+          <button
+            onClick={() => navigate('/contact-us')}
+            className="px-6 py-2 bg-cyan-500 hover:bg-cyan-600 rounded-lg font-semibold transition-colors ml-2"
+          >
+            Contact
+          </button>
+        </nav>
+
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="lg:hidden p-2 hover:bg-slate-800 rounded-lg transition-colors"
+        >
+          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+      </div>
+
+      {mobileMenuOpen && (
+        <div className="lg:hidden py-4 border-t border-slate-800">
+          <div className="flex flex-col gap-2">
+            <NavLink to="/" icon={Home}>Home</NavLink>
+            <NavLink to="/about-us" icon={Shield}>About</NavLink>
+            <NavLink to="/teams" icon={Users}>Team</NavLink>
+            <NavLink to="/case-studies" icon={Award}>Cases</NavLink>
+            <NavLink to="/resources" icon={BookOpen}>Resources</NavLink>
+            <NavLink to="/qfs" icon={Network}>QFS</NavLink>
+            <NavLink to="/cyber-sentinel-trust" icon={Lock}>Sentinel</NavLink>
+            <NavLink to="/portfolio" icon={LayoutDashboard}>Portfolio</NavLink>
+            <NavLink to="/pricing" icon={TrendingUp}>Pricing</NavLink>
+            <NavLink to="/contact-us" icon={Mail}>Contact</NavLink>
+          </div>
+        </div>
+      )}
+    </div>
+  </header>
+
+  <main>
+    {currentPath === '/' && <HomePage navigate={navigate} />}
+    {currentPath === '/about-us' && <AboutPage navigate={navigate} />}
+    {currentPath === '/teams' && <TeamPage navigate={navigate} />}
+    {currentPath === '/case-studies' && <CaseStudiesPage navigate={navigate} />}
+    {currentPath === '/resources' && <ResourcesPage navigate={navigate} />}
+    {currentPath === '/qfs' && <QFSPage navigate={navigate} />}
+    {currentPath === '/cyber-sentinel-trust' && <SentinelPage navigate={navigate} />}
+    {currentPath === '/portfolio' && <PortfolioPage navigate={navigate} />}
+    {currentPath === '/pricing' && <PricingPage navigate={navigate} />}
+    {currentPath === '/contact-us' && <ContactPage navigate={navigate} />}
+    {currentPath === '/legal/privacy-policy' && <PrivacyPage navigate={navigate} />}
+    {currentPath === '/legal/terms-of-service' && <TermsPage navigate={navigate} />}
+    {currentPath === '/legal/cookie-policy' && <CookiePage navigate={navigate} />}
+  </main>
+
+  <footer className="bg-slate-900 border-t border-slate-800 py-12">
+    <div className="container mx-auto px-4">
+      <div className="grid md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <h3 className="font-bold mb-4">Company</h3>
+          <div className="space-y-2">
+            <button onClick={() => navigate('/about-us')} className="block text-slate-400 hover:text-white transition-colors text-sm">About Us</button>
+            <button onClick={() => navigate('/teams')} className="block text-slate-400 hover:text-white transition-colors text-sm">Our Team</button>
+            <button onClick={() => navigate('/case-studies')} className="block text-slate-400 hover:text-white transition-colors text-sm">Case Studies</button>
+          </div>
+        </div>
+        <div>
+          <h3 className="font-bold mb-4">Services</h3>
+          <div className="space-y-2">
+            <button onClick={() => navigate('/qfs')} className="block text-slate-400 hover:text-white transition-colors text-sm">QFS Network</button>
+            <button onClick={() => navigate('/cyber-sentinel-trust')} className="block text-slate-400 hover:text-white transition-colors text-sm">Sentinel Trust</button>
+            <button onClick={() => navigate('/pricing')} className="block text-slate-400 hover:text-white transition-colors text-sm">Pricing</button>
+          </div>
+        </div>
+        <div>
+          <h3 className="font-bold mb-4">Resources</h3>
+          <div className="space-y-2">
+            <button onClick={() => navigate('/resources')} className="block text-slate-400 hover:text-white transition-colors text-sm">Resource Hub</button>
+            <button onClick={() => navigate('/portfolio')} className="block text-slate-400 hover:text-white transition-colors text-sm">Portfolio</button>
+          </div>
+        </div>
+        <div>
+          <h3 className="font-bold mb-4">Legal</h3>
+          <div className="space-y-2">
+            <button onClick={() => navigate('/legal/privacy-policy')} className="block text-slate-400 hover:text-white transition-colors text-sm">Privacy</button>
+            <button onClick={() => navigate('/legal/terms-of-service')} className="block text-slate-400 hover:text-white transition-colors text-sm">Terms</button>
+            <button onClick={() => navigate('/legal/cookie-policy')} className="block text-slate-400 hover:text-white transition-colors text-sm">Cookies</button>
+          </div>
+        </div>
+      </div>
+      <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="text-slate-400 text-sm">© 2026 GEM Enterprise. All rights reserved.</div>
+        <div className="flex items-center gap-4 text-sm">
+          <a href="tel:+18603054376" className="text-cyan-500 hover:text-cyan-400 flex items-center gap-2">
+            <Phone className="w-4 h-4" />
+            (860) 305-4376
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+```
+
+);
+};
+
+// HOME PAGE - Enhanced
+const HomePage = ({ navigate }) => (
+
+  <div>
+    <section className="relative pt-32 pb-20 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-cyan-950/20 to-slate-950" />
+      <div className="absolute inset-0" style={{
+        backgroundImage: 'radial-gradient(circle at 1px 1px, rgb(71, 85, 105) 1px, transparent 0)',
+        backgroundSize: '40px 40px',
+        opacity: 0.15
+      }} />
+
+```
+  <div className="container mx-auto px-4 relative z-10">
+    <div className="max-w-5xl mx-auto text-center">
+      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-6">
+        <Shield className="w-4 h-4 text-cyan-500" />
+        <span className="text-sm font-medium text-cyan-500">24/7 Enterprise Monitoring Active</span>
+      </div>
+      
+      <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6">
+        Enterprise Cybersecurity &
+        <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+          Asset Recovery
+        </span>
+      </h1>
+      
+      <p className="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto mb-8">
+        GEM Enterprise + Alliance Trust Realty: Unified platform for global threat detection, 
+        regulatory compliance, and high-value asset protection.
+      </p>
+
+      <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+        <button
+          onClick={() => navigate('/contact-us')}
+          className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 rounded-lg font-semibold text-lg transition-all shadow-lg"
+        >
+          Schedule Assessment
+        </button>
+        <button
+          onClick={() => navigate('/pricing')}
+          className="px-8 py-4 border-2 border-cyan-500 text-cyan-500 hover:bg-cyan-500 hover:text-white rounded-lg font-semibold text-lg transition-all"
+        >
+          View Pricing
+        </button>
+      </div>
+
+      <div className="grid grid-cols-3 gap-6 max-w-3xl mx-auto">
+        <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6">
+          <div className="text-3xl font-bold text-cyan-500 mb-2">99.9%</div>
+          <div className="text-sm text-slate-400">Uptime SLA</div>
+        </div>
+        <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6">
+          <div className="text-3xl font-bold text-cyan-500 mb-2">2min</div>
+          <div className="text-sm text-slate-400">Response Time</div>
+        </div>
+        <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6">
+          <div className="text-3xl font-bold text-cyan-500 mb-2">$50M+</div>
+          <div className="text-sm text-slate-400">Assets Managed</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section className="py-24 bg-slate-900/50">
+  <div className="container mx-auto px-4">
+    <div className="max-w-6xl mx-auto text-center mb-16">
+      <h2 className="text-3xl md:text-4xl font-bold mb-4">Cybersecurity Solutions</h2>
+      <p className="text-slate-400 text-lg">Enterprise-grade protection for modern threats</p>
+    </div>
+
+    <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+      {[
+        { icon: Shield, title: '24/7 Threat Monitoring', desc: 'Continuous surveillance with AI-powered detection' },
+        { icon: Zap, title: 'Incident Response', desc: '2-minute average response time guaranteed' },
+        { icon: Lock, title: 'Compliance Management', desc: 'SOC 2, ISO 27001, HIPAA certification support' },
+        { icon: Eye, title: 'Vulnerability Scanning', desc: 'Continuous assessment of security posture' },
+        { icon: Building2, title: 'Asset Recovery', desc: 'High-value physical asset protection' },
+        { icon: Globe, title: 'Global Coverage', desc: 'Protection across all time zones' }
+      ].map((service, idx) => {
+        const Icon = service.icon;
+        return (
+          <div key={idx} className="bg-slate-900 border border-slate-800 rounded-xl p-8 hover:border-cyan-500/50 transition-colors">
+            <Icon className="w-12 h-12 text-cyan-500 mb-4" />
+            <h3 className="text-xl font-bold mb-3">{service.title}</h3>
+            <p className="text-slate-400">{service.desc}</p>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<section className="py-24">
+  <div className="container mx-auto px-4">
+    <div className="max-w-6xl mx-auto text-center mb-16">
+      <h2 className="text-3xl md:text-4xl font-bold mb-4">Explore Our Platform</h2>
+      <p className="text-slate-400 text-lg">Comprehensive security and asset management</p>
+    </div>
+
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+      {[
+        { title: 'About Us', icon: Shield, path: '/about-us', desc: 'Our story and mission' },
+        { title: 'Our Team', icon: Users, path: '/teams', desc: 'Security experts' },
+        { title: 'Case Studies', icon: Award, path: '/case-studies', desc: 'Real success stories' },
+        { title: 'Resources', icon: BookOpen, path: '/resources', desc: 'Guides & reports' },
+        { title: 'QFS Network', icon: Network, path: '/qfs', desc: 'Quantum security' },
+        { title: 'Sentinel Trust', icon: Lock, path: '/cyber-sentinel-trust', desc: 'Zero trust' },
+        { title: 'Portfolio', icon: LayoutDashboard, path: '/portfolio', desc: 'Asset dashboard' },
+        { title: 'Pricing', icon: TrendingUp, path: '/pricing', desc: 'Plans & pricing' },
+        { title: 'Contact', icon: Mail, path: '/contact-us', desc: 'Get in touch' }
+      ].map((item, idx) => {
+        const Icon = item.icon;
+        return (
+          <button
+            key={idx}
+            onClick={() => navigate(item.path)}
+            className="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-cyan-500/50 transition-all text-left group"
+          >
+            <Icon className="w-8 h-8 text-cyan-500 mb-4 group-hover:scale-110 transition-transform" />
+            <h3 className="text-xl font-bold mb-2 group-hover:text-cyan-500 transition-colors">{item.title}</h3>
+            <p className="text-slate-400 text-sm">{item.desc}</p>
+          </button>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<section className="py-24 bg-slate-900/50">
+  <div className="container mx-auto px-4">
+    <div className="max-w-4xl mx-auto bg-gradient-to-r from-cyan-500/10 to-blue-600/10 border-2 border-cyan-500/30 p-12 rounded-2xl text-center">
+      <Phone className="w-16 h-16 text-cyan-500 mx-auto mb-6" />
+      <h2 className="text-3xl font-bold mb-4">24/7 Emergency Hotline</h2>
+      <p className="text-slate-400 text-lg mb-8">
+        Active security breach? Our rapid-response team is standing by.
+      </p>
+      <a href="tel:+18603054376" className="inline-flex items-center gap-2 px-8 py-4 bg-cyan-500 hover:bg-cyan-600 rounded-lg font-semibold text-lg transition-colors">
+        <Phone className="w-5 h-5" />
+        (860) 305-4376
+      </a>
+    </div>
+  </div>
+</section>
+```
+
+  </div>
+);
+
+// ABOUT PAGE - Full
+const AboutPage = ({ navigate }) => {
+const timeline = [
+{ year: ‘2019’, title: ‘Foundation’, desc: ‘GEM Enterprise founded with mission to democratize enterprise security’ },
+{ year: ‘2020’, title: ‘SOC Launch’, desc: ‘24/7 Security Operations Center with 99.9% uptime’ },
+{ year: ‘2022’, title: ‘Alliance Trust’, desc: ‘Merged with Alliance Trust Realty for asset protection’ },
+{ year: ‘2024’, title: ‘SOC 2 Certified’, desc: ‘Achieved SOC 2 Type II compliance’ },
+{ year: ‘2025’, title: ‘Global Expansion’, desc: ‘Protecting 500+ enterprises with $50M+ assets’ },
+{ year: ‘2026’, title: ‘Quantum Security’, desc: ‘Launched QFS Network and Sentinel Trust’ }
+];
+
+return (
+<div>
+<section className="relative pt-32 pb-20 overflow-hidden">
+<div className="absolute inset-0 bg-gradient-to-b from-cyan-950/20 to-slate-950" />
+<div className="container mx-auto px-4 relative z-10">
+<div className="max-w-4xl mx-auto text-center">
+<div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-6">
+<Shield className="w-4 h-4 text-cyan-500" />
+<span className="text-sm font-medium text-cyan-500">About GEM Enterprise</span>
+</div>
+<h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+Protecting Digital Assets &
+<span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+Recovering Physical Value
+</span>
+</h1>
+<p className="text-lg md:text-xl text-slate-400">
+Enterprise-grade security accessible to all organizations
+</p>
+</div>
+</div>
+</section>
+
+```
+  <section className="py-24 bg-slate-900/50">
+    <div className="container mx-auto px-4">
+      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
+        <div className="bg-gradient-to-br from-cyan-500/10 to-slate-900 border border-cyan-500/30 rounded-2xl p-8">
+          <Target className="w-12 h-12 text-cyan-500 mb-4" />
+          <h2 className="text-2xl font-bold mb-4">Our Mission</h2>
+          <p className="text-slate-300 text-lg leading-relaxed">
+            Provide uncompromising cybersecurity that empowers organizations to operate with 
+            confidence. Every business deserves Fortune 500-level protection.
+          </p>
+        </div>
+        <div className="bg-gradient-to-br from-blue-600/10 to-slate-900 border border-blue-600/30 rounded-2xl p-8">
+          <Globe className="w-12 h-12 text-blue-500 mb-4" />
+          <h2 className="text-2xl font-bold mb-4">Our Vision</h2>
+          <p className="text-slate-300 text-lg leading-relaxed">
+            Be the global standard for integrated security, where threats are neutralized 
+            before they impact operations.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section className="py-24">
+    <div className="container mx-auto px-4">
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Journey</h2>
+          <p className="text-slate-400 text-lg">Seven years of innovation and growth</p>
+        </div>
+        <div className="relative">
+          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-cyan-500/30 hidden md:block" />
+          {timeline.map((event, idx) => (
+            <div key={idx} className="relative pl-0 md:pl-24 pb-12 last:pb-0">
+              <div className="absolute left-0 md:left-4 w-8 h-8 rounded-full bg-cyan-500 border-4 border-slate-950 flex items-center justify-center">
+                <div className="w-2 h-2 rounded-full bg-white" />
+              </div>
+              <div className="ml-12 md:ml-0 bg-slate-900 border border-slate-800 rounded-lg p-6 hover:border-cyan-500/50 transition-colors">
+                <div className="text-cyan-500 text-sm font-bold mb-2">{event.year}</div>
+                <h3 className="text-xl font-bold mb-2">{event.title}</h3>
+                <p className="text-slate-400">{event.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section className="py-24 bg-slate-900/50">
+    <div className="container mx-auto px-4">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl font-bold mb-4">By The Numbers</h2>
+      </div>
+      <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-6">
+        {[
+          { number: '7+', label: 'Years Operating' },
+          { number: '500+', label: 'Clients' },
+          { number: '$50M+', label: 'Assets' },
+          { number: '2.4M+', label: 'Threats Blocked' },
+          { number: '99.97%', label: 'Accuracy' },
+          { number: '2min', label: 'Response' }
+        ].map((stat, idx) => (
+          <div key={idx} className="bg-slate-900 border border-slate-800 rounded-xl p-6 text-center hover:border-cyan-500/50 transition-colors">
+            <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-2">
+              {stat.number}
+            </div>
+            <div className="text-slate-400 text-sm">{stat.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section className="py-24">
+    <div className="container mx-auto px-4">
+      <div className="max-w-4xl mx-auto bg-gradient-to-r from-cyan-500/10 to-blue-600/10 border-2 border-cyan-500/30 p-12 rounded-2xl text-center">
+        <h2 className="text-3xl font-bold mb-4">Join 500+ Protected Enterprises</h2>
+        <p className="text-slate-400 text-lg mb-8">
+          Experience true security partnership
+        </p>
+        <button
+          onClick={() => navigate('/contact-us')}
+          className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 rounded-lg font-semibold text-lg transition-all shadow-lg inline-flex items-center gap-2"
+        >
+          Schedule Consultation
+          <ArrowRight className="w-5 h-5" />
+        </button>
+      </div>
+    </div>
+  </section>
+</div>
+```
+
+);
+};
+
+// TEAM PAGE - Full
+const TeamPage = ({ navigate }) => {
+const leadership = [
+{ name: ‘Michael Chen’, title: ‘CEO & Founder’, initials: ‘MC’, bio: ‘Former CISO at Fortune 100 with 20+ years experience’ },
+{ name: ‘Sarah Rodriguez’, title: ‘CTO’, initials: ‘SR’, bio: ‘MIT PhD, pioneered AI threat detection systems’ },
+{ name: ‘James Patterson’, title: ‘Chief Compliance Officer’, initials: ‘JP’, bio: ‘Former federal regulator, Harvard Law’ },
+{ name: ‘Alexandra Morrison’, title: ‘VP Real Estate’, initials: ‘AM’, bio: ‘18 years managing $200M+ portfolios’ }
+];
+
+return (
+<div>
+<section className="relative pt-32 pb-20 overflow-hidden">
+<div className="absolute inset-0 bg-gradient-to-b from-cyan-950/20 to-slate-950" />
+<div className="container mx-auto px-4 relative z-10">
+<div className="max-w-4xl mx-auto text-center">
+<h1 className="text-4xl md:text-5xl font-bold mb-6">
+The Experts Behind
+<span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+Your Security
+</span>
+</h1>
+<p className="text-lg text-slate-400">
+World-class security professionals dedicated to protecting your organization
+</p>
+</div>
+</div>
+</section>
+
+```
+  <section className="py-24">
+    <div className="container mx-auto px-4">
+      <div className="text-center mb-16">
+        <h2 className="text-3xl font-bold mb-4">Leadership Team</h2>
+        <p className="text-slate-400">Decades of combined expertise</p>
+      </div>
+      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-8">
+        {leadership.map((member, idx) => (
+          <div key={idx} className="bg-slate-900 border border-slate-800 rounded-2xl p-8 hover:border-cyan-500/50 transition-colors">
+            <div className="flex items-start gap-6 mb-6">
+              <div className="w-24 h-24 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-3xl font-bold flex-shrink-0">
+                {member.initials}
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-bold mb-1">{member.name}</h3>
+                <p className="text-cyan-500 font-medium mb-4">{member.title}</p>
+                <div className="flex gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 flex items-center justify-center transition-colors">
+                    <Linkedin className="w-4 h-4 text-cyan-500" />
+                  </div>
+                  <div className="w-8 h-8 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 flex items-center justify-center transition-colors">
+                    <Mail className="w-4 h-4 text-cyan-500" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p className="text-slate-400 leading-relaxed">{member.bio}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section className="py-24 bg-slate-900/50">
+    <div className="container mx-auto px-4">
+      <div className="text-center mb-16">
+        <h2 className="text-3xl font-bold mb-4">Security Operations Team</h2>
+        <p className="text-slate-400">Elite analysts protecting 24/7/365</p>
+      </div>
+      <div className="max-w-7xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {[
+          { name: 'David Kim', role: 'Lead Security Analyst', certs: 'GCIA, GCIH, OSCP' },
+          { name: 'Maria Santos', role: 'Incident Response', certs: 'GCFA, GREM, EnCE' },
+          { name: 'Robert Taylor', role: 'Compliance Manager', certs: 'CISA, CRISC, QSA' },
+          { name: 'Jennifer Lee', role: 'Penetration Testing', certs: 'OSCP, OSCE, GPEN' },
+          { name: 'Thomas Anderson', role: 'Cloud Security', certs: 'CCSP, AWS Security' },
+          { name: 'Lisa Chen', role: 'Threat Hunter', certs: 'GCTI, GDAT, CEH' }
+        ].map((member, idx) => (
+          <div key={idx} className="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-cyan-500/50 transition-colors">
+            <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-2xl font-bold mb-4">
+              {member.name.split(' ').map(n => n[0]).join('')}
+            </div>
+            <h3 className="text-lg font-bold mb-1">{member.name}</h3>
+            <p className="text-cyan-500 text-sm font-medium mb-3">{member.role}</p>
+            <div className="pt-4 border-t border-slate-700">
+              <div className="flex items-center gap-2">
+                <Shield className="w-4 h-4 text-cyan-500" />
+                <span className="text-xs text-slate-400">{member.certs}</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section className="py-24">
+    <div className="container mx-auto px-4">
+      <div className="max-w-4xl mx-auto bg-gradient-to-r from-cyan-500/10 to-blue-600/10 border-2 border-cyan-500/30 p-12 rounded-2xl text-center">
+        <Users className="w-16 h-16 text-cyan-500 mx-auto mb-6" />
+        <h2 className="text-3xl font-bold mb-4">Join Our Team</h2>
+        <p className="text-slate-400 text-lg mb-8">
+          Looking for talented security professionals passionate about protecting organizations
+        </p>
+        <button
+          onClick={() => navigate('/contact-us')}
+          className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 rounded-lg font-semibold text-lg transition-all shadow-lg"
+        >
+          View Positions
+        </button>
+      </div>
+    </div>
+  </section>
+</div>
+```
+
+);
+};
+
+// Continuing with remaining pages in next part due to length…
+// CASE STUDIES PAGE
+const CaseStudiesPage = ({ navigate }) => {
+const cases = [
+{ industry: ‘Finance’, title: ‘Zero Breaches Achieved’, metric: ‘94%’, label: ‘Incident Reduction’, size: ‘10K+ employees’ },
+{ industry: ‘Healthcare’, title: ‘50K Patient Records Secured’, metric: ‘100%’, label: ‘HIPAA Compliance’, size: ‘5K+ employees’ },
+{ industry: ‘Manufacturing’, title: ‘IoT Infrastructure Secured’, metric: ‘15%’, label: ‘Uptime Increase’, size: ‘15K+ employees’ },
+{ industry: ‘Technology’, title: ‘Hypergrowth Protection’, metric: ‘0’, label: ‘Incidents’, size: ‘500 employees’ },
+{ industry: ‘Government’, title: ‘Classified Data Protected’, metric: ‘<1min’, label: ‘Response Time’, size: ‘Classified’ },
+{ industry: ‘Real Estate’, title: ‘$12M Portfolio Protected’, metric: ‘$12M’, label: ‘Assets Recovered’, size: ‘$50M+ AUM’ }
+];
+
+return (
+<div>
+<section className="relative pt-32 pb-20 overflow-hidden">
+<div className="absolute inset-0 bg-gradient-to-b from-cyan-950/20 to-slate-950" />
+<div className="container mx-auto px-4 relative z-10">
+<div className="max-w-4xl mx-auto text-center">
+<h1 className="text-4xl md:text-5xl font-bold mb-6">
+Real Results,
+<span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+Real Protection
+</span>
+</h1>
+<p className="text-lg text-slate-400 mb-8">
+Organizations across industries trust GEM Enterprise
+</p>
+<div className="grid grid-cols-3 gap-4 max-w-2xl mx-auto">
+{[
+{ val: ‘2.4M+’, label: ‘Threats Prevented’ },
+{ val: ‘500+’, label: ‘Clients’ },
+{ val: ‘$0’, label: ‘Breach Losses’ }
+].map((stat, i) => (
+<div key={i} className="bg-slate-900 border border-slate-800 rounded-lg p-4">
+<div className="text-2xl font-bold text-cyan-500">{stat.val}</div>
+<div className="text-xs text-slate-400">{stat.label}</div>
+</div>
+))}
+</div>
+</div>
+</div>
+</section>
+
+```
+  <section className="py-24">
+    <div className="container mx-auto px-4">
+      <div className="max-w-7xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {cases.map((study, idx) => (
+          <div key={idx} className="bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-cyan-500/50 transition-all cursor-pointer">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-xs font-medium text-cyan-500 mb-4">
+              {study.industry} | {study.size}
+            </div>
+            <h3 className="text-xl font-bold mb-4">{study.title}</h3>
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              <div className="bg-slate-800 rounded-lg p-3 text-center">
+                <div className="text-2xl font-bold text-cyan-500">{study.metric}</div>
+                <div className="text-xs text-slate-400">{study.label}</div>
+              </div>
+              <div className="bg-slate-800 rounded-lg p-3 text-center">
+                <div className="text-2xl font-bold text-green-400">✓</div>
+                <div className="text-xs text-slate-400">Success</div>
+              </div>
+            </div>
+            <button className="w-full px-4 py-2 bg-cyan-500/10 hover:bg-cyan-500 border border-cyan-500/30 hover:border-cyan-500 text-cyan-500 hover:text-white rounded-lg font-semibold transition-all flex items-center justify-center gap-2">
+              Read Story
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section className="py-24 bg-slate-900/50">
+    <div className="container mx-auto px-4">
+      <div className="max-w-4xl mx-auto bg-gradient-to-r from-cyan-500/10 to-blue-600/10 border-2 border-cyan-500/30 p-12 rounded-2xl text-center">
+        <h2 className="text-3xl font-bold mb-4">Ready to Write Your Success Story?</h2>
+        <p className="text-slate-400 text-lg mb-8">
+          Join hundreds of protected organizations
+        </p>
+        <button
+          onClick={() => navigate('/contact-us')}
+          className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 rounded-lg font-semibold text-lg transition-all shadow-lg inline-flex items-center gap-2"
+        >
+          Schedule Consultation
+          <ArrowRight className="w-5 h-5" />
+        </button>
+      </div>
+    </div>
+  </section>
+</div>
+```
+
+);
+};
+
+// RESOURCES PAGE
+const ResourcesPage = ({ navigate }) => {
+const resources = [
+{ title: ‘SOC 2 Compliance Guide’, type: ‘Whitepaper’, time: ‘45 min’, views: ‘12.5K’ },
+{ title: ‘Ransomware Defense 2026’, type: ‘Whitepaper’, time: ‘35 min’, views: ‘18.2K’ },
+{ title: ‘Zero Trust Framework’, type: ‘Guide’, time: ‘30 min’, views: ‘11.2K’ },
+{ title: ‘Incident Response Checklist’, type: ‘Guide’, time: ‘15 min’, views: ‘25.3K’ },
+{ title: ‘Q1 2026 Threat Report’, type: ‘Report’, time: ‘25 min’, views: ‘21.8K’ },
+{ title: ‘Security ROI Calculator’, type: ‘Tool’, time: ‘5 min’, views: ‘31.2K’ }
+];
+
+return (
+<div>
+<section className="relative pt-32 pb-20 overflow-hidden">
+<div className="absolute inset-0 bg-gradient-to-b from-cyan-950/20 to-slate-950" />
+<div className="container mx-auto px-4 relative z-10">
+<div className="max-w-4xl mx-auto text-center">
+<h1 className="text-4xl md:text-5xl font-bold mb-6">
+Security Intelligence &
+<span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+Expert Insights
+</span>
+</h1>
+<p className="text-lg text-slate-400 mb-8">
+Free whitepapers, guides, and tools
+</p>
+<div className="max-w-2xl mx-auto relative">
+<Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+<input
+type="text"
+placeholder="Search resources..."
+className="w-full pl-12 pr-4 py-4 bg-slate-900 border border-slate-800 rounded-lg focus:border-cyan-500 focus:outline-none"
+/>
+</div>
+</div>
+</div>
+</section>
+
+```
+  <section className="py-24">
+    <div className="container mx-auto px-4">
+      <div className="max-w-7xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {resources.map((resource, idx) => (
+          <div key={idx} className="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-cyan-500/50 transition-colors">
+            <div className="flex items-center justify-between mb-4">
+              <div className="px-3 py-1 bg-slate-800 rounded-full text-xs font-medium text-slate-400">
+                {resource.type}
+              </div>
+              <FileText className="w-5 h-5 text-cyan-500" />
+            </div>
+            <h3 className="text-lg font-bold mb-2">{resource.title}</h3>
+            <div className="flex items-center gap-4 text-xs text-slate-500 mb-4">
+              <div className="flex items-center gap-1">
+                <Clock className="w-3 h-3" />
+                {resource.time}
+              </div>
+              <div>{resource.views} views</div>
+            </div>
+            <button className="w-full px-4 py-2 bg-cyan-500/10 hover:bg-cyan-500 border border-cyan-500/30 text-cyan-500 hover:text-white rounded-lg font-semibold transition-all flex items-center justify-center gap-2">
+              <Download className="w-4 h-4" />
+              Download
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section className="py-24 bg-slate-900/50">
+    <div className="container mx-auto px-4">
+      <div className="max-w-2xl mx-auto bg-gradient-to-r from-cyan-500/10 to-blue-600/10 border-2 border-cyan-500/30 p-12 rounded-2xl text-center">
+        <Mail className="w-16 h-16 text-cyan-500 mx-auto mb-6" />
+        <h2 className="text-3xl font-bold mb-4">Get Weekly Insights</h2>
+        <p className="text-slate-400 mb-6">
+          Subscribe for latest threat reports and best practices
+        </p>
+        <div className="flex gap-3">
+          <input
+            type="email"
+            placeholder="your@email.com"
+            className="flex-1 px-4 py-3 bg-slate-900 border border-slate-800 rounded-lg focus:border-cyan-500 focus:outline-none"
+          />
+          <button className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 rounded-lg font-semibold transition-colors">
+            Subscribe
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+```
+
+);
+};
+
+// Continuing with remaining specialized pages…
+
+const QFSPage = ({ navigate }) => (
+
+  <div>
+    <section className="relative pt-32 pb-20 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-cyan-950/20 to-slate-950" />
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            Quantum-Secure
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+              Financial Infrastructure
+            </span>
+          </h1>
+          <p className="text-lg text-slate-400 mb-8">
+            Military-level security for high-value transactions
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={() => navigate('/contact-us')}
+              className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 rounded-lg font-semibold text-lg transition-all shadow-lg"
+            >
+              Request Integration
+            </button>
+            <button className="px-8 py-4 border-2 border-cyan-500 text-cyan-500 hover:bg-cyan-500 hover:text-white rounded-lg font-semibold text-lg transition-all">
+              View Docs
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+```
+<section className="py-24">
+  <div className="container mx-auto px-4">
+    <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-6 mb-12">
+      {[
+        { label: 'Transaction Throughput', value: '100K+ TPS' },
+        { label: 'Average Latency', value: '<50ms' },
+        { label: 'Uptime SLA', value: '99.99%' }
+      ].map((spec, i) => (
+        <div key={i} className="bg-slate-900 border border-slate-800 rounded-xl p-6 text-center">
+          <div className="text-xs text-slate-500 uppercase mb-2">{spec.label}</div>
+          <div className="text-2xl font-bold text-cyan-500">{spec.value}</div>
+        </div>
+      ))}
+    </div>
+    
+    <div className="bg-gradient-to-br from-cyan-500/10 to-slate-900 border-2 border-cyan-500/30 rounded-2xl p-12 max-w-4xl mx-auto">
+      <h2 className="text-2xl font-bold mb-4">What is QFS?</h2>
+      <p className="text-slate-300 leading-relaxed mb-6">
+        The Quantum Financial System represents the evolution of financial infrastructure, 
+        leveraging quantum-resistant encryption and distributed ledger technology.
+      </p>
+      <p className="text-slate-300 leading-relaxed">
+        GEM Enterprise provides 24/7 security monitoring, threat detection, and compliance 
+        management for organizations on the QFS network.
+      </p>
+    </div>
+  </div>
+</section>
+```
+
+  </div>
+);
+
+const SentinelPage = ({ navigate }) => (
+
+  <div>
+    <section className="relative pt-32 pb-20 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-cyan-950/20 to-slate-950" />
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            Enterprise Zero Trust
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+              Security Framework
+            </span>
+          </h1>
+          <p className="text-lg text-slate-400">
+            Never trust, always verify - eliminate implicit trust
+          </p>
+        </div>
+      </div>
+    </section>
+
+```
+<section className="py-24">
+  <div className="container mx-auto px-4">
+    <div className="max-w-7xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {[
+        { icon: Users, title: 'Identity Verification', desc: 'Multi-factor authentication' },
+        { icon: Eye, title: 'Continuous Monitoring', desc: '24/7 surveillance' },
+        { icon: Lock, title: 'Least Privilege', desc: 'Minimal access only' },
+        { icon: Network, title: 'Micro-Segmentation', desc: 'Secure zones' },
+        { icon: FileText, title: 'Data Classification', desc: 'Auto protection' },
+        { icon: Shield, title: 'Threat Prevention', desc: 'Proactive defense' }
+      ].map((pillar, idx) => {
+        const Icon = pillar.icon;
+        return (
+          <div key={idx} className="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-cyan-500/50 transition-colors">
+            <Icon className="w-8 h-8 text-cyan-500 mb-4" />
+            <h3 className="font-bold mb-2">{pillar.title}</h3>
+            <p className="text-slate-400 text-sm">{pillar.desc}</p>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<section className="py-24 bg-slate-900/50">
+  <div className="container mx-auto px-4">
+    <div className="max-w-5xl mx-auto grid md:grid-cols-4 gap-6">
+      {[
+        { stat: '89%', label: 'Attack Surface Reduced' },
+        { stat: '94%', label: 'Faster Detection' },
+        { stat: '100%', label: 'Audit Coverage' },
+        { stat: '2.3min', label: 'Containment Time' }
+      ].map((benefit, i) => (
+        <div key={i} className="bg-slate-900 border border-slate-800 rounded-xl p-6 text-center">
+          <div className="text-4xl font-bold text-cyan-500 mb-2">{benefit.stat}</div>
+          <div className="text-sm text-slate-400">{benefit.label}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+```
+
+  </div>
+);
+
+const PortfolioPage = ({ navigate }) => {
+const [activeTab, setActiveTab] = useState(‘overview’);
+
+return (
+<div>
+<section className="relative pt-24 pb-12 bg-gradient-to-b from-slate-900 to-slate-950">
+<div className="container mx-auto px-4">
+<h1 className="text-3xl font-bold mb-8">Portfolio Dashboard</h1>
+<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+{[
+{ label: ‘Total Assets’, value: ‘$52.4M’ },
+{ label: ‘Digital’, value: ‘245’ },
+{ label: ‘Properties’, value: ‘8’ },
+{ label: ‘Uptime’, value: ‘99.97%’ }
+].map((stat, i) => (
+<div key={i} className="bg-slate-900 border border-slate-800 rounded-lg p-4">
+<div className="text-xs text-slate-500 uppercase mb-1">{stat.label}</div>
+<div className="text-2xl font-bold text-cyan-500">{stat.value}</div>
+</div>
+))}
+</div>
+</div>
+</section>
+
+```
+  <section className="py-12">
+    <div className="container mx-auto px-4">
+      <div className="flex gap-2 mb-8 overflow-x-auto">
+        {['overview', 'digital', 'properties', 'reports'].map(tab => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`px-6 py-3 rounded-lg font-medium transition-all whitespace-nowrap ${
+              activeTab === tab ? 'bg-cyan-500 text-white' : 'bg-slate-900 text-slate-400'
+            }`}
+          >
+            {tab.charAt(0).toUpperCase() + tab.slice(1)}
+          </button>
+        ))}
+      </div>
+
+      <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
+        <h2 className="text-xl font-bold mb-4">Security Status</h2>
+        <div className="space-y-3">
+          {['All Systems Operational', '24/7 Monitoring Active', 'Compliance Up to Date'].map((status, i) => (
+            <div key={i} className="flex items-center gap-3 p-4 bg-slate-800 rounded-lg">
+              <CheckCircle className="w-5 h-5 text-green-400" />
+              <span>{status}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+```
+
+);
+};
+
+const PricingPage = ({ navigate }) => (
+
+  <div>
+    <section className="relative pt-32 pb-20 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-cyan-950/20 to-slate-950" />
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            Security That Scales
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+              With Your Business
+            </span>
+          </h1>
+          <p className="text-lg text-slate-400">
+            Enterprise-grade cybersecurity without enterprise complexity
+          </p>
+        </div>
+      </div>
+    </section>
+
+```
+<section className="py-24">
+  <div className="container mx-auto px-4">
+    <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+      {[
+        { name: 'Starter', price: '$2,499', features: ['50 Endpoints', '24/7 Monitoring', 'Email Support', 'Monthly Reports'], popular: false },
+        { name: 'Professional', price: '$5,999', features: ['500 Endpoints', 'Priority Support (2hr)', 'Weekly Reports', 'Quarterly Pen Testing'], popular: true },
+        { name: 'Enterprise', price: 'Custom', features: ['Unlimited Endpoints', 'Dedicated Team', 'Real-time Reports', 'Monthly Pen Testing'], popular: false }
+      ].map((plan, idx) => (
+        <div key={idx} className={`rounded-2xl p-8 ${plan.popular ? 'bg-gradient-to-b from-cyan-500/10 to-slate-900 border-2 border-cyan-500/50 relative' : 'bg-slate-900 border border-slate-800'}`}>
+          {plan.popular && <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-cyan-500 rounded-full text-sm font-semibold">Most Popular</div>}
+          <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
+          <div className="text-4xl font-bold mb-6">{plan.price}<span className="text-lg text-slate-400 font-normal">/mo</span></div>
+          <ul className="space-y-3 mb-6">
+            {plan.features.map((f, i) => (
+              <li key={i} className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
+                <span className="text-sm">{f}</span>
+              </li>
+            ))}
+          </ul>
+          <button
+            onClick={() => navigate('/contact-us')}
+            className={`w-full py-3 rounded-lg font-semibold transition-all ${plan.popular ? 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700' : 'border-2 border-cyan-500 hover:bg-cyan-500'}`}
+          >
+            Get Started
+          </button>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+```
+
+  </div>
+);
+
+const ContactPage = ({ navigate }) => {
+const [submitted, setSubmitted] = useState(false);
+
+return (
+<div>
+<section className="relative pt-32 pb-20 overflow-hidden">
+<div className="absolute inset-0 bg-gradient-to-b from-cyan-950/20 to-slate-950" />
+<div className="container mx-auto px-4 relative z-10">
+<div className="max-w-4xl mx-auto text-center">
+<h1 className="text-4xl md:text-5xl font-bold mb-6">
+Get Started With
+<span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+Enterprise Security
+</span>
+</h1>
+<p className="text-lg text-slate-400">
+Schedule a personalized demo with our security experts
+</p>
+</div>
+</div>
+</section>
+
+```
+  <section className="py-24">
+    <div className="container mx-auto px-4">
+      <div className="max-w-6xl mx-auto grid lg:grid-cols-3 gap-12">
+        <div className="lg:col-span-2">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8">
+            {submitted ? (
+              <div className="text-center py-12">
+                <CheckCircle className="w-20 h-20 text-green-400 mx-auto mb-6" />
+                <h3 className="text-2xl font-bold mb-4">Thank You!</h3>
+                <p className="text-slate-400">We'll reach out within 24 hours</p>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                <h2 className="text-2xl font-bold">Request Information</h2>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <input type="text" placeholder="First Name" className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:border-cyan-500 focus:outline-none" />
+                  <input type="text" placeholder="Last Name" className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:border-cyan-500 focus:outline-none" />
+                </div>
+                <input type="email" placeholder="Work Email" className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:border-cyan-500 focus:outline-none" />
+                <input type="text" placeholder="Company" className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:border-cyan-500 focus:outline-none" />
+                <select className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:border-cyan-500 focus:outline-none">
+                  <option>Company Size</option>
+                  <option>1-50</option>
+                  <option>51-200</option>
+                  <option>201-500</option>
+                  <option>500+</option>
+                </select>
+                <textarea placeholder="Message" rows={4} className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:border-cyan-500 focus:outline-none resize-none" />
+                <button
+                  onClick={() => setSubmitted(true)}
+                  className="w-full py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 rounded-lg font-semibold text-lg transition-all shadow-lg"
+                >
+                  Submit Request
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
+            <h3 className="font-bold mb-4">Get In Touch</h3>
+            <div className="space-y-4">
+              {[
+                { icon: Mail, label: 'Email', value: 'sales@gemcyber.com' },
+                { icon: Phone, label: 'Phone', value: '(860) 305-4376' },
+                { icon: Calendar, label: 'Hours', value: 'Mon-Fri 8am-6pm PST' }
+              ].map((contact, i) => {
+                const Icon = contact.icon;
+                return (
+                  <div key={i} className="flex items-start gap-3">
+                    <Icon className="w-5 h-5 text-cyan-500 mt-0.5" />
+                    <div>
+                      <div className="font-medium">{contact.label}</div>
+                      <div className="text-sm text-slate-400">{contact.value}</div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-b from-cyan-500/10 to-slate-900 border border-cyan-500/30 rounded-xl p-6">
+            <h3 className="font-bold mb-4">What to Expect</h3>
+            <div className="space-y-3">
+              {['Response within 24 hours', 'Personalized assessment', 'Custom pricing', 'No obligation'].map((item, i) => (
+                <div key={i} className="flex gap-2">
+                  <CheckCircle className="w-5 h-5 text-cyan-500 flex-shrink-0" />
+                  <span className="text-sm">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+```
+
+);
+};
+
+const PrivacyPage = ({ navigate }) => (
+
+  <div className="py-24">
+    <div className="container mx-auto px-4 max-w-4xl">
+      <h1 className="text-4xl font-bold mb-4">Privacy Policy</h1>
+      <p className="text-slate-400 mb-8">Last Updated: January 24, 2026</p>
+      <div className="bg-slate-900 border border-slate-800 rounded-xl p-8 space-y-6">
+        <p className="text-slate-300">GEM Enterprise is committed to protecting your privacy.</p>
+        {['Information Collection', 'Data Usage', 'Security Measures', 'Your Rights', 'Contact'].map((section, i) => (
+          <div key={i}>
+            <h3 className="font-bold mb-2">{i + 1}. {section}</h3>
+            <p className="text-slate-400 text-sm">Details about {section.toLowerCase()} and our practices.</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
+const TermsPage = ({ navigate }) => (
+
+  <div className="py-24">
+    <div className="container mx-auto px-4 max-w-4xl">
+      <h1 className="text-4xl font-bold mb-4">Terms of Service</h1>
+      <p className="text-slate-400 mb-8">Last Updated: January 24, 2026</p>
+      <div className="bg-slate-900 border border-slate-800 rounded-xl p-8 space-y-6">
+        <p className="text-slate-300">By using GEM Enterprise services, you agree to these terms.</p>
+        {['Acceptance', 'Services', 'Accounts', 'Payment', 'Liability'].map((section, i) => (
+          <div key={i}>
+            <h3 className="font-bold mb-2">{i + 1}. {section}</h3>
+            <p className="text-slate-400 text-sm">Legal terms regarding {section.toLowerCase()}.</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
+const CookiePage = ({ navigate }) => (
+
+  <div className="py-24">
+    <div className="container mx-auto px-4 max-w-4xl">
+      <h1 className="text-4xl font-bold mb-4">Cookie Policy</h1>
+      <p className="text-slate-400 mb-8">Last Updated: January 24, 2026</p>
+      <div className="bg-slate-900 border border-slate-800 rounded-xl p-8 space-y-6">
+        <p className="text-slate-300">How we use cookies and similar technologies.</p>
+        <div className="grid md:grid-cols-2 gap-4">
+          {['Essential', 'Analytics', 'Functional', 'Marketing'].map((type, i) => (
+            <div key={i} className="bg-slate-800 rounded-lg p-4">
+              <Cookie className="w-6 h-6 text-cyan-500 mb-2" />
+              <h3 className="font-bold mb-1">{type} Cookies</h3>
+              <p className="text-slate-400 text-sm">Used for {type.toLowerCase()} purposes.</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+export default Router;

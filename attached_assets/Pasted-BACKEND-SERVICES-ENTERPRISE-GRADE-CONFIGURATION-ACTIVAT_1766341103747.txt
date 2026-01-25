@@ -1,0 +1,115 @@
+BACKEND SERVICES — ENTERPRISE-GRADE CONFIGURATION & ACTIVATION (NO FRONTEND GO-LIVE)
+
+OBJECTIVE
+All backend applications, services, and servers MUST be:
+- Fully configured
+- Actively running
+- Enterprise-grade in quality and reliability
+- Ready to serve traffic through the intended redirect/base URL
+
+Frontend deployment remains deferred.
+Backend services MUST be live, stable, and reachable.
+
+================================
+SCOPE
+================================
+This applies to ALL backend components, including but not limited to:
+- API service
+- Worker / background job processors
+- Agent orchestration engine
+- Integration connectors
+- Auth, RBAC, audit logging subsystems
+- Data persistence and queues
+
+================================
+ENTERPRISE-GRADE REQUIREMENTS
+================================
+
+1) SERVICE ACTIVATION
+- All backend services must start successfully on boot
+- No placeholder or disabled services
+- No mock servers for core runtime paths
+- Services must be resilient to missing optional integrations
+
+2) ROUTING & REDIRECT BASE
+- Backend must be bound to the intended base URL / redirect path
+- All APIs must resolve correctly under that base (no hardcoded localhost paths)
+- Health checks must be reachable at:
+  /health or /status
+- API base paths must be documented clearly
+
+3) CONFIGURATION STANDARDS
+- Environment-based configuration only
+- No hardcoded secrets or endpoints
+- Production-safe defaults
+- Graceful handling of missing credentials:
+  - Log warnings
+  - Do not crash services
+  - Mark integrations as inactive
+
+4) ENTERPRISE QUALITY BAR
+- Structured logging (JSON or consistent format)
+- Clear startup logs indicating:
+  - service name
+  - version
+  - environment
+- RBAC enforced at API boundaries
+- Audit events emitted for:
+  - auth actions
+  - agent runs
+  - configuration changes
+- Background jobs must be idempotent and retry-safe
+
+5) INFRASTRUCTURE READINESS
+- Docker containers must build and run cleanly
+- docker-compose must bring up:
+  - API
+  - worker
+  - database
+  - queue
+- No orphaned services
+- Ports and dependencies explicitly defined
+
+================================
+DOCUMENTATION (MANDATORY)
+================================
+Update or create the following:
+- /docs/ARCHITECTURE.md
+  - Backend service overview
+  - Runtime responsibilities
+- /docs/DEPLOYMENT.md
+  - Backend deployment section
+  - Redirect/base URL explanation
+- /docs/EXECUTION_LOG.md
+  - What services were activated
+  - How they were verified
+  - Current operational state
+
+================================
+VALIDATION
+================================
+Confirm and log:
+- All backend services are running
+- API responds under intended base path
+- Health endpoints return success
+- Existing GEM functionality remains intact
+- ForgeOps backend foundation is active and stable
+
+================================
+CONSTRAINTS
+================================
+- Do NOT deploy or update the frontend
+- Do NOT modify the live Vercel project
+- Do NOT request Autonomous Mode
+- Do NOT introduce breaking changes
+
+================================
+END STATE
+================================
+Backend system is:
+- Enterprise-grade
+- Fully active
+- Properly routed
+- Ready to support multiple frontend projects later
+
+Proceed immediately.

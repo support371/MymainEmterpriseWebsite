@@ -1,0 +1,216 @@
+Got you, GEM—that actually all hangs together. Let’s turn what you’ve been circling into a clean, final spec you can paste straight into Replit AI as “Build this for me.”
+
+---
+
+Project overview
+
+Goal:
+Build a production-ready full‑stack web app where every page works flawlessly, is user‑friendly, and the codebase is maintainable and flexible for future expansion.
+
+The Replit AI should generate:
+
+• A complete front‑end (UI, routing, state, forms, validation).
+• A complete back‑end (API, business logic, persistence).
+• A clear project structure, with comments and docs where needed.
+
+
+---
+
+Tech stack
+
+Front‑end:
+
+• Framework: React with a modern meta‑framework (Next.js or Remix). If unsure, choose Next.js (App Router).
+• Language: TypeScript.
+• Styling: Tailwind CSS or a simple, consistent component library.
+• Routing: File‑based routing with nested layouts.
+• Form handling: React Hook Form or framework-native forms.
+• State: Local component state + minimal global state (Context or Zustand) only where necessary.
+
+
+Back‑end:
+
+• Language: Python.
+• Framework: FastAPI.
+• API style: RESTful JSON endpoints.
+• Persistence: PostgreSQL (via SQLAlchemy or equivalent ORM).
+• Migrations: Alembic or built‑in migration tool.
+• Environment: .env for secrets and config.
+
+
+General:
+
+• Auth: Session or JWT-based auth with secure password hashing.
+• Testing: Basic tests for critical routes and core logic (unit + minimal integration).
+• Tooling: Prettier/ESLint (front‑end), Black/isort (back‑end).
+
+
+---
+
+Architecture and structure
+
+Front‑end structure (example for Next.js):
+
+• app/• layout.tsx — global layout, navigation, footer.
+• page.tsx — landing/dashboard.
+• auth/ — login, register, logout pages.
+• settings/ — user profile, preferences.
+• Other feature routes as needed.
+
+• components/ — reusable UI components.
+• lib/ — API client helpers, utilities.
+• styles/ — global styles if needed.
+
+
+Back‑end structure (FastAPI):
+
+• app/main.py — FastAPI app entrypoint.
+• app/config.py — settings, env loading.
+• app/models/ — ORM models.
+• app/schemas/ — Pydantic schemas.
+• app/api/• routes/ — route modules grouped by feature.
+• dependencies.py — shared dependencies.
+
+• app/services/ — business logic.
+• app/db/ — DB session, migrations.
+
+
+Communication:
+
+• Front‑end calls back‑end via REST endpoints (e.g. /api/...).
+• All responses are JSON with a consistent envelope:
+{ "success": boolean, "data": ..., "error": { "code": string, "message": string } | null }.
+
+
+---
+
+Pages and UX requirements
+
+Every page must:
+
+• Be responsive (desktop, tablet, mobile).
+• Be accessible (semantic HTML, labels, focus states, basic ARIA where needed).
+• Provide clear feedback (loading states, error messages, success confirmations).
+• Handle error states gracefully (network errors, validation errors, empty states).
+
+
+At minimum, implement:
+
+1. Landing / Dashboard page• Purpose: Overview of the system, key actions, and navigation.
+• Features:• If authenticated: show user‑specific content (e.g. summary, recent activity).
+• If not authenticated: show call‑to‑action to log in or register.
+• Clear navigation to all main sections.
+
+
+2. Authentication pages• Login page:• Email/username + password.
+• Client‑side validation + server‑side validation.
+• Show specific error messages (invalid credentials, missing fields).
+
+• Registration page:• Basic fields (name, email, password, confirm password).
+• Strong password rules and validation.
+• On success, either auto‑login or redirect to login with a success message.
+
+• Logout:• Clear action that invalidates session/JWT and redirects to login/landing.
+
+
+3. Settings / Profile page• View and edit profile details.
+• Change password flow.
+• Basic preferences (placeholder structure for future expansion).
+
+4. Error pages / states• 404 page with navigation back to safety.
+• 500 / generic error boundary with a friendly message and retry option.
+
+
+
+---
+
+Back‑end API requirements
+
+Implement a clean, versioned API, e.g. /api/v1/....
+
+Auth endpoints:
+
+• POST /api/v1/auth/register• Accepts registration data.
+• Validates uniqueness of email/username.
+• Hashes password.
+• Returns success + user summary (no password).
+
+• POST /api/v1/auth/login• Accepts credentials.
+• Validates and returns session/JWT token.
+• On failure, returns clear error code/message.
+
+• POST /api/v1/auth/logout• Invalidates session/JWT (depending on chosen strategy).
+
+• GET /api/v1/auth/me• Returns current user info based on auth token/session.
+
+
+
+User endpoints:
+
+• GET /api/v1/users/me
+• PATCH /api/v1/users/me
+• POST /api/v1/users/change-password
+
+
+General API behavior:
+
+• Use proper HTTP status codes.
+• Return consistent JSON structure.
+• Validate all inputs with Pydantic schemas.
+• Log errors on the server side (without leaking sensitive data to the client).
+
+
+---
+
+Configuration, environment, and setup
+
+Replit AI should:
+
+• Provide a README with:• How to run front‑end and back‑end (dev mode).
+• How to configure environment variables.
+• How to run migrations.
+• How to run tests.
+
+• Use environment variables for:• Database URL.
+• JWT/secret keys.
+• Any external service keys (if added later).
+
+• Ensure the project can be started with simple commands, e.g.:• Back‑end: uvicorn app.main:app --reload
+• Front‑end: npm install && npm run dev (or pnpm/yarn).
+
+
+
+---
+
+Code quality and maintainability
+
+• Use clear, consistent naming for files, functions, and components.
+• Add docstrings/comments for non‑obvious logic.
+• Keep components and modules small and focused.
+• Avoid unnecessary complexity—prioritize clarity and extensibility.
+• Include at least:• A few unit tests for core back‑end logic (auth, user model).
+• A couple of front‑end tests (basic rendering and form submission).
+
+
+
+---
+
+UX tone and “friendly usage”
+
+• Copy and UI text should be simple, direct, and reassuring.
+• Avoid jargon where possible; when technical terms are needed, keep them short and clear.
+• Use help text and inline validation messages instead of cryptic errors.
+• Make primary actions obvious and safe (no destructive actions without confirmation).
+
+
+---
+
+Final instruction to Replit AI
+
+Use the above specification to generate a complete, working full‑stack application in this Replit project.
+Implement both the front‑end and back‑end, wire them together, and ensure every page and route behaves correctly, with friendly, flexible, and robust UX.
+When in doubt, choose the simplest implementation that remains clean, testable, and easy to extend.
+
+---
+
+If you want, next step we can specialize this spec to your actual domain (trading engine, compliance platform, etc.) so Replit AI bakes in the right terminology and data models from the start.

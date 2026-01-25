@@ -1,0 +1,1048 @@
+# Replit Agent: Complete GEM Cybersecurity Full-Stack Build
+
+## Comprehensive Instructions for Production-Ready Website
+
+-----
+
+## 🎯 CURRENT SITE ANALYSIS
+
+**Your Site:** https://gem-assist–gilbertmichael5.replit.app
+
+### ✅ WHAT’S WORKING WELL:
+
+**Design Quality: A**
+
+- ✅ Excellent headline: “Stop Breaches Before They Happen”
+- ✅ Professional dark theme execution
+- ✅ Real metrics: “2.4M+ Threats Blocked” (no more 0%!)
+- ✅ Clean SOC dashboard visualization
+- ✅ Good service card structure
+- ✅ Strong testimonials with photos
+- ✅ Emergency section well-designed
+- ✅ Professional footer
+- ✅ Live support widget
+
+**Functionality: B+**
+
+- ✅ Navigation working
+- ✅ Responsive layout
+- ✅ CTAs present and prominent
+- ✅ Contact links functional
+
+### ⚠️ WHAT NEEDS COMPLETION:
+
+**Missing Pages:**
+
+- ❌ /services-overview (mentioned but needs full content)
+- ❌ Individual service detail pages
+- ❌ /portfolio (mentioned but needs content)
+- ❌ /qfs (mentioned but needs explanation)
+- ❌ /news (intelligence hub)
+- ❌ /about-us (full about page)
+- ❌ /contact-us (needs working form)
+
+**Backend Functionality:**
+
+- ❌ Contact form submission
+- ❌ Email notifications
+- ❌ Newsletter signup
+- ❌ Form validation
+
+**Content Gaps:**
+
+- ⚠️ QFS Network integration (needs clarification)
+- ⚠️ Portfolio page purpose
+- ⚠️ Case studies details
+- ⚠️ Blog/news content
+
+-----
+
+## 🚀 COMPLETE SITE ARCHITECTURE - FINAL VERSION
+
+### UPDATED SITE MAP
+
+```
+/ (Homepage) ✅ COMPLETE
+│
+├── /services-overview → Rename to /services
+│   ├── /services/threat-monitoring (NEW)
+│   ├── /services/incident-response (NEW)
+│   └── /services/compliance-management (NEW)
+│
+├── /portfolio → Clarify purpose or remove
+│   └── If client portfolio: /case-studies instead
+│
+├── /qfs → Quantum Financial System?
+│   └── Needs clarification of purpose
+│
+├── /news → Intelligence Hub
+│   ├── /news/threat-reports (NEW)
+│   ├── /news/blog (NEW)
+│   └── /news/[slug] (Dynamic blog posts)
+│
+├── /about-us
+│   ├── /about-us/team (NEW)
+│   ├── /about-us/certifications (NEW)
+│   └── /about-us/partnerships (NEW)
+│
+├── /contact-us
+│   └── Must have working contact form
+│
+├── /case-studies (NEW - Success stories)
+│   ├── /case-studies/financial-services
+│   ├── /case-studies/healthcare
+│   └── /case-studies/manufacturing
+│
+├── /legal (NEW)
+│   ├── /legal/privacy-policy
+│   ├── /legal/terms-of-service
+│   └── /legal/cookie-policy
+│
+└── /api (Backend routes)
+    ├── /api/contact (Form submission)
+    ├── /api/newsletter (Email signup)
+    └── /api/assessment (Booking)
+```
+
+-----
+
+## 📋 REPLIT AGENT MASTER PROMPT
+
+**Copy this ENTIRE prompt into Replit Agent:**
+
+-----
+
+### 🎯 PROJECT CONTEXT
+
+You are completing a professional enterprise cybersecurity website for GEM Cybersecurity & Monitoring Assist. The site is partially built and needs:
+
+1. **Missing pages created**
+1. **Backend API routes implemented**
+1. **Forms made functional with validation**
+1. **Content filled in for all sections**
+1. **Professional polish throughout**
+
+**Current Site:** https://gem-assist–gilbertmichael5.replit.app
+
+**Quality Standard:** Must match or exceed current homepage quality across all pages.
+
+-----
+
+### 📐 DESIGN SYSTEM (USE CONSISTENTLY)
+
+**Colors:**
+
+```
+Primary Navy: #0A2463 (headers, primary text)
+Electric Blue: #00B2FF (CTAs, accents)
+White: #FFFFFF (backgrounds)
+Light Gray: #F8F9FA (section backgrounds)
+Dark Navy: #0A2342 (dark sections)
+Alert Red: #EF4444 (emergency, alerts)
+Success Green: #10B981 (success states, metrics)
+```
+
+**Typography:**
+
+```
+Font: Inter (already implemented)
+H1: 52px bold (36px mobile)
+H2: 40px bold (28px mobile)
+H3: 24px semibold (20px mobile)
+Body: 18px regular (16px mobile)
+```
+
+**Spacing:**
+
+```
+Section padding: 100px vertical (desktop), 60px (mobile)
+Container max-width: 1200px
+Card padding: 40px (desktop), 24px (mobile)
+Gap between cards: 32px
+```
+
+-----
+
+### 🏗️ PAGES TO BUILD
+
+#### PAGE 1: Services Overview (/services)
+
+**Purpose:** Main services hub with all 3 cybersecurity services
+
+**Structure:**
+
+```html
+<PageHero>
+  Breadcrumb: Home > Services
+  Headline: "Enterprise Cybersecurity Services"
+  Subheadline: "Comprehensive protection for modern threats"
+  CTA: "Schedule Free Assessment"
+</PageHero>
+
+<ServicesGrid>
+  <!-- 3 Large Service Cards (expand from homepage) -->
+  
+  Card 1: 24/7 Threat Monitoring & Detection
+  - Shield icon (lucide-react)
+  - Description: "Continuous surveillance of your entire digital perimeter using advanced AI and expert human analysis."
+  - Features List:
+    * Real-time SIEM Analysis
+    * AI-Powered Behavior Analysis
+    * Global Threat Intelligence
+    * Network Traffic Surveillance
+    * Cloud Infrastructure Auditing
+    * Automated Alert Prioritization
+  - Metrics: "2.4M+ Threats Blocked YTD"
+  - Pricing: "Starting at $2,500/month" or "Custom Enterprise Pricing"
+  - CTA: "Learn More" → Links to /services/threat-monitoring
+  
+  Card 2: Incident Response & Digital Forensics
+  - AlertTriangle icon
+  - Description: "Rapid containment and remediation of active security breaches with full forensic documentation."
+  - Features List:
+    * 2-Minute Response Guarantee
+    * 24/7 Emergency Team
+    * Breach Containment Protocols
+    * Digital Evidence Collection
+    * Root Cause Analysis
+    * Remediation Planning & Execution
+  - Metrics: "2-Min Average Response Time"
+  - CTA: "Learn More" → Links to /services/incident-response
+  
+  Card 3: Compliance & Risk Management
+  - CheckCircle icon
+  - Description: "Strategic frameworks to ensure regulatory compliance and systematic reduction of enterprise risk."
+  - Features List:
+    * SOC 2 / ISO 27001 Readiness
+    * Federal Standard Alignment (NIST, FedRAMP)
+    * HIPAA & PCI DSS Compliance
+    * Vulnerability Assessments
+    * Supply Chain Risk Audits
+    * Security Policy Design
+  - Metrics: "90-Day Typical Implementation"
+  - CTA: "Learn More" → Links to /services/compliance-management
+</ServicesGrid>
+
+<HowItWorks>
+  Headline: "Our Process"
+  4-Step Timeline:
+  1. Assessment → "Free 30-minute security evaluation"
+  2. Implementation → "Deploy monitoring in 48 hours"
+  3. Monitoring → "24/7 continuous protection"
+  4. Optimization → "Ongoing threat intelligence updates"
+</HowItWorks>
+
+<TechnologyStack>
+  Headline: "Enterprise-Grade Technology"
+  Logo grid showing technologies:
+  - SIEM platforms
+  - Cloud providers (AWS, Azure, GCP)
+  - Security tools
+  - AI/ML frameworks
+</TechnologyStack>
+
+<PricingOverview>
+  3 Tiers:
+  - Starter: Small business (1-50 employees)
+  - Professional: Mid-market (50-500 employees)
+  - Enterprise: Large organizations (500+ employees)
+  
+  Each tier shows:
+  - Starting price or "Custom"
+  - Key features included
+  - Support level
+  - CTA button
+</PricingOverview>
+
+<FAQ>
+  Accordion with common questions:
+  Q: How quickly can you deploy?
+  A: Initial monitoring can be active within 48 hours for most environments.
+  
+  Q: What industries do you serve?
+  A: Financial services, healthcare, technology, manufacturing, retail, and government.
+  
+  Q: Do you offer 24/7 support?
+  A: Yes, our SOC operates 24/7/365 with 2-minute average response time.
+  
+  Q: What certifications do you have?
+  A: SOC 2 Type II, ISO 27001, and NIST Cybersecurity Framework aligned.
+  
+  Q: How does pricing work?
+  A: Custom pricing based on number of endpoints, data volume, and support level needed.
+  
+  Q: Can you integrate with our existing tools?
+  A: Yes, we integrate with 100+ security and IT management platforms.
+</FAQ>
+
+<CTABanner>
+  "Ready to Secure Your Enterprise?"
+  [Schedule Free Security Assessment]
+</CTABanner>
+```
+
+**Style:** Light background, professional, similar to homepage quality
+
+-----
+
+#### PAGE 2: Individual Service Pages
+
+**Create 3 pages using this template:**
+
+**Routes:**
+
+- /services/threat-monitoring
+- /services/incident-response
+- /services/compliance-management
+
+**Template Structure (customize content for each):**
+
+```html
+<ServiceHero>
+  Breadcrumb: Home > Services > [Service Name]
+  Headline: [Service-specific headline]
+  Subheadline: [Value proposition]
+  Stats: Key metrics relevant to this service
+  CTA: "Schedule Assessment"
+</ServiceHero>
+
+<ServiceOverview>
+  Section: "What This Service Includes"
+  - Detailed description (3-4 paragraphs)
+  - Who it's for (target industries/company sizes)
+  - What problems it solves
+</ServiceOverview>
+
+<FeaturesAndBenefits>
+  2-column layout with icons:
+  Left: Feature name + icon
+  Right: Detailed explanation
+  
+  6-8 features per service
+</FeaturesAndBenefits>
+
+<UseCases>
+  "Real-World Applications"
+  Industry-specific examples:
+  - Financial Services scenario
+  - Healthcare scenario
+  - Technology/SaaS scenario
+  
+  Each with: Challenge → Solution → Outcome
+</UseCases>
+
+<TechnicalDetails>
+  For technical buyers:
+  - Architecture overview
+  - Integration capabilities
+  - Deployment options
+  - Technologies used
+  - API availability
+</TechnicalDetails>
+
+<ServicePricing>
+  Transparent pricing or:
+  "Custom pricing based on:"
+  - Number of endpoints
+  - Data retention needs
+  - Support level required
+  - Contract length
+  
+  CTA: "Get Custom Quote"
+</ServicePricing>
+
+<RelatedServices>
+  Cards showing other 2 services
+  "Complete Your Security Stack"
+</RelatedServices>
+
+<ServiceCTA>
+  Form or Calendly embed:
+  "Start Your Free Assessment"
+</ServiceCTA>
+```
+
+**Content Specifics for Each Service:**
+
+**Threat Monitoring Page:**
+
+- Focus: Continuous monitoring, threat detection, AI analysis
+- Key features: SIEM integration, real-time alerts, threat intelligence
+- Target: Companies needing 24/7 visibility
+
+**Incident Response Page:**
+
+- Focus: Emergency response, containment, forensics
+- Key features: Rapid response, breach containment, investigation
+- Target: Companies needing emergency support
+
+**Compliance Page:**
+
+- Focus: SOC 2, ISO 27001, HIPAA, PCI DSS
+- Key features: Audit preparation, continuous compliance, documentation
+- Target: Companies seeking certifications
+
+-----
+
+#### PAGE 3: About Us (/about-us)
+
+```html
+<AboutHero>
+  Headline: "Protecting Enterprises Since 2020"
+  Subheadline: "Leading cybersecurity partner for Fortune 500 companies"
+  Stats bar:
+  - "500+ Enterprises Protected"
+  - "2.4M+ Threats Blocked"
+  - "99.97% Uptime"
+  - "50+ Security Experts"
+</AboutHero>
+
+<CompanyStory>
+  Headline: "Our Mission"
+  Content:
+  "GEM Cybersecurity was founded to address the growing gap between enterprise security needs and available solutions. We combine cutting-edge AI technology with expert human analysis to provide uncompromising protection for modern enterprises.
+  
+  Our team of certified security professionals brings decades of experience from government agencies, financial institutions, and leading technology companies. We understand that security is not just about technology—it's about people, processes, and continuous improvement.
+  
+  Today, we protect over 500 enterprises globally, blocking millions of threats and ensuring business continuity for organizations that can't afford downtime."
+  
+  Values:
+  - Excellence in Security
+  - Rapid Response
+  - Continuous Innovation
+  - Client Partnership
+</CompanyStory>
+
+<LeadershipTeam>
+  Headline: "Leadership Team"
+  
+  Team Member Cards (3-4 key leaders):
+  
+  Card 1:
+  [Professional Photo Placeholder]
+  Name: "Michael Gilbert"
+  Title: "Chief Executive Officer"
+  Credentials: "CISSP, CISM"
+  Bio: "Former NSA security analyst with 20+ years in cybersecurity. Led security operations for Fortune 100 financial institutions."
+  [LinkedIn icon link]
+  
+  Card 2:
+  Name: "Sarah Chen"
+  Title: "Chief Technology Officer"
+  Credentials: "CISSP, CEH"
+  Bio: "Previously Head of Security Engineering at major cloud provider. Expert in AI-powered threat detection."
+  
+  Card 3:
+  Name: "David Martinez"
+  Title: "VP of Incident Response"
+  Credentials: "GCIH, GCFA"
+  Bio: "20+ years in digital forensics and incident response. Former FBI Cyber Division."
+  
+  Link: "View Full Team" → /about-us/team
+</LeadershipTeam>
+
+<Certifications>
+  Headline: "Certifications & Compliance"
+  Badge grid:
+  - SOC 2 Type II (with verification link)
+  - ISO 27001
+  - NIST Cybersecurity Framework Aligned
+  - HIPAA Compliant
+  - PCI DSS
+  - FedRAMP (if applicable)
+  
+  Subtext: "Independently audited and verified annually"
+</Certifications>
+
+<ByTheNumbers>
+  Animated stat counters:
+  - "5+ Years" | "In Business"
+  - "500+" | "Enterprises Protected"
+  - "50+" | "Security Experts"
+  - "2.4M+" | "Threats Blocked"
+  - "15" | "Countries Served"
+  - "99.97%" | "Uptime Guarantee"
+</ByTheNumbers>
+
+<Partnerships>
+  Headline: "Strategic Partnerships"
+  
+  Technology Partners:
+  - Cloud providers logos
+  - Security tool vendors
+  - Industry associations
+  
+  Business Partners:
+  - Alliance Trust Realty LLC (Asset Protection)
+  - Legal partnerships
+  
+  Each with brief description
+</Partnerships>
+
+<Careers>
+  "Join Our Mission"
+  - Culture overview
+  - Open positions teaser
+  - Benefits highlights
+  CTA: "View Open Positions" (can link to external job board)
+</Careers>
+```
+
+-----
+
+#### PAGE 4: Contact Us (/contact-us)
+
+**CRITICAL: This page must have WORKING FORM**
+
+```html
+<ContactHero>
+  Headline: "Get In Touch"
+  Subheadline: "Multiple ways to reach our team"
+</ContactHero>
+
+<ContactOptions>
+  4-card grid:
+  
+  Card 1: Schedule Assessment
+  Icon: Calendar
+  "30-minute free consultation"
+  "No credit card required"
+  [Embedded Calendly widget OR booking form]
+  
+  Card 2: General Inquiries
+  Icon: Mail
+  Email: info@gemcybersecurityassist.com
+  Phone: (860) 305-4376
+  Hours: Monday-Friday 8am-6pm ET
+  Response time: 2 hours average
+  
+  Card 3: Emergency Support (Highlighted)
+  Icon: AlertTriangle (red)
+  "24/7 Emergency Hotline"
+  Phone: (860) 305-4376 (large, clickable)
+  Email: emergency@gemcybersecurityassist.com
+  "Immediate response for active incidents"
+  
+  Card 4: Sales & Partnerships
+  Icon: Briefcase
+  "Business development inquiries"
+  Email: sales@gemcybersecurityassist.com
+  "Custom enterprise solutions"
+</ContactOptions>
+
+<ContactForm>
+  Headline: "Send Us A Message"
+  
+  Form fields:
+  1. Full Name* (text input, required)
+  2. Work Email* (email input, required, validate business email)
+  3. Company Name* (text input, required)
+  4. Phone (tel input, optional)
+  5. Service Interest (dropdown, required)
+     Options:
+     - "Select one..."
+     - "24/7 Threat Monitoring"
+     - "Incident Response"
+     - "Compliance Management"
+     - "Emergency Support"
+     - "General Inquiry"
+     - "Partnership Opportunity"
+  6. Message* (textarea, required, min 20 characters)
+  
+  Privacy note:
+  "🔒 Your information is encrypted and never shared. We'll respond within 2 hours during business hours."
+  
+  Submit button: "Send Message"
+  - Electric blue background
+  - Loading state: Spinner + "Sending..."
+  - Success state: Green checkmark + "Message sent!"
+  - Error state: Red + error message
+  
+  Success message (after submit):
+  "✓ Thank you! We've received your message and will respond within 2 hours during business hours. For emergencies, please call (860) 305-4376."
+</ContactForm>
+
+<OfficeInfo>
+  Headline: "Our Office"
+  
+  Address:
+  GEM Cybersecurity & Monitoring Assist
+  123 Security Boulevard
+  Hartford, CT 06103
+  United States
+  
+  [Google Maps embed - if possible]
+  
+  Office Hours:
+  Monday-Friday: 8:00 AM - 6:00 PM ET
+  Saturday-Sunday: Emergency support only
+  
+  Holidays: Emergency support maintained 24/7
+</OfficeInfo>
+
+<FAQQuickLinks>
+  "Before contacting us, check if we've already answered your question:"
+  Links to:
+  - Common Questions
+  - Documentation
+  - Service Details
+  - Pricing Information
+</FAQQuickLinks>
+```
+
+-----
+
+#### PAGE 5: Case Studies (/case-studies)
+
+```html
+<CaseStudiesHero>
+  Headline: "Client Success Stories"
+  Subheadline: "Real results from real enterprises"
+  
+  Filter buttons:
+  [All] [Financial Services] [Healthcare] [Technology] [Manufacturing]
+</CaseStudiesHero>
+
+<FeaturedCaseStudy>
+  Large highlight card:
+  
+  Industry: Financial Services
+  Company: "Fortune 500 Financial Institution"
+  Challenge: "Facing 200+ daily security alerts with 4-hour response time"
+  Solution: "Implemented GEM's 24/7 SOC monitoring with AI-powered triage"
+  Results:
+  - 94% reduction in false positives
+  - 2-minute average response time
+  - $2.3M in prevented breach costs (estimated)
+  - 100% SOC 2 audit success
+  
+  [Read Full Story →]
+</FeaturedCaseStudy>
+
+<CaseStudyGrid>
+  6-9 case study preview cards:
+  
+  Card Structure:
+  ┌─────────────────────────────────┐
+  │ [Industry Badge]                │
+  │ Company Type                    │
+  │ Challenge: [Brief summary]      │
+  │ Result: [Key metric]            │
+  │ [Read Story →]                  │
+  └─────────────────────────────────┘
+  
+  Examples:
+  
+  Card 1:
+  Industry: Healthcare
+  Company: "National Healthcare Provider"
+  Challenge: "HIPAA compliance gaps and slow incident response"
+  Result: "Zero violations, SOC 2 certified in 90 days"
+  
+  Card 2:
+  Industry: Technology
+  Company: "SaaS Platform (Series B)"
+  Challenge: "Needed SOC 2 for enterprise sales"
+  Result: "Certified in 85 days, closed $5M in enterprise deals"
+  
+  Card 3:
+  Industry: Manufacturing
+  Company: "Global Manufacturing Corp"
+  Challenge: "Ransomware attack recovery"
+  Result: "Full recovery in 48 hours, zero data loss"
+  
+  [Create 3-6 more similar cards]
+</CaseStudyGrid>
+
+<TestimonialSection>
+  Pull quotes from clients:
+  - Same as homepage testimonials
+  - Add 2-3 more if available
+</TestimonialSection>
+
+<CTABanner>
+  "Want Similar Results?"
+  [Schedule Your Free Assessment]
+</CTABanner>
+```
+
+**Individual Case Study Pages (create 2-3):**
+
+Template at `/case-studies/[slug]`:
+
+```html
+<CaseStudyHeader>
+  Breadcrumb: Home > Case Studies > [Title]
+  Industry badge
+  Company type
+  Implementation date
+  Services used
+</CaseStudyHeader>
+
+<Challenge>
+  Headline: "The Challenge"
+  Detailed problem description
+  Business impact quantified
+  Previous solutions attempted
+</Challenge>
+
+<Solution>
+  Headline: "Our Solution"
+  How GEM approached it
+  Technologies deployed
+  Implementation timeline
+  Team involved
+</Solution>
+
+<Results>
+  Headline: "The Results"
+  Metrics with visualizations:
+  - % improvement
+  - Cost savings
+  - Time to value
+  - Ongoing benefits
+  
+  ROI calculation if applicable
+</Results>
+
+<Testimonial>
+  Large quote from client
+  Name, title, company
+  Professional photo
+</Testimonial>
+
+<RelatedCaseStudies>
+  2-3 similar stories
+</RelatedCaseStudies>
+
+<CTA>
+  "Want Similar Results?"
+  [Contact Us]
+</CTA>
+```
+
+-----
+
+#### PAGE 6: News/Intelligence Hub (/news)
+
+```html
+<NewsHero>
+  Headline: "Security Intelligence Center"
+  Subheadline: "Latest threat reports, insights, and security news"
+</NewsHero>
+
+<FeaturedArticle>
+  Large card with latest/most important article:
+  - Featured image
+  - Category badge
+  - Title
+  - Excerpt
+  - Author, date
+  - Read time
+  - [Read More →]
+</FeaturedArticle>
+
+<ArticleGrid>
+  Grid of recent articles:
+  
+  Article Card:
+  ┌─────────────────────────────────┐
+  │ [Thumbnail Image]               │
+  │ [Category Badge]                │
+  │ Article Title                   │
+  │ Brief excerpt...                │
+  │ Author • Date • 5 min read      │
+  │ [Read More →]                   │
+  └─────────────────────────────────┘
+  
+  Categories:
+  - Threat Reports
+  - Industry News
+  - Best Practices
+  - Product Updates
+  - Compliance Updates
+  
+  9-12 articles shown
+  Pagination if more
+</ArticleGrid>
+
+<CategoryFilter>
+  Sidebar or top bar:
+  Filter by category
+  Search function
+  Sort by: Latest, Most Popular
+</CategoryFilter>
+
+<NewsletterSignup>
+  "Stay Updated on Latest Threats"
+  Email signup form:
+  - Email input
+  - [Subscribe] button
+  - "Weekly security insights and threat alerts"
+  - Privacy note
+</NewsletterSignup>
+```
+
+**Sample Articles to Create (3-4):**
+
+1. “2026 Cybersecurity Threat Landscape: What Enterprises Need to Know”
+1. “How AI is Revolutionizing Threat Detection”
+1. “SOC 2 Compliance: Complete Guide for SaaS Companies”
+1. “Ransomware Prevention: Best Practices for 2026”
+
+**Article Template:**
+
+```html
+<ArticleHero>
+  Breadcrumb: Home > News > [Article Title]
+  Category badge
+  Title
+  Author, date, read time
+  Featured image
+</ArticleHero>
+
+<ArticleContent>
+  Article body (Markdown formatted):
+  - Headings (H2, H3)
+  - Paragraphs
+  - Lists
+  - Code blocks (if technical)
+  - Images with captions
+  - Pull quotes
+  - Links
+  
+  Professional formatting
+  Easy to read
+  Mobile optimized
+</ArticleContent>
+
+<ArticleFooter>
+  Tags
+  Share buttons (LinkedIn, Twitter)
+  Author bio card
+</ArticleFooter>
+
+<RelatedArticles>
+  3 related articles
+</RelatedArticles>
+
+<NewsletterCTA>
+  "Get articles like this in your inbox"
+  [Subscribe]
+</NewsletterCTA>
+```
+
+-----
+
+#### PAGE 7: Legal Pages
+
+**Create 3 legal pages:**
+
+**/legal/privacy-policy:**
+
+```html
+<LegalPageHeader>
+  Headline: "Privacy Policy"
+  Last updated: January 19, 2026
+</LegalPageHeader>
+
+<LegalContent>
+  Sections:
+  1. Information We Collect
+  2. How We Use Your Information
+  3. Information Sharing
+  4. Data Security
+  5. Your Rights
+  6. Cookies and Tracking
+  7. Changes to This Policy
+  8. Contact Us
+  
+  Professional legal formatting
+  Easy to read sections
+  Table of contents with anchor links
+</LegalContent>
+```
+
+**/legal/terms-of-service:**
+
+```html
+Similar structure:
+- Terms of Use
+- Service Agreement
+- Limitations of Liability
+- Dispute Resolution
+- etc.
+```
+
+**/legal/cookie-policy:**
+
+```html
+- Types of Cookies
+- How We Use Cookies
+- Managing Cookies
+- Third-Party Cookies
+```
+
+-----
+
+### 🔌 BACKEND API ROUTES (CRITICAL)
+
+#### API Route 1: Contact Form
+
+**File:** `app/api/contact/route.ts`
+
+```typescript
+import { NextResponse } from 'next/server'
+import nodemailer from 'nodemailer'
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json()
+    const { name, email, company, phone, service, message } = body
+    
+    // Validation
+    if (!name || !email || !company || !service || !message) {
+      return NextResponse.json(
+        { success: false, message: 'Missing required fields' },
+        { status: 400 }
+      )
+    }
+    
+    // Email validation (business email only)
+    const emailRegex = /^[^@]+@(?!gmail|yahoo|hotmail|outlook)[^@]+\.[^@]+$/
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        { success: false, message: 'Please use your company email' },
+        { status: 400 }
+      )
+    }
+    
+    // Configure email transporter
+    const transporter = nodemailer.createTransporter({
+      host: process.env.SMTP_HOST || 'smtp.gmail.com',
+      port: parseInt(process.env.SMTP_PORT || '587'),
+      secure: false,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    })
+    
+    // Email to admin
+    await transporter.sendMail({
+      from: process.env.SMTP_USER,
+      to: 'info@gemcybersecurityassist.com',
+      subject: `New Contact Form: ${service}`,
+      html: `
+        <h2>New Contact Form Submission</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Company:</strong> ${company}</p>
+        <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
+        <p><strong>Service Interest:</strong> ${service}</p>
+        <p><strong>Message:</strong></p>
+        <p>${message}</p>
+      `,
+    })
+    
+    // Confirmation email to user
+    await transporter.sendMail({
+      from: process.env.SMTP_USER,
+      to: email,
+      subject: 'Thank you for contacting GEM Cybersecurity',
+      html: `
+        <h2>Thank you for your inquiry</h2>
+        <p>Hi ${name},</p>
+        <p>We've received your message and will respond within 2 hours during business hours.</p>
+        <p>For immediate assistance, call us at (860) 305-4376.</p>
+        <br>
+        <p>Best regards,<br>GEM Cybersecurity Team</p>
+      `,
+    })
+    
+    return NextResponse.json({
+      success: true,
+      message: 'Message sent successfully'
+    })
+    
+  } catch (error) {
+    console.error('Contact form error:', error)
+    return NextResponse.json(
+      { success: false, message: 'Failed to send message' },
+      { status: 500 }
+    )
+  }
+}
+```
+
+#### API Route 2: Newsletter Signup
+
+**File:** `app/api/newsletter/route.ts`
+
+```typescript
+import { NextResponse } from 'next/server'
+
+export async function POST(request: Request) {
+  try {
+    const { email } = await request.json()
+    
+    // Validation
+    if (!email || !email.includes('@')) {
+      return NextResponse.json(
+        { success: false, message: 'Invalid email address' },
+        { status: 400 }
+      )
+    }
+    
+    // Here you would integrate with email service
+    // Examples: Mailchimp, SendGrid, ConvertKit
+    
+    // For now, just log and return success
+    console.log('Newsletter signup:', email)
+    
+    // Optional: Store in database
+    // await db.newsletterSubscribers.create({ email })
+    
+    return NextResponse.json({
+      success: true,
+      message: 'Successfully subscribed to newsletter'
+    })
+    
+  } catch (error) {
+    console.error('Newsletter signup error:', error)
+    return NextResponse.json(
+      { success: false, message: 'Failed to subscribe' },
+      { status: 500 }
+    )
+  }
+}
+```
+
+#### API Route 3: Assessment Booking
+
+**File:** `app/api/assessment/route.ts`
+
+```typescript
+import { NextResponse } from 'next/server'
+import nodemailer from 'nodemailer'
+
+export async function POST(request: Request) {
+  try {
+    const { email, company, service, preferredDate } = await request.json()
+    
+    // Validation
+    if (!email || !company) {
+      return NextResponse.json(
+        { success: false, message: 'Email and company required' },
+        { status: 400 }
+      )
+    }
+    
+    // Send notification to sales team
+    const transporter = nodemailer.createTransporter({
+      host: process.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT || '587'),
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS
+```

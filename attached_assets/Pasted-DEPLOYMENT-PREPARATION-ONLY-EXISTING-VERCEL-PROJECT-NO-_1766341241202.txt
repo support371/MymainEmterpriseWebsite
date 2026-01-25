@@ -1,0 +1,101 @@
+DEPLOYMENT PREPARATION ONLY — EXISTING VERCEL PROJECT (NO LIVE CONFIGURATION YET)
+
+IMPORTANT CONSTRAINT
+Deployment must be FULLY SET UP and READY, but MUST NOT be finalized,
+activated, or pushed live until ALL remaining websites/projects are completed.
+
+This is a PREPARATION-ONLY phase.
+Do NOT execute a live deploy.
+Do NOT bind production configuration.
+Do NOT update the live Vercel project yet.
+
+Stay within Fast Mode. No Autonomous Mode requests.
+
+================================
+GOAL
+================================
+Prepare the system so it can later deploy to an EXISTING Vercel project
+with a single command, once all projects are ready to be added.
+
+================================
+STEP 1 — FRONTEND DEPLOYMENT READINESS
+================================
+1) Identify the correct frontend directory (existing structure):
+   - Prefer /apps/web if present
+   - Otherwise, use the current active frontend directory
+
+2) Ensure frontend build works locally:
+   - npm run build (or equivalent)
+   - Fix build issues if any (small, safe changes only)
+
+3) Ensure code is Vercel-compatible:
+   - Framework auto-detection works
+   - No hardcoded environment values
+   - All config pulled from process.env
+
+================================
+STEP 2 — VERCEL PROJECT LINK (NO DEPLOY)
+================================
+Prepare linkage to an EXISTING Vercel project, but do NOT deploy.
+
+Requirements:
+- Assume these env vars MAY exist later:
+  VERCEL_TOKEN
+  VERCEL_ORG_ID
+  VERCEL_PROJECT_ID
+
+Actions:
+- Create logic/scripts to support Vercel CLI linking
+- Prepare `.vercel/project.json` template (DO NOT commit secrets)
+- If project.json does not exist, generate it dynamically from env vars
+- Do NOT run `vercel deploy`
+- Do NOT run `vercel --prod`
+
+================================
+STEP 3 — CONFIGURATION & DOCUMENTATION
+================================
+1) Update `.env.example` to include:
+   - VERCEL_TOKEN
+   - VERCEL_ORG_ID
+   - VERCEL_PROJECT_ID
+
+2) Update `/docs/DEPLOYMENT.md` with a clear section:
+   "Deferred Vercel Deployment (Existing Project)"
+
+Include:
+- Explanation that deployment is intentionally deferred
+- Exact commands that WILL be run later:
+  npx vercel --token $VERCEL_TOKEN --yes
+  npx vercel --prod --token $VERCEL_TOKEN --yes
+- Preconditions checklist:
+  - All projects added
+  - Final UI verified
+  - Environment variables set
+
+================================
+STEP 4 — SAFETY GUARANTEES
+================================
+- No live environment changes
+- No production deploy
+- No Vercel project creation
+- No breaking changes to existing GEM runtime
+
+================================
+STATE CONFIRMATION
+================================
+After completing this task, report:
+- "Vercel deployment fully prepared but intentionally not executed"
+- Frontend build status (pass/fail)
+- Readiness level (READY / BLOCKED_BY_CREDENTIALS)
+
+Log results in:
+- /docs/EXECUTION_LOG.md
+
+================================
+END CONDITION
+================================
+Stop after preparation is complete.
+Do NOT proceed to live deployment.
+Wait for explicit future instruction to activate deployment.
+
+Proceed now.

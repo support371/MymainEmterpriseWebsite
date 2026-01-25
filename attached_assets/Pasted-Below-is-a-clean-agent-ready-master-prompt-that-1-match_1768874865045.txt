@@ -1,0 +1,244 @@
+Below is a clean, agent-ready master prompt that (1) matches your top-graded current homepage quality, (2) fits your hybrid model (Cybersecurity + Alliance Trust Realty), and (3) forces the agent to first audit where the last agent stopped before adding anything new.
+
+You can copy/paste this directly into Replit Agent.
+
+⸻
+
+REPLIT AGENT MASTER PROMPT (Hybrid Enterprise Platform)
+
+0) Mission
+
+You are continuing an in-progress enterprise website for:
+	•	GEM Cybersecurity & Monitoring Assist (Cyber Division)
+	•	Alliance Trust Realty LLC (Asset/Trust Division; Powered Partner)
+
+The site must remain one cohesive platform (not two stitched sites).
+Your output must match or exceed the homepage design quality across all pages.
+
+⸻
+
+PHASE 1 — “STOP POINT” AUDIT (MANDATORY FIRST)
+
+Goal: Determine EXACTLY what the previous agent completed and where work stopped, before adding features.
+	1.	Inventory the current project structure
+
+	•	List routes/endpoints
+	•	List templates/pages/components
+	•	List nav/footer links and dropdown items
+	•	Identify any broken routes (500) or missing templates
+
+	2.	Create a Status Map
+Produce a table in your response (for the user) with columns:
+
+	•	Route
+	•	Purpose
+	•	Exists? (Y/N)
+	•	Works? (Y/N)
+	•	Template/component source
+	•	Notes / missing sections
+
+	3.	Identify prior agent stopping point
+Explicitly state:
+
+	•	“Previous agent completed: ____”
+	•	“Previous agent stopped before: ____”
+	•	“Next safe continuation step: ____”
+
+✅ Only after you finish this audit may you build new pages/features.
+
+⸻
+
+PHASE 2 — LOCK THE PRODUCT MODEL (NO MIXING)
+
+The platform has two divisions:
+
+A) Cybersecurity Solutions (GEM)
+	•	SOC Monitoring / Threat Monitoring
+	•	Incident Response
+	•	Compliance Management (SOC 2, ISO 27001, NIST, HIPAA, PCI)
+
+B) Alliance Trust Realty Solutions (Powered Partner)
+	•	Asset Recovery
+	•	Federal Compliance (documentation, governance, regulated advisory scope)
+
+Rules
+	•	Cyber pages must NOT include real-estate sales language.
+	•	Trust/asset pages must NOT use cybersecurity jargon.
+	•	Shared pages (Home, About, Contact) may mention both — but in separate sections.
+
+⸻
+
+PHASE 3 — INFORMATION ARCHITECTURE (CANONICAL)
+
+Required Routes (Final Sitemap)
+
+Core
+	•	/ (Homepage) ✅ already strong
+	•	/services (Solutions Hub — canonical)
+	•	/news (Intelligence hub)
+	•	/portfolio OR replace with /case-studies
+	•	/qfs (must explain purpose)
+	•	/about-us
+	•	/contact-us (must have working form)
+	•	/legal/privacy-policy
+	•	/legal/terms-of-service
+	•	/legal/cookie-policy
+
+Services
+	•	/services/threat-monitoring (or map existing /monitoring-threats to this)
+	•	/services/incident-response
+	•	/services/compliance-management
+	•	/services/asset-recovery
+	•	/services/federal-compliance
+
+Redirect requirement
+
+If /services-overview exists, it must redirect to /services.
+
+⸻
+
+PHASE 4 — DESIGN SYSTEM (MATCH CURRENT “A” QUALITY)
+
+Visual Standard
+	•	Maintain existing premium dark theme and typography
+	•	Improve rhythm: spacing, hierarchy, legibility, consistency
+	•	Avoid “template look” regressions
+
+Conversion Standard
+	•	One persistent primary CTA: Schedule Assessment
+	•	Secondary CTA: Talk to an Expert
+	•	Clear trust signals: certifications, metrics, testimonials, “powered by” statement
+
+⸻
+
+PHASE 5 — PAGES TO BUILD (IN ORDER)
+
+Build in this order so the site remains coherent throughout:
+
+1) /services (Solutions Hub)
+
+Must include two clearly separated sections:
+	•	Cybersecurity Solutions
+	•	Alliance Trust Realty Solutions
+
+Each card includes:
+	•	1-line value prop
+	•	3–6 feature bullets
+	•	1 metric proof point
+	•	CTA “Learn more”
+
+2) Service Detail Pages (5 total)
+
+Use a consistent enterprise template:
+	•	Hero: headline + subheadline + metrics + CTA
+	•	“What’s included” (clear scope)
+	•	“How it works” (workflow)
+	•	“Use cases” (by industry)
+	•	“Governance & compliance” section
+	•	Pricing approach (transparent or “custom based on…”)
+	•	CTA block
+
+3) /contact-us with WORKING FORM
+
+Must include:
+	•	Validations (required fields, message length)
+	•	Success/error states
+	•	Send email notification to admin
+	•	Send confirmation email to user
+	•	Service Interest dropdown includes both divisions
+
+4) /news Intelligence Hub
+	•	Featured article
+	•	Grid of posts
+	•	Filters
+	•	Newsletter signup
+
+5) /about-us
+
+Must include:
+	•	Mission
+	•	Leadership/team
+	•	Certifications & trust markers
+	•	Partnerships (Alliance Trust Realty highlighted cleanly)
+
+6) /case-studies (recommended over portfolio)
+	•	Filterable grid
+	•	2–3 detailed case pages
+
+7) Legal pages
+	•	Clean formatting, TOC anchors, last updated date
+
+⸻
+
+PHASE 6 — BACKEND REQUIREMENTS (CHOOSE STACK-CORRECT IMPLEMENTATION)
+
+Before coding APIs, detect the stack:
+
+If Flask/Jinja (likely):
+	•	Use POST /api/contact, POST /api/newsletter, POST /api/assessment
+	•	Implement SMTP via environment variables
+	•	Add server-side validation + CSRF protection (if forms are server-rendered)
+
+If Next.js:
+	•	Use app/api/*/route.ts
+	•	Use nodemailer (correct transporter creation: createTransport, not createTransporter)
+
+Do not implement Next.js routes inside a Flask project. Detect first.
+
+⸻
+
+PHASE 7 — PERFORMANCE & QUALITY BAR (NON-NEGOTIABLE)
+	•	Optimize images (WebP)
+	•	Avoid heavy JS
+	•	Keep animations subtle
+	•	Mobile-first verification
+	•	No broken links, no duplicate services, no traceable deprecated endpoints
+
+⸻
+
+OUTPUT FORMAT REQUIRED FROM AGENT EACH RUN
+
+Every run must end with:
+	1.	Completed changes
+	2.	Files changed
+	3.	Routes added/modified
+	4.	Tests performed (URLs checked)
+	5.	Next actions
+
+⸻
+
+EXTRA: “WORKFORCE / WORKFLOW” PROOF (NEW REQUIREMENT)
+
+Add a section on relevant pages that demonstrates operational maturity:
+	•	Cyber: escalation steps, analyst oversight, response timeline, reporting cadence
+	•	Trust: intake → verification → documentation → stakeholder updates → closure reporting
+
+This must be written as real operational workflow, not marketing fluff.
+
+⸻
+
+STOP CONDITIONS (TO PREVENT REGRESSIONS)
+
+Do NOT:
+	•	Replace the entire theme with a generic template
+	•	Add unrelated services
+	•	Mix cyber and trust language within the same service page
+	•	Break existing working pages while adding new ones
+
+⸻
+
+FINAL TASK
+
+Start with the Phase 1 audit. Do not code new features until the audit is complete and the stop point is identified.
+
+⸻
+
+Quick note (important)
+
+Your prompt you pasted includes Next.js API route examples, but your project so far has strongly resembled Flask/Jinja templates. The prompt above forces the agent to detect the stack first, so you don’t get mismatched code again.
+
+If you want, I can also produce:
+	•	a Flask-only version of the API routes (contact/newsletter/assessment) with SMTP env vars, validation, and templates, or
+	•	a Next-only version with correct nodemailer usage and form wiring.
+
+Just tell me which stack your new project is using.
