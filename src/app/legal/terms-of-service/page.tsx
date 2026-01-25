@@ -5,16 +5,16 @@ export default function TermsOfServicePage() {
         <h1 className="text-4xl font-bold mb-4 text-white">Terms of Service</h1>
         <p className="text-slate-400 mb-8">Last Updated: January 24, 2026</p>
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-8 space-y-8 text-slate-300">
-          <p>By using GEM Enterprise services, you agree to be bound by the following terms and conditions.</p>
+          <p>By using services provided by GEM Cybersecurity & Alliance Trust Realty (collectively, "the Enterprise"), you agree to be bound by the following terms and conditions.</p>
 
           <section>
             <h2 className="text-xl font-bold mb-4 text-white">1. Acceptance of Terms</h2>
-            <p className="text-sm">By accessing or using our services, you agree to comply with and be bound by these Terms of Service.</p>
+            <p className="text-sm">By accessing or using our services, including digital security monitoring and physical asset protection, you agree to comply with and be bound by these Terms of Service.</p>
           </section>
 
           <section>
             <h2 className="text-xl font-bold mb-4 text-white">2. Description of Service</h2>
-            <p className="text-sm">GEM Enterprise provides cybersecurity monitoring, incident response, and compliance management services.</p>
+            <p className="text-sm">The Enterprise provides cybersecurity monitoring, physical asset recovery, incident response, and federal compliance management services.</p>
           </section>
 
           <section>

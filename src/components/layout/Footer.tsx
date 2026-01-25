@@ -17,15 +17,18 @@ export default function Footer() {
           <div>
             <h3 className="font-bold mb-4 text-white">Services</h3>
             <div className="space-y-2">
-              <Link href="/qfs" className="block text-slate-400 hover:text-white transition-colors text-sm">QFS Network</Link>
-              <Link href="/cyber-sentinel-trust" className="block text-slate-400 hover:text-white transition-colors text-sm">Sentinel Trust</Link>
-              <Link href="/pricing" className="block text-slate-400 hover:text-white transition-colors text-sm">Pricing</Link>
+              <Link href="/services/threat-monitoring" className="block text-slate-400 hover:text-white transition-colors text-sm">Threat Monitoring</Link>
+              <Link href="/services/compliance-management" className="block text-slate-400 hover:text-white transition-colors text-sm">Compliance Management</Link>
+              <Link href="/services/asset-recovery" className="block text-slate-400 hover:text-white transition-colors text-sm">Asset Recovery</Link>
+              <Link href="/services/federal-compliance" className="block text-slate-400 hover:text-white transition-colors text-sm">Federal Compliance</Link>
             </div>
           </div>
           <div>
             <h3 className="font-bold mb-4 text-white">Resources</h3>
             <div className="space-y-2">
+              <Link href="/intelligence" className="block text-slate-400 hover:text-white transition-colors text-sm">Intelligence Hub</Link>
               <Link href="/resources" className="block text-slate-400 hover:text-white transition-colors text-sm">Resource Hub</Link>
+              <Link href="/case-studies" className="block text-slate-400 hover:text-white transition-colors text-sm">Case Studies</Link>
               <Link href="/portfolio" className="block text-slate-400 hover:text-white transition-colors text-sm">Portfolio</Link>
             </div>
           </div>

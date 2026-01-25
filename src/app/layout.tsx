@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import LiveSupport from "@/components/layout/LiveSupport";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "GEM Cybersecurity - Enterprise Security & Asset Recovery",
-  description: "Unified platform for global threat detection, regulatory compliance, and high-value asset protection.",
+  title: "GEM Cybersecurity & Alliance Trust Realty",
+  description: "Unified Operations Center for global threat detection, federal compliance, and high-value physical asset protection.",
 };
 
 export default function RootLayout({
@@ -28,8 +29,9 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-950 text-white`}>
         <Navbar />
-        {children}
+        <main>{children}</main>
         <Footer />
+        <LiveSupport />
       </body>
     </html>
   );

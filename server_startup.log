@@ -1,0 +1,52 @@
+
+> tmp@0.1.0 dev
+> next dev -p 3000
+
+▲ Next.js 16.1.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.2:3000
+
+✓ Starting...
+✓ Ready in 3.6s
+ HEAD / 200 in 2.4s (compile: 1337ms, render: 1083ms)
+ GET / 200 in 472ms (compile: 13ms, render: 459ms)
+ GET /services 200 in 1261ms (compile: 903ms, render: 358ms)
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <form className=... onSubmit={function onSubmit} children=...>
+                               ^^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>) {
+  digest: '3015819717'
+}
+ GET /intelligence 500 in 1629ms (compile: 562ms, render: 1067ms)
+ GET / 200 in 306ms (compile: 11ms, render: 295ms)
+ GET /services 200 in 254ms (compile: 4ms, render: 251ms)
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <form className=... onSubmit={function onSubmit} children=...>
+                               ^^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>) {
+  digest: '3015819717'
+}
+ GET /intelligence 500 in 670ms (compile: 4ms, render: 666ms)
+ GET / 200 in 233ms (compile: 4ms, render: 229ms)
+ GET /services 200 in 205ms (compile: 5ms, render: 200ms)
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <form className=... onSubmit={function onSubmit} children=...>
+                               ^^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>) {
+  digest: '3015819717'
+}
+ GET /intelligence 500 in 585ms (compile: 4ms, render: 581ms)
+✓ Compiled in 654ms
+ GET / 200 in 285ms (compile: 5ms, render: 279ms)
+ GET /services 200 in 233ms (compile: 3ms, render: 230ms)
+ GET /intelligence 200 in 435ms (compile: 160ms, render: 275ms)
+Persisting failed: Failed to compact database
+
+Caused by:
+    0: Failed to deserialize used key hashes AMQF from 00000224.meta
+    1: incompatible version
+ GET / 200 in 265ms (compile: 4ms, render: 260ms)
+ GET / 200 in 299ms (compile: 3ms, render: 295ms)

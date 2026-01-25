@@ -80,9 +80,9 @@ export default function ContactPage() {
                 <h3 className="font-bold mb-4 text-white">Get In Touch</h3>
                 <div className="space-y-4">
                   {[
-                    { icon: Mail, label: 'Email', value: 'sales@gemcyber.com' },
+                    { icon: Mail, label: 'Email', value: 'Support@gemcybersecurityassist.com' },
                     { icon: Phone, label: 'Phone', value: '(860) 305-4376' },
-                    { icon: Calendar, label: 'Hours', value: 'Mon-Fri 8am-6pm PST' }
+                    { icon: Calendar, label: 'Hours', value: '24/7 Monitoring Active' }
                   ].map((contact, i) => {
                     const Icon = contact.icon;
                     return (

@@ -21,15 +21,15 @@ export default function HomePage() {
             </div>
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-white">
-              Enterprise Cybersecurity &
+              GEM Enterprise Cybersecurity &
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
-                Asset Recovery
+                Alliance Trust Realty
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto mb-8">
-              GEM Enterprise + Alliance Trust Realty: Unified platform for global threat detection,
-              regulatory compliance, and high-value asset protection.
+            <p className="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto mb-8 font-medium tracking-tight">
+              Unified Operations Center for global threat detection,
+              federal compliance, and physical asset protection.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -69,18 +69,18 @@ export default function HomePage() {
       <section className="py-24 bg-slate-900/50">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Cybersecurity Solutions</h2>
-            <p className="text-slate-400 text-lg">Enterprise-grade protection for modern threats</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Cybersecurity & Physical Solutions</h2>
+            <p className="text-slate-400 text-lg">Enterprise-grade protection for the modern Hybrid Enterprise</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {[
               { icon: Shield, title: '24/7 Threat Monitoring', desc: 'Continuous surveillance with AI-powered detection' },
               { icon: Zap, title: 'Incident Response', desc: '2-minute average response time guaranteed' },
-              { icon: Lock, title: 'Compliance Management', desc: 'SOC 2, ISO 27001, HIPAA certification support' },
-              { icon: Eye, title: 'Vulnerability Scanning', desc: 'Continuous assessment of security posture' },
-              { icon: Building2, title: 'Asset Recovery', desc: 'High-value physical asset protection' },
-              { icon: Globe, title: 'Global Coverage', desc: 'Protection across all time zones' }
+              { icon: Lock, title: 'Federal Compliance', desc: 'NIST, CMMC, and ISO 27001 certification support' },
+              { icon: Building2, title: 'Asset Recovery', desc: 'High-value physical asset recovery and protection' },
+              { icon: Eye, title: 'Intelligence Hub', desc: 'Canonical source for global threat intelligence' },
+              { icon: Globe, title: 'Global Coverage', desc: 'Protection across all time zones and jurisdictions' }
             ].map((service, idx) => {
               const Icon = service.icon;
               return (
@@ -91,6 +91,40 @@ export default function HomePage() {
                 </div>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-24">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-12">
+            <div className="bg-slate-950 border border-slate-800 p-8 rounded-2xl relative">
+              <div className="text-cyan-500 text-6xl font-serif absolute top-4 left-4 opacity-20">"</div>
+              <p className="text-slate-300 italic mb-6 relative z-10">
+                The integration of digital threat intelligence with physical asset protection has transformed our risk profile. GEM Cybersecurity is the definitive partner for the hybrid enterprise.
+              </p>
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-slate-800" />
+                <div>
+                  <div className="text-white font-bold">Michael Gilbert</div>
+                  <div className="text-slate-500 text-sm">Director of Operations</div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-slate-950 border border-slate-800 p-8 rounded-2xl relative">
+              <div className="text-cyan-500 text-6xl font-serif absolute top-4 left-4 opacity-20">"</div>
+              <p className="text-slate-300 italic mb-6 relative z-10">
+                Their 2-minute response guarantee isn't just a marketing slogan; it's a mission-critical reality that has saved our enterprise millions in potential data loss.
+              </p>
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-slate-800" />
+                <div>
+                  <div className="text-white font-bold">Jennifer Davis</div>
+                  <div className="text-slate-500 text-sm">Senior Security Analyst</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

@@ -7,7 +7,7 @@ export default function PrivacyPolicyPage() {
         <h1 className="text-4xl font-bold mb-4 text-white">Privacy Policy</h1>
         <p className="text-slate-400 mb-8">Last Updated: January 24, 2026</p>
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-8 space-y-8 text-slate-300">
-          <p>GEM Enterprise is committed to protecting your privacy and ensuring the security of your data.</p>
+          <p>GEM Cybersecurity & Alliance Trust Realty (collectively, "the Enterprise") are committed to protecting your privacy and ensuring the security of your data.</p>
 
           <section>
             <h2 className="text-xl font-bold mb-4 text-white">1. Information Collection</h2>
@@ -31,7 +31,7 @@ export default function PrivacyPolicyPage() {
 
           <section>
             <h2 className="text-xl font-bold mb-4 text-white">5. Contact</h2>
-            <p className="text-sm">If you have any questions about this Privacy Policy, please contact us at privacy@gemcyber.com.</p>
+            <p className="text-sm">If you have any questions about this Privacy Policy, please contact us at Support@gemcybersecurityassist.com.</p>
           </section>
         </div>
       </div>

@@ -8,14 +8,15 @@ import { Shield, Menu, X, Home, Users, Award, BookOpen, TrendingUp, Lock, Layout
 const navigation = [
   { name: 'Home', href: '/', icon: Home },
   { name: 'About', href: '/about-us', icon: Shield },
+  { name: 'Services', href: '/services', icon: LayoutDashboard },
+  { name: 'Intelligence', href: '/intelligence', icon: BookOpen },
   { name: 'Team', href: '/teams', icon: Users },
-  { name: 'Cases', href: '/case-studies', icon: Award },
-  { name: 'Resources', href: '/resources', icon: BookOpen },
-  { name: 'Pricing', href: '/pricing', icon: TrendingUp },
 ];
 
 const mobileNavigation = [
   ...navigation,
+  { name: 'Cases', href: '/case-studies', icon: Award },
+  { name: 'Resources', href: '/resources', icon: BookOpen },
   { name: 'QFS', href: '/qfs', icon: Network },
   { name: 'Sentinel', href: '/cyber-sentinel-trust', icon: Lock },
   { name: 'Portfolio', href: '/portfolio', icon: LayoutDashboard },
