@@ -1,3 +1,10 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Terms of Service",
+  description: "GEM Cybersecurity & Alliance Trust Realty Terms of Service. By using our services, you agree to these terms.",
+};
+
 export default function TermsOfServicePage() {
   return (
     <div className="min-h-screen pt-32 pb-24">
@@ -5,7 +12,7 @@ export default function TermsOfServicePage() {
         <h1 className="text-4xl font-bold mb-4 text-white">Terms of Service</h1>
         <p className="text-slate-400 mb-8">Last Updated: January 24, 2026</p>
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-8 space-y-8 text-slate-300">
-          <p>By using services provided by GEM Cybersecurity & Alliance Trust Realty (collectively, "the Enterprise"), you agree to be bound by the following terms and conditions.</p>
+          <p>By using services provided by GEM Cybersecurity & Alliance Trust Realty (collectively, &quot;the Enterprise&quot;), you agree to be bound by the following terms and conditions.</p>
 
           <section>
             <h2 className="text-xl font-bold mb-4 text-white">1. Acceptance of Terms</h2>
