@@ -1,5 +1,14 @@
+import { Metadata } from 'next';
 import { Shield, Zap, Lock, Building2, Eye, Globe, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import Hero from '@/components/ui/Hero';
+import StatGrid from '@/components/ui/StatGrid';
+import SectionHeader from '@/components/ui/SectionHeader';
+
+export const metadata: Metadata = {
+  title: "Services Hub",
+  description: "Explore our comprehensive security services, from 24/7 threat monitoring to federal compliance and high-value asset recovery.",
+};
 
 const services = [
   {
@@ -40,23 +49,19 @@ const services = [
 ];
 
 export default function ServicesHubPage() {
+  const stats = [
+    { label: 'Countries', value: '24+' },
+    { label: 'Assets Managed', value: '$50M+' },
+    { label: 'Security Analysts', value: '150+' },
+    { label: 'Enterprise Clients', value: '500+' }
+  ];
+
   return (
     <div className="min-h-screen pt-20">
-      <section className="py-20 bg-slate-950 overflow-hidden relative">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-500 via-transparent to-transparent" />
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white tracking-tight">
-              Enterprise
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500"> Service Suite
-              </span>
-            </h1>
-            <p className="text-xl text-slate-400">
-              Integrated cybersecurity and physical asset management for the modern hybrid enterprise.
-            </p>
-          </div>
-        </div>
-      </section>
+      <Hero
+        title="Enterprise Service Suite"
+        subtitle="Integrated cybersecurity and physical asset management for the modern hybrid enterprise."
+      />
 
       <section className="py-24">
         <div className="container mx-auto px-4">
@@ -95,26 +100,14 @@ export default function ServicesHubPage() {
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-16 items-center max-w-7xl mx-auto">
             <div>
-              <h2 className="text-3xl font-bold text-white mb-6">Global Operations Center</h2>
-              <p className="text-slate-400 text-lg mb-8">
-                Operating across 24 countries, our Unified Operations Center provides seamless
-                protection for both your digital perimeter and physical holdings.
-              </p>
-              <div className="grid grid-cols-2 gap-6">
-                {[
-                  { label: 'Countries', val: '24+' },
-                  { label: 'Assets', val: '$50M+' },
-                  { label: 'Analysts', val: '150+' },
-                  { label: 'Clients', val: '500+' }
-                ].map((stat, i) => (
-                  <div key={i}>
-                    <div className="text-2xl font-bold text-white">{stat.val}</div>
-                    <div className="text-sm text-slate-500 uppercase tracking-widest">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
+              <SectionHeader
+                title="Global Operations Center"
+                subtitle="Operating across 24 countries, our Unified Operations Center provides seamless protection for both your digital perimeter and physical holdings."
+                centered={false}
+              />
+              <StatGrid stats={stats} columns={2} />
             </div>
-            <div className="relative aspect-video rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden flex items-center justify-center">
+            <div className="relative aspect-video rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden flex items-center justify-center shadow-2xl">
                <Globe className="w-32 h-32 text-blue-500 opacity-20 animate-pulse" />
                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_#020617_70%)]" />
             </div>

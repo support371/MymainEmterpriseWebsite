@@ -1,21 +1,61 @@
 "use client";
 
 import { useState } from 'react';
-import { Mail, Phone, Calendar, CheckCircle } from 'lucide-react';
+import { Mail, Phone, Calendar, CheckCircle, AlertCircle } from 'lucide-react';
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    company: '',
+    service: '',
+    message: ''
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: `${formData.firstName} ${formData.lastName}`,
+          email: formData.email,
+          company: formData.company,
+          service: formData.service,
+          message: formData.message,
+          phone: '' // Optional in API
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSubmitted(true);
+      } else {
+        setError(data.message || 'Something went wrong. Please try again.');
+      }
+    } catch (err) {
+      setError('Failed to connect to the server. Please check your internet connection.');
+    } finally {
       setLoading(false);
-      setSubmitted(true);
-    }, 1500);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
 
   return (
@@ -49,20 +89,72 @@ export default function ContactPage() {
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <h2 className="text-2xl font-bold text-white">Request Information</h2>
+                    {error && (
+                      <div className="flex items-center gap-2 p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500 text-sm">
+                        <AlertCircle className="w-4 h-4" />
+                        {error}
+                      </div>
+                    )}
                     <div className="grid md:grid-cols-2 gap-6">
-                      <input type="text" placeholder="First Name" required className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:border-cyan-500 focus:outline-none text-white" />
-                      <input type="text" placeholder="Last Name" required className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:border-cyan-500 focus:outline-none text-white" />
+                      <input
+                        type="text"
+                        name="firstName"
+                        placeholder="First Name"
+                        required
+                        value={formData.firstName}
+                        onChange={handleChange}
+                        className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:border-cyan-500 focus:outline-none text-white"
+                      />
+                      <input
+                        type="text"
+                        name="lastName"
+                        placeholder="Last Name"
+                        required
+                        value={formData.lastName}
+                        onChange={handleChange}
+                        className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:border-cyan-500 focus:outline-none text-white"
+                      />
                     </div>
-                    <input type="email" placeholder="Work Email" required className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:border-cyan-500 focus:outline-none text-white" />
-                    <input type="text" placeholder="Company" required className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:border-cyan-500 focus:outline-none text-white" />
-                    <select required className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:border-cyan-500 focus:outline-none text-white">
-                      <option value="">Company Size</option>
-                      <option>1-50</option>
-                      <option>51-200</option>
-                      <option>201-500</option>
-                      <option>500+</option>
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Work Email"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:border-cyan-500 focus:outline-none text-white"
+                    />
+                    <input
+                      type="text"
+                      name="company"
+                      placeholder="Company"
+                      required
+                      value={formData.company}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:border-cyan-500 focus:outline-none text-white"
+                    />
+                    <select
+                      name="service"
+                      required
+                      value={formData.service}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:border-cyan-500 focus:outline-none text-white"
+                    >
+                      <option value="">Select Service</option>
+                      <option value="Threat Monitoring">Threat Monitoring</option>
+                      <option value="Compliance">Compliance Management</option>
+                      <option value="Asset Recovery">Asset Recovery</option>
+                      <option value="Other">Other Inquiry</option>
                     </select>
-                    <textarea placeholder="Message" rows={4} required className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:border-cyan-500 focus:outline-none resize-none text-white" />
+                    <textarea
+                      name="message"
+                      placeholder="Message"
+                      rows={4}
+                      required
+                      value={formData.message}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:border-cyan-500 focus:outline-none resize-none text-white"
+                    />
                     <button
                       type="submit"
                       disabled={loading}

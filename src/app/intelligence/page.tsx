@@ -1,7 +1,6 @@
 "use client";
 
 import { Newspaper, Bell, Lock, ArrowRight, Zap, ShieldAlert } from 'lucide-react';
-import Link from 'next/link';
 
 export default function IntelligencePage() {
   return (

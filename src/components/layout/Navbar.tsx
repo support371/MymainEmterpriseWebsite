@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Shield, Menu, X, Home, Users, Award, BookOpen, TrendingUp, Lock, LayoutDashboard, Mail, Network } from 'lucide-react';
+import { Shield, Menu, X, Home, Users, Award, BookOpen, Lock, LayoutDashboard, Mail, Network } from 'lucide-react';
 
 const navigation = [
   { name: 'Home', href: '/', icon: Home },
