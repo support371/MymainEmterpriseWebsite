@@ -107,6 +107,7 @@ export default function HomePage() {
               { title: 'About Us', icon: Shield, path: '/about-us', desc: 'Our story and mission' },
               { title: 'Our Team', icon: Users, path: '/teams', desc: 'Security experts' },
               { title: 'Case Studies', icon: Award, path: '/case-studies', desc: 'Real success stories' },
+              { title: 'Intelligence', icon: Eye, path: '/news', desc: 'Global threat feed' },
               { title: 'Resources', icon: BookOpen, path: '/resources', desc: 'Guides & reports' },
               { title: 'QFS Network', icon: Network, path: '/qfs', desc: 'Quantum security' },
               { title: 'Sentinel Trust', icon: Lock, path: '/cyber-sentinel-trust', desc: 'Zero trust' },
