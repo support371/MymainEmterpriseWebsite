@@ -1,3 +1,4 @@
+[![Board Status](https://dev.azure.com/Gemassist/56762fd0-29ad-4c8b-a303-e6601fa9b688/ad1fffbe-8f60-4003-990a-b6983ff1e123/_apis/work/boardbadge/2728d809-c76b-47e8-bdea-ca54bb1bcd15)](https://dev.azure.com/Gemassist/56762fd0-29ad-4c8b-a303-e6601fa9b688/_boards/board/t/ad1fffbe-8f60-4003-990a-b6983ff1e123/Microsoft.RequirementCategory)
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
