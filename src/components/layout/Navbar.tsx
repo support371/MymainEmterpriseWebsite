@@ -30,11 +30,11 @@ export default function Navbar() {
   const isActive = (path: string) => pathname === path;
 
   return (
-    <header className="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-sm border-b border-slate-800">
+    <header className="sticky top-0 z-50 bg-slate-950/90 backdrop-blur-md border-b border-cyan-900/30">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-400 to-sky-500 shadow-[0_0_18px_rgba(0,212,255,0.35)] flex items-center justify-center">
               <Shield className="w-6 h-6 text-white" />
             </div>
             <div className="text-left">
@@ -52,8 +52,8 @@ export default function Navbar() {
                   href={item.href}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
                     isActive(item.href)
-                      ? 'bg-cyan-500 text-white'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                      ? 'bg-cyan-500 text-slate-950 font-semibold'
+                      : 'text-slate-300 hover:text-white hover:bg-slate-900'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -63,7 +63,7 @@ export default function Navbar() {
             })}
             <Link
               href="/contact-us"
-              className="px-6 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg font-semibold transition-colors ml-2"
+              className="px-6 py-2 bg-gradient-to-r from-cyan-400 to-sky-500 hover:from-cyan-300 hover:to-sky-400 text-slate-950 rounded-lg font-semibold transition-all ml-2 shadow-[0_0_20px_rgba(0,212,255,0.3)]"
             >
               Contact
             </Link>
@@ -89,8 +89,8 @@ export default function Navbar() {
                     onClick={() => setMobileMenuOpen(false)}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
                       isActive(item.href)
-                        ? 'bg-cyan-500 text-white'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                        ? 'bg-cyan-500 text-slate-950 font-semibold'
+                        : 'text-slate-300 hover:text-white hover:bg-slate-900'
                     }`}
                   >
                     <Icon className="w-4 h-4" />

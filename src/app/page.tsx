@@ -50,17 +50,14 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_15%,rgba(6,182,212,0.2),transparent_35%),radial-gradient(circle_at_80%_10%,rgba(59,130,246,0.14),transparent_30%)]" />
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950" />
         <div className="container mx-auto px-4 relative z-10 pt-32 pb-24 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 mb-7">
-            <Shield className="w-4 h-4 text-cyan-400" />
-            <span className="text-xs md:text-sm font-medium text-cyan-300">24/7 Enterprise Monitoring Active</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-400/40 mb-7 glow-cyan">
+            <span className="w-2.5 h-2.5 rounded-full bg-cyan-300 monitoring-dot" />
+            <span className="text-xs md:text-sm font-semibold text-cyan-300 uppercase tracking-[0.12em]">24/7 Enterprise Monitoring Active</span>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-bold text-white leading-[1.05] tracking-tight max-w-5xl mx-auto">
-            GEM Enterprise
-            <br />
-            Cybersecurity &amp; Alliance
-            <br />
-            Trust Realty
+          <h1 className="text-5xl md:text-7xl font-bold text-white leading-[1.02] tracking-tight max-w-5xl mx-auto">
+            Stop Breaches
+            <span className="text-cyan-300"> Before They Happen</span>
           </h1>
 
           <p className="mt-7 text-slate-300 max-w-3xl mx-auto text-lg md:text-2xl">
@@ -68,12 +65,12 @@ export default function HomePage() {
           </p>
 
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <Link href="/contact-us" className="px-8 py-4 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold rounded-lg transition-colors">
-              Schedule Assessment
+            <Link href="/contact-us" className="px-8 py-4 bg-gradient-to-r from-cyan-400 to-sky-500 hover:from-cyan-300 hover:to-sky-400 text-slate-950 font-semibold rounded-lg transition-all shadow-[0_0_24px_rgba(0,212,255,0.35)]">
+              Schedule Security Assessment
             </Link>
-            <Link href="/pricing" className="px-8 py-4 border border-cyan-500 text-cyan-300 hover:bg-cyan-500/10 font-semibold rounded-lg transition-colors">
-              View Pricing
-            </Link>
+            <a href="tel:+18603054376" className="px-8 py-4 border border-rose-400/80 text-rose-200 hover:bg-rose-500/10 font-semibold rounded-lg transition-colors">
+              24/7 Emergency: (860) 305-4376
+            </a>
           </div>
 
           <div className="mt-14 grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
@@ -101,7 +98,7 @@ export default function HomePage() {
             {solutions.map((service) => {
               const Icon = service.icon;
               return (
-                <article key={service.title} className="rounded-xl border border-slate-800 bg-slate-900/45 p-7 hover:border-cyan-500/50 transition-colors">
+                <article key={service.title} className="rounded-xl border border-cyan-900/30 bg-slate-900/55 p-7 hover:border-cyan-400/70 transition-colors">
                   <Icon className="w-10 h-10 text-cyan-400 mb-4" />
                   <h3 className="text-2xl font-bold text-white mb-2">{service.title}</h3>
                   <p className="text-slate-400">{service.desc}</p>
@@ -155,7 +152,7 @@ export default function HomePage() {
             {platformLinks.map((item) => {
               const Icon = item.icon;
               return (
-                <Link key={item.path} href={item.path} className="rounded-xl border border-slate-800 bg-slate-900/50 p-6 hover:border-cyan-500/50 transition-colors">
+                <Link key={item.path} href={item.path} className="rounded-xl border border-cyan-900/30 bg-slate-900/55 p-6 hover:border-cyan-400/70 transition-colors">
                   <Icon className="w-8 h-8 text-cyan-400 mb-4" />
                   <h3 className="text-2xl font-bold text-white mb-2">{item.title}</h3>
                   <p className="text-slate-400 text-sm">{item.desc}</p>
