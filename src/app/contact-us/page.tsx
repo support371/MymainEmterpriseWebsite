@@ -13,6 +13,7 @@ export default function ContactPage() {
     email: '',
     company: '',
     service: '',
+    phone: '',
     message: ''
   });
 
@@ -33,7 +34,8 @@ export default function ContactPage() {
           company: formData.company,
           service: formData.service,
           message: formData.message,
-          phone: '' // Optional in API
+          phone: formData.phone,
+          sourcePage: '/contact-us'
         }),
       });
 
@@ -130,6 +132,14 @@ export default function ContactPage() {
                       placeholder="Company"
                       required
                       value={formData.company}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:border-cyan-500 focus:outline-none text-white"
+                    />
+                    <input
+                      type="tel"
+                      name="phone"
+                      placeholder="Phone (optional)"
+                      value={formData.phone}
                       onChange={handleChange}
                       className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:border-cyan-500 focus:outline-none text-white"
                     />
