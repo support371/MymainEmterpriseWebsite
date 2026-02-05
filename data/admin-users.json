@@ -1,0 +1,26 @@
+[
+  {
+    "id": "U-1",
+    "email": "superadmin@gem.local",
+    "password": "change-me-superadmin",
+    "name": "Super Admin",
+    "role": "super_admin",
+    "active": true
+  },
+  {
+    "id": "U-2",
+    "email": "admin@gem.local",
+    "password": "change-me-admin",
+    "name": "Platform Admin",
+    "role": "admin",
+    "active": true
+  },
+  {
+    "id": "U-3",
+    "email": "analyst@gem.local",
+    "password": "change-me-analyst",
+    "name": "SOC Analyst",
+    "role": "analyst",
+    "active": true
+  }
+]

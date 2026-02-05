@@ -1,37 +1,80 @@
 [![Board Status](https://dev.azure.com/Gemassist/56762fd0-29ad-4c8b-a303-e6601fa9b688/ad1fffbe-8f60-4003-990a-b6983ff1e123/_apis/work/boardbadge/2728d809-c76b-47e8-bdea-ca54bb1bcd15)](https://dev.azure.com/Gemassist/56762fd0-29ad-4c8b-a303-e6601fa9b688/_boards/board/t/ad1fffbe-8f60-4003-990a-b6983ff1e123/Microsoft.RequirementCategory)
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# GEM Cybersecurity Website
 
-First, run the development server:
+Next.js 16 App Router marketing + admin experience for GEM Cybersecurity.
+
+## Run locally
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Configure environment variables (recommended `.env.local`):
+
+```bash
+ADMIN_AUTH_SECRET=replace-with-a-secure-secret
+SUPER_ADMIN_PASSWORD=replace-super-admin-password
+ADMIN_PASSWORD=replace-admin-password
+ANALYST_PASSWORD=replace-analyst-password
+SMTP_USER=
+SMTP_PASS=
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+```
+
+3. Start development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open:
+- Public site: `http://localhost:3000`
+- Admin sign-in: `http://localhost:3000/admin/login`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Admin credentials and roles
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+On first run, `data/admin-users.json` is generated with users for:
 
-## Learn More
+- `superadmin@gem.local` (`super_admin`)
+- `admin@gem.local` (`admin`)
+- `analyst@gem.local` (`analyst`)
 
-To learn more about Next.js, take a look at the following resources:
+Passwords come from env vars above (or default `change-me-*` fallbacks for local setup only).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Test and quality checks
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run lint
+npm run build
+```
 
-## Deploy on Vercel
+## Admin Center routes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Protected routes are guarded by `src/proxy.ts` and signed session cookies:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `/admin/inbox` — inbound message triage, assignment, CSV export
+- `/admin/teams`
+- `/admin/organizations`
+- `/admin/grants`
+- `/admin/diagnostics`
+- `/admin/users` (super admin)
+
+## Deployment
+
+This project deploys cleanly on Vercel and other Node-compatible hosts.
+
+- Build command: `npm run build`
+- Start command: `npm run start`
+- Persisted inbox data currently uses `data/contact-messages.json`; in production, migrate to a managed database or object storage for durability.
+
+## Remaining nice-to-have checklist
+
+- [ ] Replace file-based message and user stores with Postgres (Prisma/Drizzle) + migrations.
+- [ ] Add pagination and bulk actions to `/admin/inbox`.
+- [ ] Add audit log entries for admin status/assignment changes.
+- [ ] Add automated tests for admin API and route protection.
+- [ ] Add per-route permission checks for admin, analyst, and auditor roles.
