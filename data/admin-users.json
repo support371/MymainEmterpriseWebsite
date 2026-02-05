@@ -2,7 +2,7 @@
   {
     "id": "U-1",
     "email": "superadmin@gem.local",
-    "password": "change-me-superadmin",
+    "passwordHash": "6770fedeeeccfbd370395860044e165e:41b3c952df5dc8066f1c3bc647bb2b2ad7fcbf4118f4c29982841a283d4039c377f51b5e8e49dadc5b82344cdff2bfa71e32cf7ee28cec4589bdd37fc939639c",
     "name": "Super Admin",
     "role": "super_admin",
     "active": true
@@ -10,7 +10,7 @@
   {
     "id": "U-2",
     "email": "admin@gem.local",
-    "password": "change-me-admin",
+    "passwordHash": "401ff5329898981259084e556567e3b8:edba0ba79c3ecc414c89775d7cffd739a692be351a3bda91bc690355746de6f8ab301b545121a0324978d9aa71e468ce6e98e888e398ea2bb1cfc5d17998e48f",
     "name": "Platform Admin",
     "role": "admin",
     "active": true
@@ -18,7 +18,7 @@
   {
     "id": "U-3",
     "email": "analyst@gem.local",
-    "password": "change-me-analyst",
+    "passwordHash": "dd8ebf526e04e4dccb53c276d0570726:6b2885dfdf46372adac037ca4292917adf4533d52fe9fcdb86106c7fc1dd34632f898a1b2de5979e22f83d5cfe7e81bdbe1f476c165e26a4943b5417c9952e7d",
     "name": "SOC Analyst",
     "role": "analyst",
     "active": true
