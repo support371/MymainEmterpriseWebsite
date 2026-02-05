@@ -1,27 +1,37 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import { createContactMessage } from '@/lib/contactMessages';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, company, phone, service, message } = body;
+    const { name, email, company, phone, service, message, sourcePage } = body;
 
-    // Validation
     if (!name || !email || !company || !service || !message) {
       return NextResponse.json(
         { success: false, message: 'Missing required fields' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    // Email validation (business email only - optional but recommended in instructions)
+    const [firstName, ...rest] = String(name).trim().split(' ');
+    const lastName = rest.join(' ');
+
+    await createContactMessage({
+      sourcePage: typeof sourcePage === 'string' ? sourcePage : '/contact-us',
+      firstName: firstName || 'Unknown',
+      lastName: lastName || '',
+      email,
+      phone: typeof phone === 'string' ? phone : '',
+      serviceInterest: service,
+      messageBody: `${message}\n\nCompany: ${company}`,
+    });
+
     const emailRegex = /^[^@]+@(?!gmail|yahoo|hotmail|outlook|live|icloud)[^@]+\.[^@]+$/;
-    // We'll allow all for now but log if it's not a business email
     const isBusinessEmail = emailRegex.test(email.toLowerCase());
 
     console.log(`New contact from ${name} (${email}). Business email: ${isBusinessEmail}`);
 
-    // If SMTP credentials exist, send real email
     if (process.env.SMTP_USER && process.env.SMTP_PASS) {
       const transporter = nodemailer.createTransport({
         host: process.env.SMTP_HOST || 'smtp.gmail.com',
@@ -33,7 +43,6 @@ export async function POST(request: Request) {
         },
       });
 
-      // Email to admin
       await transporter.sendMail({
         from: process.env.SMTP_USER,
         to: 'info@gemcybersecurityassist.com',
@@ -50,7 +59,6 @@ export async function POST(request: Request) {
         `,
       });
 
-      // Confirmation email to user
       await transporter.sendMail({
         from: process.env.SMTP_USER,
         to: email,
@@ -70,14 +78,13 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
-      message: 'Message sent successfully'
+      message: 'Message sent successfully',
     });
-
   } catch (error) {
     console.error('Contact form error:', error);
     return NextResponse.json(
       { success: false, message: 'Failed to send message' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
