@@ -14,6 +14,7 @@ import {
   Network,
   LayoutDashboard,
   Mail,
+  Map,
 } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -40,6 +41,7 @@ const platformLinks = [
   { title: 'Sentinel Trust', icon: Lock, path: '/cyber-sentinel-trust', desc: 'Zero trust' },
   { title: 'Portfolio', icon: LayoutDashboard, path: '/portfolio', desc: 'Asset dashboard' },
   { title: 'Pricing', icon: Zap, path: '/pricing', desc: 'Plans & pricing' },
+  { title: 'Roadmap', icon: Map, path: '/roadmap', desc: 'Project delivery phases' },
   { title: 'Contact', icon: Mail, path: '/contact-us', desc: 'Get in touch' },
 ];
 
@@ -159,6 +161,23 @@ export default function HomePage() {
                 </Link>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-5xl mx-auto rounded-2xl border border-cyan-900/40 bg-slate-900/60 p-8 md:p-10">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <p className="text-cyan-300 uppercase tracking-[0.14em] text-xs mb-2">Project Description Output</p>
+                <h2 className="text-2xl md:text-3xl font-bold text-white">Need the full project roadmap?</h2>
+                <p className="text-slate-300 mt-2">Review the detailed phased delivery plan covering design, admin operations, inbox intelligence, security hardening, and scaling.</p>
+              </div>
+              <Link href="/roadmap" className="px-6 py-3 rounded-lg bg-gradient-to-r from-cyan-400 to-sky-500 text-slate-950 font-semibold">
+                Open Roadmap
+              </Link>
+            </div>
           </div>
         </div>
       </section>

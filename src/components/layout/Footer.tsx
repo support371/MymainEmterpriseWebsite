@@ -30,6 +30,7 @@ export default function Footer() {
               <Link href="/resources" className="block text-slate-400 hover:text-white transition-colors text-sm">Resource Hub</Link>
               <Link href="/case-studies" className="block text-slate-400 hover:text-white transition-colors text-sm">Case Studies</Link>
               <Link href="/portfolio" className="block text-slate-400 hover:text-white transition-colors text-sm">Portfolio</Link>
+              <Link href="/roadmap" className="block text-slate-400 hover:text-white transition-colors text-sm">Project Roadmap</Link>
             </div>
           </div>
           <div>

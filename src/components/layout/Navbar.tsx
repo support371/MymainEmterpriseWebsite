@@ -3,13 +3,14 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Shield, Menu, X, Home, Users, Award, BookOpen, Lock, LayoutDashboard, Mail, Network } from 'lucide-react';
+import { Shield, Menu, X, Home, Users, Award, BookOpen, Lock, LayoutDashboard, Mail, Network, Map } from 'lucide-react';
 
 const navigation = [
   { name: 'Home', href: '/', icon: Home },
   { name: 'About', href: '/about-us', icon: Shield },
   { name: 'Services', href: '/services', icon: LayoutDashboard },
   { name: 'Intelligence', href: '/news', icon: BookOpen },
+  { name: 'Roadmap', href: '/roadmap', icon: Map },
   { name: 'Team', href: '/teams', icon: Users },
 ];
 
@@ -20,6 +21,7 @@ const mobileNavigation = [
   { name: 'QFS', href: '/qfs', icon: Network },
   { name: 'Sentinel', href: '/cyber-sentinel-trust', icon: Lock },
   { name: 'Portfolio', href: '/portfolio', icon: LayoutDashboard },
+  { name: 'Roadmap', href: '/roadmap', icon: Map },
   { name: 'Contact', href: '/contact-us', icon: Mail },
 ];
 
