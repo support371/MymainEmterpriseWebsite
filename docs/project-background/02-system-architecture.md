@@ -51,3 +51,8 @@ The provided UI artifacts imply intended architecture beyond basic marketing pag
 - Secure-by-default headers and cookie policy.
 - Compliance-ready auditability (change events, admin actions, campaign actions).
 - Deterministic rollback and deployment traceability.
+
+## Architecture image reference
+- Single visual architecture diagram: `docs/project-background/08-enterprise-architecture-diagram.svg`.
+
+![GEM enterprise architecture diagram](./08-enterprise-architecture-diagram.svg)

@@ -61,6 +61,7 @@ Architecture and project-context handoff files are available in:
 - `docs/project-background/05-discussion-derived-decisions.md`
 - `docs/project-background/06-visual-reference-architecture-from-screens.md` (captures architecture-relevant requirements from provided UI image references)
 - `docs/project-background/07-professional-reference-architecture.md` (deep research-informed enterprise architecture guidance)
+- `docs/project-background/08-enterprise-architecture-diagram.svg` (single-image architecture reference for teams and agents)
 
 ## Deployment
 
