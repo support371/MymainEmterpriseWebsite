@@ -49,6 +49,20 @@ Protected routes are guarded by `middleware.ts` and session cookie auth:
 - `/admin/grants`
 - `/admin/diagnostics`
 
+
+## Project background handoff for developer agents
+
+Architecture and project-context handoff files are available in:
+
+- `docs/project-background/01-project-context.md`
+- `docs/project-background/02-system-architecture.md`
+- `docs/project-background/03-route-and-feature-inventory.md`
+- `docs/project-background/04-data-config-and-ops.md`
+- `docs/project-background/05-discussion-derived-decisions.md`
+- `docs/project-background/06-visual-reference-architecture-from-screens.md` (captures architecture-relevant requirements from provided UI image references)
+- `docs/project-background/07-professional-reference-architecture.md` (deep research-informed enterprise architecture guidance)
+- `docs/project-background/08-enterprise-architecture-diagram.svg` (single-image architecture reference for teams and agents)
+
 ## Deployment
 
 This project deploys cleanly on Vercel and other Node-compatible hosts.
