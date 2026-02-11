@@ -8,6 +8,7 @@ Next.js 16 App Router experience with:
 - Intelligence Command Center (`/intelligence`).
 - Email Campaign Engine UI shell (`/campaigns`).
 - Architecture/specification route (`/specs`).
+- Architecture alias route (`/architecture`).
 - Admin center with role-based auth (`/admin/*`).
 
 ## Local development
@@ -36,6 +37,7 @@ npm run dev
 - Intelligence module: `http://localhost:3000/intelligence`
 - Campaign module: `http://localhost:3000/campaigns`
 - Specs route: `http://localhost:3000/specs`
+- Architecture alias: `http://localhost:3000/architecture`
 - Admin login: `http://localhost:3000/admin/login`
 
 ## Required environment variables
@@ -79,6 +81,15 @@ Tailwind is configured through the Next.js build pipeline (no CDN dependency):
    - Output: `.next` (automatic)
 5. Enable previews for branch pushes.
 6. Keep production deployment mapped to `main`.
+
+### Suggested branch workflow
+
+```bash
+git checkout -b feat/master-onepage-rebrand
+git push -u origin feat/master-onepage-rebrand
+```
+
+After preview validation in Vercel, open a PR into `main`.
 
 ## Notes
 
