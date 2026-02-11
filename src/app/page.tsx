@@ -2,108 +2,115 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import {
   Shield,
-  Zap,
+  Server,
   Lock,
-  Eye,
-  Building2,
-  Globe,
-  Phone,
-  Users,
-  Award,
-  BookOpen,
-  Network,
-  LayoutDashboard,
+  Radar,
   Mail,
-  Map,
+  Workflow,
+  Database,
+  Cpu,
+  Clock3,
+  CheckCircle2,
+  ArrowUpRight,
+  Bell,
 } from 'lucide-react';
+import { appEnv } from '@/lib/env';
 
 export const metadata: Metadata = {
   description:
-    'Unified Operations Center for global threat detection, federal compliance, and high-value physical asset protection. The definitive partner for the Hybrid Enterprise.',
+    'GEM CYBER unified one-page enterprise platform for cybersecurity, IT operations, intelligence monitoring, and reputation-safe email campaign orchestration.',
 };
 
-const solutions = [
-  { icon: Shield, title: '24/7 Threat Monitoring', desc: 'Continuous surveillance with AI-powered detection' },
-  { icon: Zap, title: 'Incident Response', desc: '2-minute average response time guaranteed' },
-  { icon: Lock, title: 'Federal Compliance', desc: 'NIST, CMMC, and ISO 27001 certification support' },
-  { icon: Building2, title: 'Asset Recovery', desc: 'High-value physical asset recovery and protection' },
-  { icon: Eye, title: 'Intelligence Hub', desc: 'Canonical source for global threat intelligence' },
-  { icon: Globe, title: 'Global Coverage', desc: 'Protection across all time zones and jurisdictions' },
+const trustMetrics = [
+  { label: 'Service Reliability', value: '99.9%' },
+  { label: 'Mean Time To Respond', value: '< 2 min' },
+  { label: 'Assets Monitored', value: '50K+' },
+  { label: 'Protected Mailboxes', value: '120K+' },
 ];
 
-const platformLinks = [
-  { title: 'About Us', icon: Shield, path: '/about-us', desc: 'Our story and mission' },
-  { title: 'Our Team', icon: Users, path: '/teams', desc: 'Security experts' },
-  { title: 'Case Studies', icon: Award, path: '/case-studies', desc: 'Real success stories' },
-  { title: 'Intelligence', icon: Eye, path: '/news', desc: 'Global threat feed' },
-  { title: 'Resources', icon: BookOpen, path: '/resources', desc: 'Guides & reports' },
-  { title: 'QFS Network', icon: Network, path: '/qfs', desc: 'Quantum security' },
-  { title: 'Sentinel Trust', icon: Lock, path: '/cyber-sentinel-trust', desc: 'Zero trust' },
-  { title: 'Portfolio', icon: LayoutDashboard, path: '/portfolio', desc: 'Asset dashboard' },
-  { title: 'Pricing', icon: Zap, path: '/pricing', desc: 'Plans & pricing' },
-  { title: 'Roadmap', icon: Map, path: '/roadmap', desc: 'Project delivery phases' },
-  { title: 'Contact', icon: Mail, path: '/contact-us', desc: 'Get in touch' },
+const services = [
+  { icon: Shield, title: 'Managed Cybersecurity', desc: 'Threat hunting, SOC triage, and response playbooks that scale enterprise-wide.' },
+  { icon: Lock, title: 'Compliance Operations', desc: 'NIST, ISO, SOC 2, CMMC, and control evidence workflows for audits.' },
+  { icon: Server, title: 'IT Reliability Engineering', desc: 'Infrastructure hardening, patch governance, and continuity planning.' },
+  { icon: Radar, title: 'Intelligence Command Center', desc: 'Analyst-ready threat feeds, filterable risk cards, and schedule controls.' },
+  { icon: Mail, title: 'Campaign & Outreach Engine', desc: 'Reputation-safe email dispatch with suppression, throttling, and auditing.' },
+  { icon: Workflow, title: 'Automation & Integrations', desc: 'Webhook and queue-based automations across security and growth operations.' },
+];
+
+const architectureSurfaces = [
+  {
+    title: 'Core Data Surfaces',
+    items: ['contacts', 'segments', 'campaigns', 'recipients', 'events'],
+  },
+  {
+    title: 'Compliance & Safety',
+    items: ['suppression_list', 'audit_logs', 'notification_outbox', 'sending throttles'],
+  },
+  {
+    title: 'Runtime Controls',
+    items: ['news ingest', 'dispatch queue', 'UTC scheduler', 'access policies'],
+  },
+];
+
+const intelligencePreview = [
+  { tag: 'Threat Intel', title: 'Credential Harvesting Trendline', summary: 'New phishing kits targeting M365 orgs in regulated sectors.' },
+  { tag: 'Regulatory', title: 'CMMC 2.0 Readiness Window', summary: 'Controls and evidence automation checkpoints for Q2 planning.' },
+  { tag: 'Ops Alert', title: 'Ransomware IOC Refresh', summary: 'Updated indicators, attack chain references, and isolation playbook.' },
 ];
 
 export default function HomePage() {
   return (
-    <div className="bg-slate-950">
-      <section className="relative overflow-hidden border-b border-slate-800/70">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_15%,rgba(6,182,212,0.2),transparent_35%),radial-gradient(circle_at_80%_10%,rgba(59,130,246,0.14),transparent_30%)]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950" />
-        <div className="container mx-auto px-4 relative z-10 pt-32 pb-24 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-400/40 mb-7 glow-cyan">
-            <span className="w-2.5 h-2.5 rounded-full bg-cyan-300 monitoring-dot" />
-            <span className="text-xs md:text-sm font-semibold text-cyan-300 uppercase tracking-[0.12em]">24/7 Enterprise Monitoring Active</span>
+    <div className="bg-slate-950 text-white scroll-smooth">
+      <section id="home" className="relative overflow-hidden border-b border-slate-800/70">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(6,182,212,0.23),transparent_34%),radial-gradient(circle_at_85%_10%,rgba(59,130,246,0.18),transparent_32%)]" />
+        <div className="container mx-auto px-4 relative z-10 pt-28 pb-20">
+          <div className="max-w-4xl">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-400/40 mb-6">
+              <span className="w-2.5 h-2.5 rounded-full bg-cyan-300 monitoring-dot" />
+              <span className="text-xs font-semibold text-cyan-300 uppercase tracking-[0.12em]">Everything in One Page</span>
+            </div>
+            <h1 className="text-4xl md:text-6xl font-bold leading-tight tracking-tight">
+              Enterprise Cybersecurity, IT, and Growth Operations
+              <span className="block text-cyan-300">Unified Under {appEnv.appName}</span>
+            </h1>
+            <p className="mt-6 text-slate-300 max-w-3xl text-lg">
+              One platform for security operations, intelligence ingestion, and compliant campaign dispatch. Built for modern enterprise teams that need speed, trust, and control.
+            </p>
+            <div className="mt-10 flex flex-wrap gap-4">
+              <Link href="/intelligence" className="px-7 py-3 rounded-lg bg-gradient-to-r from-cyan-400 to-sky-500 text-slate-950 font-semibold">
+                Open Intelligence Command Center
+              </Link>
+              <Link href="/campaigns" className="px-7 py-3 rounded-lg border border-cyan-500/60 text-cyan-100 hover:bg-cyan-500/10">
+                Launch Campaign Engine
+              </Link>
+            </div>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-bold text-white leading-[1.02] tracking-tight max-w-5xl mx-auto">
-            Stop Breaches
-            <span className="text-cyan-300"> Before They Happen</span>
-          </h1>
-
-          <p className="mt-7 text-slate-300 max-w-3xl mx-auto text-lg md:text-2xl">
-            Unified Operations Center for global threat detection, federal compliance, and physical asset protection.
-          </p>
-
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <Link href="/contact-us" className="px-8 py-4 bg-gradient-to-r from-cyan-400 to-sky-500 hover:from-cyan-300 hover:to-sky-400 text-slate-950 font-semibold rounded-lg transition-all shadow-[0_0_24px_rgba(0,212,255,0.35)]">
-              Schedule Security Assessment
-            </Link>
-            <a href="tel:+18603054376" className="px-8 py-4 border border-rose-400/80 text-rose-200 hover:bg-rose-500/10 font-semibold rounded-lg transition-colors">
-              24/7 Emergency: (860) 305-4376
-            </a>
-          </div>
-
-          <div className="mt-14 grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
-            {[
-              { label: 'Uptime SLA', value: '99.9%' },
-              { label: 'Response Time', value: '2min' },
-              { label: '$50M+ Assets Managed', value: '$50M+' },
-            ].map((stat) => (
-              <div key={stat.label} className="rounded-2xl border border-slate-800 bg-slate-900/55 p-6">
-                <div className="text-cyan-400 text-4xl font-bold">{stat.value}</div>
-                <div className="text-xs text-slate-400 uppercase tracking-[0.2em] mt-2">{stat.label}</div>
-              </div>
+          <div className="mt-14 grid md:grid-cols-4 gap-4">
+            {trustMetrics.map((metric) => (
+              <article key={metric.label} className="rounded-xl border border-slate-800 bg-slate-900/60 p-5">
+                <p className="text-3xl font-bold text-cyan-300">{metric.value}</p>
+                <p className="text-xs text-slate-400 mt-2 uppercase tracking-[0.16em]">{metric.label}</p>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-24 bg-[linear-gradient(180deg,rgba(15,23,42,0.7),rgba(2,6,23,0.9))]">
+      <section id="services" className="py-20">
         <div className="container mx-auto px-4">
-          <div className="text-center max-w-4xl mx-auto mb-14">
-            <h2 className="text-4xl md:text-5xl font-bold text-white">Cybersecurity &amp; Physical Solutions</h2>
-            <p className="text-slate-400 mt-3 text-lg">Enterprise-grade protection for the modern Hybrid Enterprise</p>
+          <div className="max-w-3xl mb-10">
+            <h2 className="text-3xl md:text-4xl font-bold">Cybersecurity + IT Solutions</h2>
+            <p className="text-slate-400 mt-2">Production-grade service lines aligned to enterprise SOC, infrastructure, and go-to-market priorities.</p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-            {solutions.map((service) => {
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {services.map((service) => {
               const Icon = service.icon;
               return (
-                <article key={service.title} className="rounded-xl border border-cyan-900/30 bg-slate-900/55 p-7 hover:border-cyan-400/70 transition-colors">
-                  <Icon className="w-10 h-10 text-cyan-400 mb-4" />
-                  <h3 className="text-2xl font-bold text-white mb-2">{service.title}</h3>
-                  <p className="text-slate-400">{service.desc}</p>
+                <article key={service.title} className="rounded-xl border border-cyan-900/40 bg-slate-900/50 p-6">
+                  <Icon className="w-9 h-9 text-cyan-300 mb-4" />
+                  <h3 className="text-xl font-bold">{service.title}</h3>
+                  <p className="text-slate-400 mt-2 text-sm">{service.desc}</p>
                 </article>
               );
             })}
@@ -111,87 +118,96 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-24">
+      <section id="intelligence" className="py-20 border-y border-slate-800/60 bg-slate-900/40">
         <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
-            {[
-              {
-                quote:
-                  'The integration of digital threat intelligence with physical asset protection has transformed our risk profile. GEM Cybersecurity is the definitive partner for the hybrid enterprise.',
-                name: 'Michael Gilbert',
-                role: 'Director of Operations',
-              },
-              {
-                quote:
-                  "Their 2-minute response guarantee isn't just a marketing slogan; it's a mission-critical reality that has saved our enterprise millions in potential data loss.",
-                name: 'Jennifer Davis',
-                role: 'Senior Security Analyst',
-              },
-            ].map((testimonial) => (
-              <article key={testimonial.name} className="rounded-2xl border border-slate-800 bg-slate-950/80 p-8 relative">
-                <span className="absolute top-4 left-4 text-cyan-500/25 text-6xl leading-none">&quot;</span>
-                <p className="text-slate-300 italic mb-6 relative z-10">{testimonial.quote}</p>
-                <div className="flex items-center gap-4">
-                  <div className="w-11 h-11 bg-slate-800 rounded-full" />
-                  <div>
-                    <p className="text-white font-semibold">{testimonial.name}</p>
-                    <p className="text-slate-500 text-sm">{testimonial.role}</p>
-                  </div>
-                </div>
+          <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold">Intelligence Hub Preview</h2>
+              <p className="text-slate-400 mt-2">Live threat context, regulatory changes, and analyst summaries.</p>
+            </div>
+            <Link href="/intelligence" className="inline-flex items-center gap-2 text-cyan-300 hover:text-cyan-200">
+              Open command center <ArrowUpRight className="w-4 h-4" />
+            </Link>
+          </div>
+          <div className="grid md:grid-cols-3 gap-5">
+            {intelligencePreview.map((item) => (
+              <article key={item.title} className="rounded-xl border border-slate-700 bg-slate-950/70 p-6">
+                <span className="text-xs uppercase tracking-[0.14em] text-cyan-300">{item.tag}</span>
+                <h3 className="mt-3 text-xl font-semibold">{item.title}</h3>
+                <p className="mt-2 text-sm text-slate-400">{item.summary}</p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-24 bg-slate-900/45 border-y border-slate-800/70">
+      <section id="campaigns" className="py-20">
         <div className="container mx-auto px-4">
-          <div className="text-center max-w-4xl mx-auto mb-14">
-            <h2 className="text-4xl md:text-5xl font-bold text-white">Explore Our Platform</h2>
-            <p className="text-slate-400 mt-3 text-lg">Comprehensive security and asset management</p>
+          <div className="max-w-3xl mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold">Email Campaign & Outreach</h2>
+            <p className="text-slate-400 mt-2">First-class dispatch platform with compliance gates, sender reputation controls, and measurable outcomes.</p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-            {platformLinks.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Link key={item.path} href={item.path} className="rounded-xl border border-cyan-900/30 bg-slate-900/55 p-6 hover:border-cyan-400/70 transition-colors">
-                  <Icon className="w-8 h-8 text-cyan-400 mb-4" />
-                  <h3 className="text-2xl font-bold text-white mb-2">{item.title}</h3>
-                  <p className="text-slate-400 text-sm">{item.desc}</p>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto rounded-2xl border border-cyan-900/40 bg-slate-900/60 p-8 md:p-10">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div>
-                <p className="text-cyan-300 uppercase tracking-[0.14em] text-xs mb-2">Project Description Output</p>
-                <h2 className="text-2xl md:text-3xl font-bold text-white">Need the full project roadmap?</h2>
-                <p className="text-slate-300 mt-2">Review the detailed phased delivery plan covering design, admin operations, inbox intelligence, security hardening, and scaling.</p>
+          <div className="grid lg:grid-cols-3 gap-5">
+            {[
+              'Campaign Builder (sequence + newsletter modes)',
+              'Audience Segments and tag-based targeting',
+              'Suppression List and hygiene automation',
+              'Dispatch Queue with UTC schedule orchestration',
+              'Analytics: delivered, open, click, bounce, complaint',
+              'Throttling + compliance preflight checks',
+            ].map((feature) => (
+              <div key={feature} className="rounded-xl border border-slate-800 bg-slate-900/60 p-5 flex gap-3">
+                <CheckCircle2 className="w-5 h-5 text-emerald-400 mt-0.5" />
+                <span className="text-sm text-slate-200">{feature}</span>
               </div>
-              <Link href="/roadmap" className="px-6 py-3 rounded-lg bg-gradient-to-r from-cyan-400 to-sky-500 text-slate-950 font-semibold">
-                Open Roadmap
-              </Link>
+            ))}
+          </div>
+          <div className="mt-8 rounded-2xl border border-cyan-900/40 bg-cyan-500/5 p-6 flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <p className="text-cyan-300 font-semibold">Reputation-safe sending is enforced by design.</p>
+              <p className="text-slate-400 text-sm mt-1">Use compliance gates, staged warm-up, suppression enforcement, and auditable controls.</p>
             </div>
+            <Link href="/campaigns" className="px-5 py-3 rounded-lg bg-cyan-500 text-slate-950 font-semibold">View Campaign Engine</Link>
           </div>
         </div>
       </section>
 
-      <section className="py-24">
+      <section id="roadmap" className="py-20 border-y border-slate-800/60 bg-slate-900/40">
         <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto rounded-2xl border border-cyan-500/35 bg-cyan-500/10 p-12 text-center">
-            <Phone className="w-16 h-16 text-cyan-400 mx-auto mb-6" />
-            <h2 className="text-4xl font-bold text-white mb-3">24/7 Emergency Hotline</h2>
-            <p className="text-slate-300 text-lg mb-8">Active security breach? Our rapid-response team is standing by.</p>
-            <a href="tel:+18603054376" className="inline-flex items-center gap-2 px-8 py-3 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold rounded-lg transition-colors">
-              <Phone className="w-5 h-5" />
-              (860) 305-4376
-            </a>
+          <div className="max-w-3xl mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold">Roadmap + Backend Surfaces</h2>
+            <p className="text-slate-400 mt-2">Execution modules from intake through orchestration, audit, and notification pipelines.</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-5">
+            {architectureSurfaces.map((surface) => (
+              <article key={surface.title} className="rounded-xl border border-slate-800 bg-slate-950/65 p-6">
+                <h3 className="font-semibold text-cyan-300">{surface.title}</h3>
+                <ul className="mt-3 space-y-2 text-sm text-slate-300">
+                  {surface.items.map((item) => (
+                    <li key={item} className="flex items-center gap-2"><Database className="w-4 h-4 text-slate-500" />{item}</li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+          <div className="mt-7 flex flex-wrap gap-3">
+            <Link href="/specs" className="inline-flex items-center gap-2 px-5 py-2 rounded-lg border border-cyan-500/50">Open Architecture</Link>
+            <Link href="/roadmap" className="inline-flex items-center gap-2 px-5 py-2 rounded-lg border border-slate-600"><Cpu className="w-4 h-4" />Detailed Roadmap</Link>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="rounded-2xl border border-cyan-800/40 bg-slate-900/60 p-8 md:p-10 flex flex-wrap justify-between gap-6 items-center">
+            <div>
+              <h2 className="text-3xl font-bold">Need escalation support now?</h2>
+              <p className="text-slate-400 mt-2">Security hotline and response operations are active 24/7.</p>
+            </div>
+            <div className="flex flex-col gap-3">
+              <a className="inline-flex items-center gap-2 text-cyan-300" href={`mailto:${appEnv.supportEmail}`}><Bell className="w-4 h-4" />{appEnv.supportEmail}</a>
+              <a className="inline-flex items-center gap-2 text-cyan-300" href={`tel:${appEnv.supportPhone}`}><Clock3 className="w-4 h-4" />{appEnv.supportPhone}</a>
+            </div>
           </div>
         </div>
       </section>
