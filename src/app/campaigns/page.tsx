@@ -15,6 +15,17 @@ const queueRows = [
   { id: 'CMP-2026-116', name: 'Quarterly Security Program', mode: 'Newsletter', schedule: '2026-02-12 14:00 UTC', status: 'Scheduled' },
 ];
 
+const dataModelStubs = [
+  'contacts',
+  'segments',
+  'campaigns',
+  'recipients',
+  'events',
+  'suppression_list',
+  'audit_logs',
+  'notification_outbox',
+];
+
 export default function CampaignsPage() {
   return (
     <div className="min-h-screen pt-24 pb-16 bg-slate-950 text-white">
@@ -98,6 +109,18 @@ export default function CampaignsPage() {
               <li key={guardrail}>{guardrail}</li>
             ))}
           </ul>
+        </section>
+
+        <section className="mt-8 rounded-2xl border border-slate-800 bg-slate-900/40 p-6">
+          <h3 className="text-lg font-semibold">Data Model Surfaces</h3>
+          <p className="text-sm text-slate-400 mt-2">Schema-aligned entities are ready for provider swaps and backend activation without refactoring UI routes.</p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {dataModelStubs.map((stub) => (
+              <span key={stub} className="px-3 py-1 rounded-full border border-cyan-900/50 text-cyan-200 text-xs tracking-[0.08em] uppercase">
+                {stub}
+              </span>
+            ))}
+          </div>
         </section>
       </div>
     </div>
