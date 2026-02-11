@@ -1,0 +1,20 @@
+This unit is reserved for Bitcoin investment–related logic and configuration.
+
+Scope:
+- Bitcoin-specific investment strategy logic
+- Integration points for market data, execution, and reporting
+- Configuration and environment variables specific to Bitcoin operations
+- Risk controls, constraints, and safeguards for automated or assisted investment workflows
+
+Non-Scope (explicitly excluded for now):
+- General portfolio logic
+- Other asset classes
+- UI or frontend components
+
+Status:
+This is an intentionally minimal placeholder. Implementation will be added incrementally once architecture, compliance, and risk parameters are finalized.
+
+Assumptions:
+- Treated as a high-risk, production-grade financial component
+- Designed to be modular, isolated, and auditable
+- Must integrate cleanly with the broader repository without tight coupling
