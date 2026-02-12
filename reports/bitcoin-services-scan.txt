@@ -1,0 +1,72 @@
+./src/app/api/newsletter/route.ts:15:    console.log('Newsletter signup:', email);
+./src/app/api/newsletter/route.ts:25:    console.error('Newsletter signup error:', error);
+./package-lock.json:72:      "integrity": "sha512-IJdWBbTcMQ6DA0gdNhh/BwrLkDR+ADW5Kr1aZmd4k3DIF6ezMV4R2NIAmT08wQJ3yUK82thHWmC/TnK/wpMMIA==",
+./package-lock.json:144:      "integrity": "sha512-IJdWBbTcMQ6DA0gdNhh/BwrLkDR+ADW5Kr1aZmd4k3DIF6ezMV4R2NIAmT08wQJ3yUK82thHWmC/TnK/wpMMIA==",
+./package-lock.json:2622:        "lightningcss": "1.30.2",
+./package-lock.json:5989:    "node_modules/lightningcss": {
+./package-lock.json:5991:      "resolved": "https://registry.npmjs.org/lightningcss/-/lightningcss-1.30.2.tgz",
+./package-lock.json:6006:        "lightningcss-android-arm64": "1.30.2",
+./package-lock.json:6007:        "lightningcss-darwin-arm64": "1.30.2",
+./package-lock.json:6008:        "lightningcss-darwin-x64": "1.30.2",
+./package-lock.json:6009:        "lightningcss-freebsd-x64": "1.30.2",
+./package-lock.json:6010:        "lightningcss-linux-arm-gnueabihf": "1.30.2",
+./package-lock.json:6011:        "lightningcss-linux-arm64-gnu": "1.30.2",
+./package-lock.json:6012:        "lightningcss-linux-arm64-musl": "1.30.2",
+./package-lock.json:6013:        "lightningcss-linux-x64-gnu": "1.30.2",
+./package-lock.json:6014:        "lightningcss-linux-x64-musl": "1.30.2",
+./package-lock.json:6015:        "lightningcss-win32-arm64-msvc": "1.30.2",
+./package-lock.json:6016:        "lightningcss-win32-x64-msvc": "1.30.2"
+./package-lock.json:6019:    "node_modules/lightningcss-android-arm64": {
+./package-lock.json:6021:      "resolved": "https://registry.npmjs.org/lightningcss-android-arm64/-/lightningcss-android-arm64-1.30.2.tgz",
+./package-lock.json:6040:    "node_modules/lightningcss-darwin-arm64": {
+./package-lock.json:6042:      "resolved": "https://registry.npmjs.org/lightningcss-darwin-arm64/-/lightningcss-darwin-arm64-1.30.2.tgz",
+./package-lock.json:6061:    "node_modules/lightningcss-darwin-x64": {
+./package-lock.json:6063:      "resolved": "https://registry.npmjs.org/lightningcss-darwin-x64/-/lightningcss-darwin-x64-1.30.2.tgz",
+./package-lock.json:6082:    "node_modules/lightningcss-freebsd-x64": {
+./package-lock.json:6084:      "resolved": "https://registry.npmjs.org/lightningcss-freebsd-x64/-/lightningcss-freebsd-x64-1.30.2.tgz",
+./package-lock.json:6103:    "node_modules/lightningcss-linux-arm-gnueabihf": {
+./package-lock.json:6105:      "resolved": "https://registry.npmjs.org/lightningcss-linux-arm-gnueabihf/-/lightningcss-linux-arm-gnueabihf-1.30.2.tgz",
+./package-lock.json:6124:    "node_modules/lightningcss-linux-arm64-gnu": {
+./package-lock.json:6126:      "resolved": "https://registry.npmjs.org/lightningcss-linux-arm64-gnu/-/lightningcss-linux-arm64-gnu-1.30.2.tgz",
+./package-lock.json:6145:    "node_modules/lightningcss-linux-arm64-musl": {
+./package-lock.json:6147:      "resolved": "https://registry.npmjs.org/lightningcss-linux-arm64-musl/-/lightningcss-linux-arm64-musl-1.30.2.tgz",
+./package-lock.json:6166:    "node_modules/lightningcss-linux-x64-gnu": {
+./package-lock.json:6168:      "resolved": "https://registry.npmjs.org/lightningcss-linux-x64-gnu/-/lightningcss-linux-x64-gnu-1.30.2.tgz",
+./package-lock.json:6187:    "node_modules/lightningcss-linux-x64-musl": {
+./package-lock.json:6189:      "resolved": "https://registry.npmjs.org/lightningcss-linux-x64-musl/-/lightningcss-linux-x64-musl-1.30.2.tgz",
+./package-lock.json:6208:    "node_modules/lightningcss-win32-arm64-msvc": {
+./package-lock.json:6210:      "resolved": "https://registry.npmjs.org/lightningcss-win32-arm64-msvc/-/lightningcss-win32-arm64-msvc-1.30.2.tgz",
+./package-lock.json:6229:    "node_modules/lightningcss-win32-x64-msvc": {
+./package-lock.json:6231:      "resolved": "https://registry.npmjs.org/lightningcss-win32-x64-msvc/-/lightningcss-win32-x64-msvc-1.30.2.tgz",
+./src/app/news/page.tsx:88:    title: "Bitcoin Holds at $88k: Market muted after CPI Data",
+./reports/remote-push-20260212-013023.log:11:## bitcoin-banking-prod
+./reports/remote-push-20260212-013023.log:24:bitcoin-banking-prod
+./reports/remote-push-20260212-013023.log:25:* bitcoin-banking-prod
+./reports/remote-push-20260212-013023.log:31:Current branch: bitcoin-banking-prod
+./reports/remote-push-20260212-013053.log:11:## bitcoin-banking-prod
+./reports/remote-push-20260212-013053.log:26:bitcoin-banking-prod
+./reports/remote-push-20260212-013053.log:27:* bitcoin-banking-prod
+./reports/remote-push-20260212-013053.log:33:Current branch: bitcoin-banking-prod
+./src/app/admin/login/page.tsx:76:          {loading ? 'Signing in…' : 'Sign in'}
+./attached_assets/Pasted--GEM-Cybersecurity-Complete-Website-Build-Instructions-_1769269549780.txt:366:5. Newsletter Signup
+./attached_assets/Pasted--GEM-Cybersecurity-Complete-Website-Build-Instructions-_1769229699005.txt:366:5. Newsletter Signup
+./attached_assets/Pasted--Replit-Agent-Complete-GEM-Cybersecurity-Website-Build-_1768830086211.txt:60:    ├── /api/newsletter (Email signup)
+./attached_assets/Pasted--Replit-Agent-Complete-GEM-Cybersecurity-Website-Build-_1768830086211.txt:757:│ Newsletter Signup                   │
+./attached_assets/Pasted--Replit-Agent-Complete-GEM-Cybersecurity-Website-Build-_1768830086211.txt:834:**Route 2: Newsletter Signup**
+./attached_assets/Pasted--Replit-Agent-Complete-GEM-Cybersecurity-Website-Build-_1768830086211.txt:1228:3. Newsletter signup
+./attached_assets/Pasted--Replit-Agent-Complete-GEM-Cybersecurity-Website-Build-_1768830086211.txt:1234:- /api/newsletter (email signup)
+./attached_assets/Pasted--Replit-Agent-Complete-GEM-Cybersecurity-Website-Build-_1768830086211.txt:1270:- [ ] Newsletter signup functions
+./attached_assets/Pasted--Replit-Agent-Complete-GEM-Cybersecurity-Full-Stack-Bui_1768871570678.txt:48:- ❌ Newsletter signup
+./attached_assets/Pasted--Replit-Agent-Complete-GEM-Cybersecurity-Full-Stack-Bui_1768871570678.txt:103:    ├── /api/newsletter (Email signup)
+./attached_assets/Pasted--Replit-Agent-Complete-GEM-Cybersecurity-Full-Stack-Bui_1768871570678.txt:776:<NewsletterSignup>
+./attached_assets/Pasted--Replit-Agent-Complete-GEM-Cybersecurity-Full-Stack-Bui_1768871570678.txt:778:  Email signup form:
+./attached_assets/Pasted--Replit-Agent-Complete-GEM-Cybersecurity-Full-Stack-Bui_1768871570678.txt:783:</NewsletterSignup>
+./attached_assets/Pasted--Replit-Agent-Complete-GEM-Cybersecurity-Full-Stack-Bui_1768871570678.txt:978:#### API Route 2: Newsletter Signup
+./attached_assets/Pasted--Replit-Agent-Complete-GEM-Cybersecurity-Full-Stack-Bui_1768871570678.txt:1001:    console.log('Newsletter signup:', email)
+./attached_assets/Pasted--Replit-Agent-Complete-GEM-Cybersecurity-Full-Stack-Bui_1768871570678.txt:1012:    console.error('Newsletter signup error:', error)
+./attached_assets/Pasted-Below-is-a-clean-agent-ready-master-prompt-that-1-match_1768874865045.txt:154:	•	Newsletter signup
+./attached_assets/Pasted--GEM-Cybersecurity-Final-Pre-Deployment-Checklist-What-_1768895634694.txt:133:- Newsletter signup
+./attached_assets/Pasted--GEM-Cybersecurity-Final-Pre-Deployment-Checklist-What-_1768895634694.txt:161:Current: Newsletter signup forms exist
+./attached_assets/Pasted--GEM-Cybersecurity-Final-Pre-Deployment-Checklist-What-_1768895634694.txt:323:- [ ] Newsletter signup working
+./attached_assets/Pasted-import-React-useState-useMemo-useEffect-from-react-impo_1766360091546.txt:89:    title: "Bitcoin Holds at $88k: Market muted after CPI Data",
+./attached_assets/Pasted-import-React-useState-useMemo-useEffect-from-react-impo_1766363091053.txt:89:    title: "Bitcoin Holds at $88k: Market muted after CPI Data",
