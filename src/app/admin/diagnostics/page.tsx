@@ -1,4 +1,5 @@
 import { promises as fs } from 'node:fs';
+import { listAdminUsers } from '@/lib/adminUsers';
 
 async function checkStorage() {
   try {
@@ -11,12 +12,14 @@ async function checkStorage() {
 
 export default async function DiagnosticsPage() {
   const storageStatus = await checkStorage();
+  const users = await listAdminUsers();
 
   const checks = [
     { key: 'runtime', label: 'Runtime', value: process.env.NODE_ENV || 'development' },
     { key: 'storage', label: 'Message Store', value: storageStatus },
     { key: 'smtp', label: 'SMTP', value: process.env.SMTP_USER ? 'configured' : 'not configured' },
-    { key: 'admin', label: 'Admin Token', value: process.env.ADMIN_ACCESS_TOKEN ? 'configured' : 'using default (change me)' },
+    { key: 'auth', label: 'Auth Secret', value: process.env.ADMIN_AUTH_SECRET ? 'configured' : 'using default (change me)' },
+    { key: 'users', label: 'Admin Users', value: `${users.length} configured` },
   ];
 
   return (
