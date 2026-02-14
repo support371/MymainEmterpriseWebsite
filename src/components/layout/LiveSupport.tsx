@@ -38,7 +38,7 @@ export default function LiveSupport() {
       {/* Trigger Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-40 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-2xl transition-all transform hover:scale-110 flex items-center gap-2 group"
+        className="fixed bottom-6 right-6 z-40 bg-cyan-500 hover:bg-cyan-400 text-white p-4 rounded-full shadow-2xl transition-all transform hover:scale-110 flex items-center gap-2 group"
       >
         <MessageSquare className="w-6 h-6" />
         <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 font-bold">
@@ -66,9 +66,9 @@ export default function LiveSupport() {
             {/* Department List */}
             <div className="flex-1 overflow-y-auto p-6 space-y-4">
               {departments.map((dept, idx) => (
-                <div key={idx} className="bg-slate-950 border border-slate-800 rounded-xl p-4 hover:border-blue-500/50 transition-all group">
+                <div key={idx} className="bg-slate-950 border border-slate-800 rounded-xl p-4 hover:border-cyan-500/50 transition-all group">
                   <div className="flex items-start justify-between mb-3">
-                    <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500">
+                    <div className="p-2 rounded-lg bg-cyan-500/10 text-cyan-400">
                       <dept.icon className="w-5 h-5" />
                     </div>
                     <div className="flex items-center gap-1.5">
@@ -79,7 +79,7 @@ export default function LiveSupport() {
                   <h3 className="font-bold text-white mb-1">{dept.name}</h3>
                   <a
                     href={`mailto:${dept.email}`}
-                    className="text-sm text-slate-400 hover:text-blue-400 flex items-center gap-2 transition-colors break-all"
+                    className="text-sm text-slate-400 hover:text-cyan-300 flex items-center gap-2 transition-colors break-all"
                   >
                     <Mail className="w-3 h-3 flex-shrink-0" />
                     {dept.email}
