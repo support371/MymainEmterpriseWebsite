@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import LiveSupport from "@/components/layout/LiveSupport";
+import ExtensionErrorGuard from "@/components/layout/ExtensionErrorGuard";
 
 export const metadata: Metadata = {
   title: {
@@ -30,6 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className="antialiased bg-slate-950 text-white min-h-screen">
+        <ExtensionErrorGuard />
         <Navbar />
         <main>{children}</main>
         <Footer />
