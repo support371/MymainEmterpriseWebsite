@@ -48,4 +48,59 @@ const config = {
   get maxCallsPerRun() { return parseInt(optional('VITE_MAX_CALLS_PER_RUN', '20'), 10); },
 };
 
+/**
+ * Validate server-side config on startup.
+ * Call this at the top of serverless functions / Node scripts.
+ * Fails fast with a clear list of every missing variable.
+ */
+export function validateServerConfig() {
+  const requiredVars = [
+    'OPENAI_API_KEY',
+    'ANTHROPIC_API_KEY',
+    'GITHUB_TOKEN',
+    'GITHUB_REPO_OWNER',
+    'VERCEL_TOKEN',
+    'VERCEL_PROJECT_ID',
+    'VERCEL_ORG_ID',
+  ];
+
+  const missing = requiredVars.filter(
+    (name) => !process.env[name]
+  );
+
+  if (missing.length > 0) {
+    const msg = [
+      '[CONFIG] Missing required environment variables:',
+      ...missing.map((v) => `  - ${v}`),
+      '',
+      'Set them in .env (local) or Vercel dashboard (production).',
+      'See .env.example for the full list.',
+    ].join('\n');
+    throw new Error(msg);
+  }
+
+  return true;
+}
+
+/**
+ * Validate client-side config (lighter — only checks optional budget vars parse correctly).
+ * Called automatically on app mount.
+ */
+export function validateClientConfig() {
+  const warnings = [];
+
+  for (const key of ['VITE_MAX_DAILY_TOKENS', 'VITE_MAX_RUN_TOKENS', 'VITE_MAX_CALLS_PER_RUN']) {
+    const raw = import.meta.env[key];
+    if (raw !== undefined && isNaN(parseInt(raw, 10))) {
+      warnings.push(`${key}="${raw}" is not a valid number`);
+    }
+  }
+
+  if (warnings.length > 0) {
+    console.warn('[CONFIG] Validation warnings:\n' + warnings.join('\n'));
+  }
+
+  return warnings;
+}
+
 export default config;
