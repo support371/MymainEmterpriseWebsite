@@ -1,28 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../providers/AuthProvider';
 import { useToast } from '../providers/ToastProvider';
-import db from '../db/MockDatabase';
+import { profileApi } from '../api/client';
 import StatusBadge from '../components/StatusBadge';
 
 export default function SettingsPage() {
-  const { user, dbCtx } = useAuth();
+  const { user } = useAuth();
   const toast = useToast();
   const [profile, setProfile] = useState(null);
   const [fullName, setFullName] = useState('');
+  const [activities, setActivities] = useState([]);
 
   useEffect(() => {
     if (!user) return;
-    const p = db.getById('profiles', user.id, dbCtx);
-    setProfile(p);
-    setFullName(p?.full_name || '');
-  }, [user, dbCtx]);
+    (async () => {
+      try {
+        const data = await profileApi.get();
+        setProfile(data.profile);
+        setFullName(data.profile?.full_name || '');
+      } catch (err) {
+        console.error('Failed to load profile:', err);
+      }
+      try {
+        const data = await profileApi.activity();
+        setActivities(data.activity || []);
+      } catch (err) {
+        console.error('Failed to load activity:', err);
+      }
+    })();
+  }, [user]);
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
     if (!fullName.trim()) { toast.error('Name cannot be empty'); return; }
-    db.update('profiles', user.id, { full_name: fullName.trim() });
-    toast.success('Profile updated');
-    setProfile(db.getById('profiles', user.id, dbCtx));
+    try {
+      const data = await profileApi.update({ fullName: fullName.trim() });
+      toast.success('Profile updated');
+      setProfile(data.profile);
+    } catch (err) {
+      toast.error(err.message);
+    }
   };
 
   if (!profile) return null;
@@ -67,15 +84,13 @@ export default function SettingsPage() {
         <div className="px-6 py-4 border-b">
           <h2 className="font-semibold text-gray-900">Activity Log</h2>
         </div>
-        <ActivityList userId={user.id} dbCtx={dbCtx} />
+        <ActivityList activities={activities} />
       </div>
     </div>
   );
 }
 
-function ActivityList({ userId, dbCtx }) {
-  const activities = db.query('activity_log', { user_id: userId }, dbCtx);
-
+function ActivityList({ activities }) {
   if (activities.length === 0) {
     return <div className="p-6 text-center text-gray-400 text-sm">No activity yet.</div>;
   }

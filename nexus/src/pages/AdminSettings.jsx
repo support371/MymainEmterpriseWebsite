@@ -1,37 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../providers/AuthProvider';
 import { useToast } from '../providers/ToastProvider';
-import db from '../db/MockDatabase';
+import { adminApi } from '../api/client';
 
 export default function AdminSettings() {
-  const { user, dbCtx } = useAuth();
   const toast = useToast();
   const [profile, setProfile] = useState(null);
   const [tableStats, setTableStats] = useState({});
 
   useEffect(() => {
-    if (!user) return;
-    setProfile(db.getById('profiles', user.id, dbCtx));
+    adminApi.settings().then((d) => {
+      setProfile(d.admin);
+      setTableStats(d.tableStats);
+    }).catch(() => {});
+  }, []);
 
-    // Collect table stats
-    const stats = {};
-    const tables = [
-      'profiles', 'roles', 'bank_accounts', 'ledger_accounts',
-      'deposits', 'ledger_entries', 'bitcoin_cards', 'card_requests',
-      'card_transactions', 'webhook_events', 'operations_log',
-      'email_outbox', 'notifications', 'activity_log',
-    ];
-    for (const t of tables) {
-      stats[t] = db.count(t);
-    }
-    setTableStats(stats);
-  }, [user, dbCtx]);
-
-  const handleReset = () => {
+  const handleReset = async () => {
     if (!window.confirm('This will erase ALL data and sign you out. Continue?')) return;
-    db.reset();
-    toast.info('Database reset. Reloading...');
-    setTimeout(() => window.location.reload(), 1000);
+    try {
+      await adminApi.reset();
+      toast.info('Database reset. Reloading...');
+      localStorage.removeItem('nexus_token');
+      setTimeout(() => window.location.reload(), 1000);
+    } catch (err) { toast.error(err.message); }
   };
 
   if (!profile) return null;
@@ -39,8 +29,6 @@ export default function AdminSettings() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Admin Settings</h1>
-
-      {/* Admin Profile */}
       <div className="bg-white rounded-xl shadow-sm border p-6 mb-6">
         <h2 className="text-lg font-semibold text-gray-900 mb-3">Admin Profile</h2>
         <div className="space-y-2">
@@ -50,8 +38,6 @@ export default function AdminSettings() {
           <Row label="ID" value={profile.id} />
         </div>
       </div>
-
-      {/* Database Stats */}
       <div className="bg-white rounded-xl shadow-sm border p-6 mb-6">
         <h2 className="text-lg font-semibold text-gray-900 mb-3">Database Stats</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -63,19 +49,10 @@ export default function AdminSettings() {
           ))}
         </div>
       </div>
-
-      {/* Danger Zone */}
       <div className="bg-red-50 border border-red-200 rounded-xl p-6">
         <h2 className="text-lg font-semibold text-red-800 mb-2">Danger Zone</h2>
-        <p className="text-sm text-red-600 mb-4">
-          Reset the entire in-memory database. All users, deposits, cards, and ledger entries will be erased.
-        </p>
-        <button
-          onClick={handleReset}
-          className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors"
-        >
-          Reset Database
-        </button>
+        <p className="text-sm text-red-600 mb-4">Reset the entire in-memory database. All users, deposits, cards, and ledger entries will be erased.</p>
+        <button onClick={handleReset} className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors">Reset Database</button>
       </div>
     </div>
   );

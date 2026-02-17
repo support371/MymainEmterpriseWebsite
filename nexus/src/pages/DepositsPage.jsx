@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../providers/AuthProvider';
 import { useToast } from '../providers/ToastProvider';
-import DepositService from '../services/DepositService';
+import { depositsApi } from '../api/client';
 import StatusBadge from '../components/StatusBadge';
 import CopyButton from '../components/CopyButton';
 
@@ -12,11 +12,19 @@ export default function DepositsPage({ onNavigate }) {
   const [amount, setAmount] = useState('');
   const [creating, setCreating] = useState(false);
 
-  const refresh = () => {
-    if (user) setDeposits(DepositService.getUserDeposits(user.id));
+  const refresh = async () => {
+    if (!user) return;
+    try {
+      const data = await depositsApi.list();
+      setDeposits(data.deposits);
+    } catch (err) {
+      console.error('Failed to load deposits:', err);
+    }
   };
 
-  useEffect(refresh, [user]);
+  useEffect(() => {
+    refresh();
+  }, [user]);
 
   const handleCreate = async (e) => {
     e.preventDefault();
@@ -24,10 +32,10 @@ export default function DepositsPage({ onNavigate }) {
     if (!val || val <= 0) { toast.error('Enter a valid amount'); return; }
     setCreating(true);
     try {
-      DepositService.createDeposit({ userId: user.id, amount: val });
+      await depositsApi.create({ amount: val });
       toast.success('Deposit request created');
       setAmount('');
-      refresh();
+      await refresh();
     } catch (err) {
       toast.error(err.message);
     } finally {

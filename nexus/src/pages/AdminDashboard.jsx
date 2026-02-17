@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import AdminService from '../services/AdminService';
+import { adminApi } from '../api/client';
 
 export default function AdminDashboard({ onNavigate }) {
   const [stats, setStats] = useState(null);
 
   useEffect(() => {
-    setStats(AdminService.getDashboardStats());
+    adminApi.dashboard().then((d) => setStats(d.stats)).catch(() => {});
   }, []);
 
   if (!stats) return null;
@@ -27,21 +27,14 @@ export default function AdminDashboard({ onNavigate }) {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Admin Dashboard</h1>
-
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
         {kpis.map((kpi) => (
-          <button
-            key={kpi.label}
-            onClick={() => onNavigate(kpi.page)}
-            className={`${kpi.color} rounded-xl p-5 text-left hover:ring-2 hover:ring-offset-1 hover:ring-orange-300 transition-all`}
-          >
+          <button key={kpi.label} onClick={() => onNavigate(kpi.page)} className={`${kpi.color} rounded-xl p-5 text-left hover:ring-2 hover:ring-offset-1 hover:ring-orange-300 transition-all`}>
             <p className="text-3xl font-bold">{kpi.value}</p>
             <p className="text-sm font-medium mt-1 opacity-80">{kpi.label}</p>
           </button>
         ))}
       </div>
-
-      {/* Quick Ops */}
       <h2 className="text-lg font-semibold text-gray-900 mb-3">Quick Operations</h2>
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
         <QuickLink label="Manage Deposits" desc="Simulate & settle" page="admin-deposits" onNavigate={onNavigate} />
@@ -55,10 +48,7 @@ export default function AdminDashboard({ onNavigate }) {
 
 function QuickLink({ label, desc, page, onNavigate }) {
   return (
-    <button
-      onClick={() => onNavigate(page)}
-      className="bg-white border rounded-lg p-4 text-left hover:bg-orange-50 hover:border-orange-200 transition-colors"
-    >
+    <button onClick={() => onNavigate(page)} className="bg-white border rounded-lg p-4 text-left hover:bg-orange-50 hover:border-orange-200 transition-colors">
       <p className="font-medium text-gray-900">{label}</p>
       <p className="text-sm text-gray-500">{desc}</p>
     </button>

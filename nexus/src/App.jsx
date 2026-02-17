@@ -33,7 +33,7 @@ export default function App() {
 }
 
 function PageRouter() {
-  const { isAuthenticated, isAdmin } = useAuth();
+  const { isAuthenticated, isAdmin, loading } = useAuth();
   const [page, setPage] = useState('landing');
   const [pageParams, setPageParams] = useState({});
 
@@ -43,12 +43,22 @@ function PageRouter() {
     window.scrollTo(0, 0);
   }, []);
 
+  // Show loading spinner while restoring session
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="text-4xl font-bold text-orange-500 mb-2">NEXUS</div>
+          <p className="text-gray-400 text-sm">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
   // If authenticated but on a public page, redirect to appropriate dashboard
   if (isAuthenticated && ['landing', 'signup', 'signin'].includes(page)) {
-    // Use a timeout-free approach: just render the right page
     const defaultPage = isAdmin ? 'admin-dashboard' : 'dashboard';
     if (page !== defaultPage) {
-      // Redirect on next render
       setTimeout(() => navigate(defaultPage), 0);
     }
   }

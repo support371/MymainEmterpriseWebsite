@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../providers/AuthProvider';
-import db from '../db/MockDatabase';
+import { profileApi } from '../api/client';
 import CopyButton from '../components/CopyButton';
 
 export default function BankAccountsPage() {
-  const { user, dbCtx } = useAuth();
+  const { user } = useAuth();
   const [accounts, setAccounts] = useState([]);
 
   useEffect(() => {
     if (!user) return;
-    setAccounts(db.query('bank_accounts', { user_id: user.id }, dbCtx));
-  }, [user, dbCtx]);
+    (async () => {
+      try {
+        const data = await profileApi.bankAccounts();
+        setAccounts(data.bankAccounts);
+      } catch (err) {
+        console.error('Failed to load bank accounts:', err);
+      }
+    })();
+  }, [user]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">

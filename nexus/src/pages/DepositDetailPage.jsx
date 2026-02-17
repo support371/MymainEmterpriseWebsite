@@ -1,23 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../providers/AuthProvider';
-import db from '../db/MockDatabase';
+import { depositsApi } from '../api/client';
 import StatusBadge from '../components/StatusBadge';
 import CopyButton from '../components/CopyButton';
 
 export default function DepositDetailPage({ depositId, onNavigate }) {
-  const { user, dbCtx } = useAuth();
+  const { user } = useAuth();
   const [deposit, setDeposit] = useState(null);
   const [entries, setEntries] = useState([]);
 
   useEffect(() => {
     if (!depositId || !user) return;
-    const d = db.getById('deposits', depositId, dbCtx);
-    setDeposit(d);
-    if (d) {
-      const all = db.query('ledger_entries', { reference: d.deposit_reference }, { isAdmin: true });
-      setEntries(all.filter((e) => e.user_id === user.id));
-    }
-  }, [depositId, user, dbCtx]);
+    (async () => {
+      try {
+        const data = await depositsApi.getById(depositId);
+        setDeposit(data.deposit);
+        setEntries(data.ledgerEntries || []);
+      } catch (err) {
+        console.error('Failed to load deposit detail:', err);
+      }
+    })();
+  }, [depositId, user]);
 
   if (!deposit) {
     return (

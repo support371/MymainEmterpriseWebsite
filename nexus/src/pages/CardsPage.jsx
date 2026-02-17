@@ -1,34 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../providers/AuthProvider';
 import { useToast } from '../providers/ToastProvider';
-import CardService from '../services/CardService';
-import db from '../db/MockDatabase';
+import { cardsApi } from '../api/client';
 import StatusBadge from '../components/StatusBadge';
 
 export default function CardsPage() {
-  const { user, dbCtx } = useAuth();
+  const { user } = useAuth();
   const toast = useToast();
   const [cards, setCards] = useState([]);
   const [requests, setRequests] = useState([]);
   const [transactions, setTransactions] = useState([]);
   const [eligibility, setEligibility] = useState(null);
 
-  const refresh = () => {
+  const refresh = async () => {
     if (!user) return;
-    setCards(CardService.getUserCards(user.id));
-    setRequests(CardService.getUserCardRequests(user.id));
-    setEligibility(CardService.checkEligibility(user.id));
-    const txs = db.query('card_transactions', { user_id: user.id }, dbCtx);
-    setTransactions(txs);
+    try {
+      const [cardsData, requestsData, eligibilityData, txData] = await Promise.all([
+        cardsApi.list(),
+        cardsApi.requests(),
+        cardsApi.eligibility(),
+        cardsApi.transactions(),
+      ]);
+      setCards(cardsData.cards || []);
+      setRequests(requestsData.requests || []);
+      setEligibility(eligibilityData);
+      setTransactions(txData.transactions || []);
+    } catch (err) {
+      console.error('Failed to load cards data:', err);
+    }
   };
 
-  useEffect(refresh, [user, dbCtx]);
+  useEffect(() => {
+    refresh();
+  }, [user]);
 
-  const handleRequest = () => {
+  const handleRequest = async () => {
     try {
-      CardService.requestCard(user.id);
+      await cardsApi.requestCard();
       toast.success('Card request submitted');
-      refresh();
+      await refresh();
     } catch (err) {
       toast.error(err.message);
     }

@@ -1,22 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../providers/AuthProvider';
-import LedgerService from '../services/LedgerService';
-import db from '../db/MockDatabase';
+import { profileApi } from '../api/client';
 import StatusBadge from '../components/StatusBadge';
 
 export default function ClientDashboard({ onNavigate }) {
-  const { user, dbCtx } = useAuth();
+  const { user } = useAuth();
   const [balances, setBalances] = useState([]);
   const [notifications, setNotifications] = useState([]);
 
+  const kycStatus = user?.kyc_status || 'pending';
+
   useEffect(() => {
     if (!user) return;
-    setBalances(LedgerService.getPortfolioBalances(user.id));
-    setNotifications(db.query('notifications', { user_id: user.id }, dbCtx).filter((n) => !n.read).slice(0, 5));
-  }, [user, dbCtx]);
-
-  const profile = user ? db.getById('profiles', user.id, dbCtx) : null;
-  const kycStatus = profile?.kyc_status || 'pending';
+    (async () => {
+      try {
+        const portfolioData = await profileApi.portfolio();
+        setBalances(portfolioData.balances);
+      } catch (err) {
+        console.error('Failed to load portfolio:', err);
+      }
+      try {
+        const notifData = await profileApi.notifications();
+        setNotifications(notifData.notifications.filter((n) => !n.read).slice(0, 5));
+      } catch (err) {
+        console.error('Failed to load notifications:', err);
+      }
+    })();
+  }, [user]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
