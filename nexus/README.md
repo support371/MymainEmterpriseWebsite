@@ -6,35 +6,34 @@ Institutional-grade Bitcoin custody, fiat on-ramp, and Bitcoin-backed spending c
 
 ```
 nexus/
-├── src/
-│   ├── main.jsx              # React entry point
-│   ├── App.jsx               # PageRouter + providers
-│   ├── config/index.js       # Centralized configuration (env vars)
-│   ├── db/MockDatabase.js    # In-memory DB with RLS simulation
+├── src/                        # FRONTEND (Vite + React 18 + Tailwind)
+│   ├── main.jsx                # React entry + config validation
+│   ├── App.jsx                 # PageRouter + providers + loading state
+│   ├── config/index.js         # Centralized configuration (env vars)
+│   ├── api/client.js           # API client (fetch wrapper + auth tokens)
 │   ├── providers/
-│   │   ├── AuthProvider.jsx  # Auth state + signup/signin
-│   │   └── ToastProvider.jsx # Toast notification system
-│   ├── services/
-│   │   ├── DepositService.js # Deposit lifecycle (create → inbound → settle)
-│   │   ├── CardService.js    # Card eligibility, request, approve, transactions
-│   │   ├── LedgerService.js  # Ledger queries + balance computation
-│   │   ├── EmailWorkerService.js # Email outbox processor
-│   │   └── AdminService.js   # Admin KPIs, client 360, KYC management
+│   │   ├── AuthProvider.jsx    # Server-backed auth (token in localStorage)
+│   │   └── ToastProvider.jsx   # Toast notification system
 │   ├── components/
-│   │   ├── Navigation.jsx    # Top nav bar (client + admin variants)
-│   │   ├── StatusBadge.jsx   # Color-coded status badges
-│   │   └── CopyButton.jsx    # Clipboard copy utility
-│   └── pages/                # All page components (client + admin)
-├── api/
-│   ├── ai-review.js          # Vercel serverless: AI code review
-│   └── ai-generate.js        # Vercel serverless: AI code generation
+│   │   ├── Navigation.jsx      # Top nav bar (client + admin variants)
+│   │   ├── StatusBadge.jsx     # Color-coded status badges
+│   │   └── CopyButton.jsx     # Clipboard copy utility
+│   └── pages/                  # All page components (client + admin)
+├── api/                        # BACKEND (Vercel Serverless Functions)
+│   ├── _lib/
+│   │   ├── database.js         # MockDatabase singleton (in-memory, RLS)
+│   │   ├── auth.js             # Token-based auth (sessions, middleware)
+│   │   └── services.js         # Business logic (deposits, cards, ledger, admin)
+│   ├── v1/[...path].js         # Catch-all API router (30+ endpoints)
+│   ├── ai-review.js            # AI code review endpoint
+│   └── ai-generate.js          # AI code generation endpoint
 ├── scripts/
-│   └── ai-budget-manager.js  # Local AI budget manager CLI
-├── logs/                     # AI usage logs (gitignored)
+│   └── ai-budget-manager.js    # Local AI budget manager CLI
+├── logs/                       # AI usage logs (gitignored)
 ├── docs/
-│   └── CREDIT_GOVERNANCE.md  # AI budget/caching documentation
-├── vercel.json               # Vercel deployment config
-└── package.json              # Vite + React + Tailwind
+│   └── CREDIT_GOVERNANCE.md    # AI budget/caching documentation
+├── vercel.json                 # Vercel deployment config
+└── package.json                # Vite + React + Tailwind
 ```
 
 ## Local Development
@@ -48,6 +47,62 @@ npm install
 npm run dev
 # Opens at http://localhost:3000
 ```
+
+## Backend API
+
+All business logic runs server-side via Vercel Serverless Functions. A single catch-all route (`api/v1/[...path].js`) handles all endpoints, ensuring they share one in-memory MockDatabase instance within warm starts.
+
+### Authentication
+
+Token-based auth using `crypto.randomUUID()`. Tokens are stored in a server-side `sessions` table and expire after 24 hours.
+
+| Endpoint | Method | Auth | Description |
+|----------|--------|------|-------------|
+| `/api/v1/auth/signup` | POST | None | Create account (email `admin@nexus-admin.com` → admin role) |
+| `/api/v1/auth/signin` | POST | None | Sign in, returns token |
+| `/api/v1/auth/signout` | POST | Bearer | Destroy session |
+| `/api/v1/auth/me` | GET | Bearer | Get current user (session restore) |
+
+### Client Endpoints (require Bearer token)
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/v1/profile` | GET | Get user profile |
+| `/api/v1/profile` | PATCH | Update profile fields |
+| `/api/v1/bank-accounts` | GET | List bank accounts |
+| `/api/v1/portfolio` | GET | Portfolio + BTC balance |
+| `/api/v1/deposits` | GET | List user deposits |
+| `/api/v1/deposits` | POST | Create new deposit request |
+| `/api/v1/deposits/:id` | GET | Deposit detail + ledger entries |
+| `/api/v1/cards` | GET | List user cards |
+| `/api/v1/cards/eligibility` | GET | Check card eligibility |
+| `/api/v1/cards/request` | POST | Request a new card |
+| `/api/v1/cards/requests` | GET | List user card requests |
+| `/api/v1/cards/transactions` | GET | List card transactions |
+| `/api/v1/notifications` | GET | List user notifications |
+| `/api/v1/activity` | GET | Recent activity feed |
+
+### Admin Endpoints (require Bearer token + admin role)
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/v1/admin/dashboard` | GET | Platform KPIs + stats |
+| `/api/v1/admin/clients` | GET | List/search all clients |
+| `/api/v1/admin/clients/:id` | GET | Client 360 detail view |
+| `/api/v1/admin/clients/:id/kyc` | PATCH | Update client KYC status |
+| `/api/v1/admin/deposits` | GET | All deposits (with client names) |
+| `/api/v1/admin/deposits/:id/simulate-inbound` | POST | Simulate fiat inbound |
+| `/api/v1/admin/deposits/:id/settle` | POST | Settle deposit (fiat→BTC) |
+| `/api/v1/admin/cards/requests` | GET | All card requests |
+| `/api/v1/admin/cards/requests/:id/approve` | POST | Approve & issue card |
+| `/api/v1/admin/cards` | GET | All issued cards |
+| `/api/v1/admin/cards/:id/simulate-tx` | POST | Simulate card transaction |
+| `/api/v1/admin/webhooks` | GET | Webhook events log |
+| `/api/v1/admin/operations` | GET | Operations log |
+| `/api/v1/admin/email-outbox` | GET | Email outbox queue |
+| `/api/v1/admin/email-outbox/process` | POST | Process email queue |
+| `/api/v1/admin/settings` | GET | Platform settings |
+| `/api/v1/admin/settings/reset` | POST | Reset platform data |
 
 ## Environment Variables
 
