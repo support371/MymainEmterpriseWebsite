@@ -91,6 +91,24 @@ git push -u origin feat/master-onepage-rebrand
 
 After preview validation in Vercel, open a PR into `main`.
 
+
+## Deployment smoke checks
+
+After deployment, verify canonical routes and redirects:
+
+```bash
+curl -I https://<your-domain>/home
+curl -I https://<your-domain>/contact
+curl -s https://<your-domain>/api/health
+curl -s https://<your-domain>/api/routes
+```
+
+Expected behavior:
+- `/home` redirects to `/`
+- `/contact` redirects to `/contact-us`
+- `/api/health` returns `{ "ok": true, ... }`
+- `/api/routes` returns route + redirect registry JSON
+
 ## Notes
 
 - Campaign data model stubs live in `src/lib/campaigns/models.ts` and map to `contacts`, `segments`, `campaigns`, `recipients`, `events`, `suppression_list`, `audit_logs`, and `notification_outbox`.
