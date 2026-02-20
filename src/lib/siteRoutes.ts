@@ -23,6 +23,7 @@ export const appRoutes: AppRoute[] = [
   { path: '/news', label: 'News', category: 'core', description: 'Company and threat landscape news updates.' },
   { path: '/specs', label: 'Architecture Specs', category: 'platform', description: 'Technical architecture and backend surfaces.' },
   { path: '/routes', label: 'Route Directory', category: 'platform', description: 'Published frontend and backend URL registry.' },
+  { path: '/live-preview', label: 'Enterprise Live Preview', category: 'platform', description: 'Unified enterprise surface combining brand homepage and route operations preview.' },
   { path: '/admin', label: 'Admin Center', category: 'admin', description: 'Operations portal for internal admins.' },
   { path: '/legal/privacy-policy', label: 'Privacy Policy', category: 'legal', description: 'Legal privacy disclosures and data handling policies.' },
   { path: '/legal/terms-of-service', label: 'Terms of Service', category: 'legal', description: 'Platform terms and service boundaries.' },
