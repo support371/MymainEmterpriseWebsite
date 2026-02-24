@@ -9,43 +9,44 @@ export const metadata = {
 };
 
 const backendEndpoints = [
-  { method: 'GET', path: '/api/routes', description: 'Route + redirect registry payload for frontend/admin tooling.' },
-  { method: 'GET', path: '/api/health', description: 'Deployment health check endpoint for uptime and smoke tests.' },
-  { method: 'GET', path: '/api/contact', description: 'Contact message intake endpoint.' },
-  { method: 'POST', path: '/api/newsletter', description: 'Newsletter subscription endpoint.' },
-  { method: 'POST', path: '/api/admin/login', description: 'Admin session authentication endpoint.' },
-  { method: 'POST', path: '/api/admin/logout', description: 'Admin session termination and cookie clearing.' },
-  { method: 'GET', path: '/api/admin/inbox', description: 'Inbox message export and triage data endpoint.' },
+  { method: 'GET',  path: '/api/routes',       description: 'Route + redirect registry payload for frontend/admin tooling.' },
+  { method: 'GET',  path: '/api/health',        description: 'Deployment health check endpoint for uptime and smoke tests.' },
+  { method: 'GET',  path: '/api/contact',       description: 'Contact message intake endpoint.' },
+  { method: 'POST', path: '/api/newsletter',    description: 'Newsletter subscription endpoint.' },
+  { method: 'POST', path: '/api/admin/login',   description: 'Admin session authentication endpoint.' },
+  { method: 'POST', path: '/api/admin/logout',  description: 'Admin session termination and cookie clearing.' },
+  { method: 'GET',  path: '/api/admin/inbox',   description: 'Inbox message export and triage data endpoint.' },
 ];
 
 const serviceModules = [
-  { label: 'Services', path: '/services', description: 'Cybersecurity and IT service overview' },
-  { label: 'Threat Monitoring', path: '/services/threat-monitoring', description: 'Continuous monitoring and alert intelligence delivery' },
-  { label: 'Incident Response', path: '/services/incident-response', description: 'Coordinated incident triage, containment, and recovery support' },
-  { label: 'Compliance Management', path: '/services/compliance-management', description: 'Compliance readiness lifecycle and evidence operations' },
-  { label: 'Federal Compliance', path: '/services/federal-compliance', description: 'Federal-grade controls alignment and reporting support' },
-  { label: 'Asset Recovery', path: '/services/asset-recovery', description: 'Asset tracking, recovery workflow, and post-incident assurance' },
+  { label: 'Services',              path: '/services',                      description: 'Cybersecurity and IT service overview' },
+  { label: 'Threat Monitoring',     path: '/services/threat-monitoring',    description: 'Continuous monitoring and alert intelligence delivery' },
+  { label: 'Incident Response',     path: '/services/incident-response',    description: 'Coordinated incident triage, containment, and recovery support' },
+  { label: 'Compliance Management', path: '/services/compliance-management',description: 'Compliance readiness lifecycle and evidence operations' },
+  { label: 'Federal Compliance',    path: '/services/federal-compliance',   description: 'Federal-grade controls alignment and reporting support' },
+  { label: 'Asset Recovery',        path: '/services/asset-recovery',       description: 'Asset tracking, recovery workflow, and post-incident assurance' },
 ];
 
 const adminRoutes = appRoutes.filter((r) => r.category === 'admin');
 
 const categoryBadge: Record<string, string> = {
-  core: 'border-cyan-500/40 text-cyan-300',
+  core:     'border-cyan-500/40 text-cyan-300',
   platform: 'border-sky-500/40 text-sky-300',
-  admin: 'border-violet-500/40 text-violet-300',
-  legal: 'border-amber-500/40 text-amber-300',
+  admin:    'border-violet-500/40 text-violet-300',
+  legal:    'border-amber-500/40 text-amber-300',
 };
 
 const highlightMetrics = [
-  { label: 'Active root routes', value: `${appRoutes.length}`, icon: LayoutTemplate },
-  { label: 'Service modules', value: `${serviceModules.length}`, icon: Cpu },
-  { label: 'Core API surfaces', value: `${backendEndpoints.length}`, icon: Server },
-  { label: 'Redirect rules', value: `${legacyRedirects.length}`, icon: Compass },
+  { label: 'Active root routes', value: `${appRoutes.length}`,       icon: LayoutTemplate },
+  { label: 'Service modules',    value: `${serviceModules.length}`,  icon: Cpu },
+  { label: 'Core API surfaces',  value: `${backendEndpoints.length}`,icon: Server },
+  { label: 'Redirect rules',     value: `${legacyRedirects.length}`, icon: Compass },
 ];
 
 export default function LivePreviewPage() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
+
       {/* ── Hero ── */}
       <section className="relative overflow-hidden border-b border-slate-800/70 pt-24">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_20%,rgba(14,116,144,0.26),transparent_36%),radial-gradient(circle_at_90%_0%,rgba(59,130,246,0.18),transparent_30%)]" />
@@ -87,32 +88,37 @@ export default function LivePreviewPage() {
         </div>
       </section>
 
-      {/* ── Route Coverage + Service Scale ── */}
+      {/* ── Route Coverage + Service Scale + Admin ── */}
       <section className="py-14">
         <div className="container mx-auto grid gap-8 px-4 lg:grid-cols-2">
+
           {/* Complete Route Coverage */}
           <article className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6">
             <h2 className="text-2xl font-semibold">Complete Route Coverage</h2>
             <p className="mt-2 text-sm text-slate-400">
               All {appRoutes.length} active routes — core, platform, admin, and legal — consolidated for delivery verification.
             </p>
-            <div className="mt-5 space-y-2 max-h-[560px] overflow-y-auto pr-1">
+            <div className="mt-5 space-y-2 max-h-[640px] overflow-y-auto pr-1">
               {appRoutes.map((route) => (
                 <div key={route.path} className="rounded-lg border border-slate-800 bg-slate-950/60 px-3 py-2">
                   <div className="flex items-center justify-between gap-2">
                     <Link href={route.path} className="font-mono text-sm font-medium text-cyan-300 hover:text-cyan-200">
                       {route.path}
                     </Link>
-                    <span className={`rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-[0.14em] ${categoryBadge[route.category]}`}>
+                    <span className={`flex-none rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-[0.14em] ${categoryBadge[route.category]}`}>
                       {route.category}
                     </span>
                   </div>
+                  <p className="mt-1 text-xs text-slate-400">
+                    {route.label} — {route.description}
+                  </p>
                 </div>
               ))}
             </div>
           </article>
 
           <div className="space-y-8">
+
             {/* Service Scale Coverage */}
             <article className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6">
               <h2 className="text-2xl font-semibold">Service Scale Coverage</h2>
@@ -141,16 +147,19 @@ export default function LivePreviewPage() {
               </p>
               <div className="mt-4 space-y-2">
                 {adminRoutes.map((route) => (
-                  <div key={route.path} className="flex items-center gap-3 rounded-lg border border-slate-800 bg-slate-950/60 px-3 py-2 text-sm">
-                    <Activity className="h-4 w-4 flex-none text-violet-400" />
-                    <Link href={route.path} className="font-mono text-violet-300 hover:text-violet-200">
-                      {route.path}
-                    </Link>
-                    <span className="ml-auto text-xs text-slate-500 hidden sm:block">{route.label}</span>
+                  <div key={route.path} className="rounded-lg border border-slate-800 bg-slate-950/60 px-3 py-2">
+                    <div className="flex items-center gap-2">
+                      <Activity className="h-4 w-4 flex-none text-violet-400" />
+                      <Link href={route.path} className="font-mono text-sm font-medium text-violet-300 hover:text-violet-200">
+                        {route.path}
+                      </Link>
+                    </div>
+                    <p className="mt-1 pl-6 text-xs text-slate-400">{route.description}</p>
                   </div>
                 ))}
               </div>
             </article>
+
           </div>
         </div>
       </section>
@@ -158,6 +167,7 @@ export default function LivePreviewPage() {
       {/* ── Backend Endpoints + Redirects ── */}
       <section className="border-t border-slate-800/50 py-14">
         <div className="container mx-auto grid gap-8 px-4 lg:grid-cols-2">
+
           {/* Backend Endpoint Readiness */}
           <article className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6">
             <h2 className="text-2xl font-semibold">Backend Endpoint Readiness</h2>
@@ -202,6 +212,7 @@ export default function LivePreviewPage() {
               ))}
             </div>
           </article>
+
         </div>
       </section>
     </main>
