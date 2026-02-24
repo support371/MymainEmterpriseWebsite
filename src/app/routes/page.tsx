@@ -16,8 +16,11 @@ const categoryStyles: Record<string, string> = {
 const backendEndpoints = [
   { method: 'GET', path: '/api/routes', description: 'Route + redirect registry payload for frontend/admin tooling.' },
   { method: 'GET', path: '/api/health', description: 'Deployment health check endpoint for uptime and smoke tests.' },
-  { method: 'POST', path: '/api/contact', description: 'Contact request intake endpoint.' },
+  { method: 'GET', path: '/api/contact', description: 'Contact message intake endpoint.' },
   { method: 'POST', path: '/api/newsletter', description: 'Newsletter subscription endpoint.' },
+  { method: 'POST', path: '/api/admin/login', description: 'Admin session authentication endpoint.' },
+  { method: 'POST', path: '/api/admin/logout', description: 'Admin session termination and cookie clearing.' },
+  { method: 'GET', path: '/api/admin/inbox', description: 'Inbox message export and triage data endpoint.' },
 ];
 
 export default function RoutesPage() {

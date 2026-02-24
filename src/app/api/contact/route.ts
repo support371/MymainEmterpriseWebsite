@@ -2,6 +2,16 @@ import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { createContactMessage } from '@/lib/contactMessages';
 
+export async function GET() {
+  return NextResponse.json({
+    endpoint: '/api/contact',
+    method: 'POST',
+    description: 'Contact form submission intake endpoint.',
+    requiredFields: ['name', 'email', 'company', 'service', 'message'],
+    optionalFields: ['phone', 'sourcePage'],
+  });
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
