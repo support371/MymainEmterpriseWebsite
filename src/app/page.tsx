@@ -1,271 +1,134 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import {
-  Shield,
-  Zap,
-  Lock,
-  Eye,
-  Building2,
-  Globe,
-  Phone,
-  Users,
-  Award,
-  BookOpen,
-  Network,
-  LayoutDashboard,
-  Mail,
-  CheckCircle2,
-  Server,
-  Database,
-  Activity,
-  FileCheck,
-} from 'lucide-react';
-import Hero from '@/components/ui/Hero';
-import StatGrid from '@/components/ui/StatGrid';
-import SectionHeader from '@/components/ui/SectionHeader';
+import { Activity, ArrowRight, CheckCircle2, ShieldCheck, TimerReset, Workflow } from 'lucide-react';
 
 export const metadata: Metadata = {
   description:
-    'Unified Operations Center for global threat detection, federal compliance, and high-value physical asset protection. The definitive partner for the Hybrid Enterprise.',
+    'GEM CYBER unified enterprise platform for cybersecurity operations, intelligence monitoring, and response orchestration.',
 };
 
+const trustStrip = [
+  '24/7 Monitoring',
+  'Incident Response SLA',
+  'Compliance Operations',
+  'Secure-by-design Architecture',
+  'SOC 2-ready controls',
+];
+
+const howItWorks = [
+  {
+    title: 'Assess',
+    description: 'Baseline your risk profile, assets, and compliance requirements with a focused security assessment.',
+    icon: ShieldCheck,
+  },
+  {
+    title: 'Deploy',
+    description: 'Implement controls, monitoring workflows, and analyst-ready playbooks aligned to your environment.',
+    icon: Workflow,
+  },
+  {
+    title: 'Monitor & Respond',
+    description: 'Operate 24/7 detection and response with measurable SLA-backed escalation paths.',
+    icon: Activity,
+  },
+];
+
 export default function HomePage() {
-  const stats = [
-    { label: 'Uptime SLA', value: '99.9%' },
-    { label: 'Response Time', value: '2min' },
-    { label: '$50M+ Assets Managed', value: '$50M+' },
-  ];
-
-  const backgroundExecution = [
-    {
-      title: 'Security Operations Backbone',
-      icon: Shield,
-      tasks: [
-        '24/7 threat monitoring and intelligence workflows organized and published',
-        'Incident response pathways and rapid-escalation flows documented',
-        'Hybrid cyber + physical protection model aligned in one operating narrative',
-      ],
-    },
-    {
-      title: 'Compliance & Governance Layer',
-      icon: FileCheck,
-      tasks: [
-        'Federal compliance coverage (NIST, CMMC, ISO 27001) positioned for enterprise buyers',
-        'Privacy, terms, and cookie policy surfaces available for legal readiness',
-        'Security trust messaging standardized across user journeys',
-      ],
-    },
-    {
-      title: 'Platform + Admin Operations',
-      icon: Server,
-      tasks: [
-        'Protected admin center established (inbox, teams, orgs, grants, diagnostics)',
-        'Session-gated access and middleware protections integrated for admin routes',
-        'Operational review tooling centralized for ongoing service management',
-      ],
-    },
-    {
-      title: 'Data & Communication Workflows',
-      icon: Database,
-      tasks: [
-        'Contact intake endpoint and storage flow enabled for inbound demand capture',
-        'Newsletter/API route framework in place for outreach and lifecycle engagement',
-        'Emergency hotline and escalation CTA surfaced for urgent response cases',
-      ],
-    },
-  ];
-
   return (
-    <div>
-      <Hero
-        title="GEM Enterprise Cybersecurity & Alliance Trust Realty"
-        subtitle="Everything is now consolidated on this single page so stakeholders can clearly review what has been accomplished in the background."
-        badge={{ icon: Shield, text: '24/7 Enterprise Monitoring Active' }}
-        cta={{ text: 'Schedule Assessment', href: '/contact-us' }}
-        secondaryCta={{ text: 'View Pricing', href: '/pricing' }}
-      />
-
-      <div className="container mx-auto px-4 -mt-16 relative z-20 mb-24">
-        <StatGrid stats={stats} />
-      </div>
-
-      <section className="py-24 bg-slate-900/50">
-        <div className="container mx-auto px-4">
-          <SectionHeader
-            title="Single-Page Background Execution Summary"
-            subtitle="A consolidated view of the behind-the-scenes work completed across operations, security, compliance, and delivery."
-          />
-
-          <div className="grid lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
-            {backgroundExecution.map((area, idx) => {
-              const Icon = area.icon;
-              return (
-                <div
-                  key={idx}
-                  className="bg-slate-950 border border-slate-800 rounded-2xl p-8 hover:border-cyan-500/50 transition-colors"
-                >
-                  <div className="flex items-center gap-4 mb-6">
-                    <Icon className="w-10 h-10 text-cyan-500" />
-                    <h3 className="text-2xl font-bold text-white">{area.title}</h3>
-                  </div>
-
-                  <ul className="space-y-4">
-                    {area.tasks.map((task, taskIdx) => (
-                      <li key={taskIdx} className="flex items-start gap-3 text-slate-300">
-                        <CheckCircle2 className="w-5 h-5 text-emerald-400 mt-0.5 shrink-0" />
-                        <span>{task}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Solutions Section */}
-      <section className="py-24">
-        <div className="container mx-auto px-4">
-          <SectionHeader
-            title="Core Service Outcomes"
-            subtitle="Enterprise-grade protection for the modern Hybrid Enterprise"
-          />
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-            {[
-              {
-                icon: Shield,
-                title: '24/7 Threat Monitoring',
-                desc: 'Continuous surveillance with AI-powered detection',
-              },
-              {
-                icon: Zap,
-                title: 'Incident Response',
-                desc: '2-minute average response time guaranteed',
-              },
-              {
-                icon: Lock,
-                title: 'Federal Compliance',
-                desc: 'NIST, CMMC, and ISO 27001 certification support',
-              },
-              {
-                icon: Building2,
-                title: 'Asset Recovery',
-                desc: 'High-value physical asset recovery and protection',
-              },
-              {
-                icon: Eye,
-                title: 'Intelligence Hub',
-                desc: 'Canonical source for global threat intelligence',
-              },
-              {
-                icon: Globe,
-                title: 'Global Coverage',
-                desc: 'Protection across all time zones and jurisdictions',
-              },
-            ].map((service, idx) => {
-              const Icon = service.icon;
-              return (
-                <div
-                  key={idx}
-                  className="bg-slate-900 border border-slate-800 rounded-xl p-8 hover:border-cyan-500/50 transition-colors"
-                >
-                  <Icon className="w-12 h-12 text-cyan-500 mb-4" />
-                  <h3 className="text-xl font-bold mb-3 text-white">{service.title}</h3>
-                  <p className="text-slate-400">{service.desc}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Operational Capabilities */}
-      <section className="py-24 bg-slate-900/50">
-        <div className="container mx-auto px-4">
-          <SectionHeader
-            title="Operational Capabilities Now in Place"
-            subtitle="From visibility to execution, the core platform functions are aligned and ready."
-          />
-
-          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-6">
-            {[
-              'Public trust stack: services, case studies, teams, resources, intelligence, and pricing pages aligned',
-              'Administrative backbone: inbox operations, diagnostics, and organizational management routes live',
-              'Direct engagement channels: contact endpoint, forms, and emergency hotline conversion paths active',
-              'Architecture continuity: API, middleware, and protected admin experience linked end-to-end',
-            ].map((item, idx) => (
-              <div key={idx} className="bg-slate-950 border border-slate-800 rounded-xl p-6 flex gap-4">
-                <Activity className="w-6 h-6 text-cyan-500 shrink-0 mt-1" />
-                <p className="text-slate-300">{item}</p>
+    <div className="bg-slate-950 text-white">
+      <section id="home" className="relative overflow-hidden border-b border-slate-800/70 pt-28 sm:pt-32">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_15%,rgba(6,182,212,0.26),transparent_34%),radial-gradient(circle_at_90%_10%,rgba(59,130,246,0.2),transparent_32%)]" />
+        <div className="container relative z-10 mx-auto px-4 pb-16">
+          <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+            <div className="max-w-2xl">
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-cyan-400/40 bg-cyan-500/10 px-4 py-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-cyan-300 monitoring-dot" />
+                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-cyan-300">Unified Security Operations</span>
               </div>
+              <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+                Stop Breaches Before
+                <span className="block text-cyan-300">They Happen</span>
+              </h1>
+              <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg">
+                GEM CYBER combines managed detection, response playbooks, and compliance operations into one enterprise-ready platform.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link href="/contact-us" className="rounded-lg bg-gradient-to-r from-cyan-400 to-sky-500 px-6 py-3 text-sm font-semibold text-slate-950">
+                  Schedule Security Assessment
+                </Link>
+                <Link href="/services" className="rounded-lg border border-cyan-500/60 px-6 py-3 text-sm font-semibold text-cyan-100 hover:bg-cyan-500/10">
+                  Explore Services
+                </Link>
+              </div>
+            </div>
+
+            <article className="rounded-2xl border border-cyan-900/40 bg-slate-900/70 p-6 shadow-[0_20px_80px_rgba(2,8,23,0.45)] sm:p-8">
+              <p className="text-xs uppercase tracking-[0.14em] text-cyan-300">Platform Snapshot</p>
+              <h2 className="mt-3 text-2xl font-semibold">Command + Response Card</h2>
+              <p className="mt-3 text-sm text-slate-300">A single view of current risk, response velocity, and deployment health.</p>
+              <div className="mt-6 space-y-3">
+                {[
+                  'Critical alerts triaged in under 2 minutes',
+                  'Cross-team escalation with audit logs',
+                  'Control status aligned to SOC 2-ready controls',
+                ].map((item) => (
+                  <div key={item} className="flex gap-2 rounded-lg border border-slate-800 bg-slate-950/70 px-3 py-2 text-sm text-slate-200">
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 flex-none text-cyan-300" />
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-slate-800/70 bg-slate-900/45 py-6">
+        <div className="container mx-auto grid gap-3 px-4 sm:grid-cols-2 lg:grid-cols-5">
+          {trustStrip.map((item) => (
+            <div key={item} className="rounded-lg border border-slate-800 bg-slate-950/60 px-4 py-3 text-sm font-medium text-slate-200">
+              {item}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl">
+            <h2 className="text-3xl font-bold sm:text-4xl">How it works</h2>
+            <p className="mt-2 text-slate-400">Outcome-driven onboarding from risk discovery to active response operations.</p>
+          </div>
+          <div className="mt-8 grid gap-5 md:grid-cols-3">
+            {howItWorks.map((step, index) => (
+              <article key={step.title} className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6">
+                <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-300">
+                  <step.icon className="h-5 w-5" />
+                </div>
+                <p className="mt-4 text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Step {index + 1}</p>
+                <h3 className="mt-1 text-xl font-semibold">{step.title}</h3>
+                <p className="mt-3 text-sm text-slate-300">{step.description}</p>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Explore Section */}
-      <section className="py-24">
+      <section className="border-t border-slate-800/70 bg-slate-900/40 py-16">
         <div className="container mx-auto px-4">
-          <SectionHeader
-            title="Explore Detailed Sections"
-            subtitle="Everything is summarized above, and these pages provide deeper detail where needed."
-          />
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-            {[
-              { title: 'About Us', icon: Shield, path: '/about-us', desc: 'Our story and mission' },
-              { title: 'Our Team', icon: Users, path: '/teams', desc: 'Security experts' },
-              { title: 'Case Studies', icon: Award, path: '/case-studies', desc: 'Real success stories' },
-              { title: 'Intelligence', icon: Eye, path: '/news', desc: 'Global threat feed' },
-              { title: 'Resources', icon: BookOpen, path: '/resources', desc: 'Guides & reports' },
-              { title: 'QFS Network', icon: Network, path: '/qfs', desc: 'Quantum security' },
-              {
-                title: 'Sentinel Trust',
-                icon: Lock,
-                path: '/cyber-sentinel-trust',
-                desc: 'Zero trust',
-              },
-              { title: 'Portfolio', icon: LayoutDashboard, path: '/portfolio', desc: 'Asset dashboard' },
-              { title: 'Pricing', icon: Zap, path: '/pricing', desc: 'Plans & pricing' },
-              { title: 'Contact', icon: Mail, path: '/contact-us', desc: 'Get in touch' },
-            ].map((item, idx) => {
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={idx}
-                  href={item.path}
-                  className="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-cyan-500/50 transition-all text-left group block"
-                >
-                  <Icon className="w-8 h-8 text-cyan-500 mb-4 group-hover:scale-110 transition-transform" />
-                  <h3 className="text-xl font-bold mb-2 group-hover:text-cyan-500 transition-colors text-white">
-                    {item.title}
-                  </h3>
-                  <p className="text-slate-400 text-sm">{item.desc}</p>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Emergency Section */}
-      <section className="py-24 bg-slate-900/50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto bg-gradient-to-r from-cyan-500/10 to-blue-600/10 border-2 border-cyan-500/30 p-12 rounded-2xl text-center shadow-2xl">
-            <Phone className="w-16 h-16 text-cyan-500 mx-auto mb-6" />
-            <h2 className="text-3xl font-bold mb-4 text-white">24/7 Emergency Hotline</h2>
-            <p className="text-slate-400 text-lg mb-8">
-              Active security breach? Our rapid-response team is standing by.
-            </p>
-            <a
-              href="tel:+18603054376"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-cyan-500 hover:bg-cyan-600 rounded-lg font-semibold text-lg transition-colors text-white"
-            >
-              <Phone className="w-5 h-5" />
-              (860) 305-4376
-            </a>
+          <div className="rounded-2xl border border-cyan-900/40 bg-slate-900/70 p-8 sm:p-10">
+            <h2 className="text-3xl font-bold sm:text-4xl">Ready to secure your platform posture?</h2>
+            <p className="mt-3 max-w-2xl text-slate-300">Get a tailored security assessment and implementation roadmap from GEM CYBER specialists.</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="/contact-us" className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-cyan-400 to-sky-500 px-6 py-3 text-sm font-semibold text-slate-950">
+                Schedule Security Assessment
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link href="/about" className="inline-flex items-center gap-2 rounded-lg border border-slate-600 px-6 py-3 text-sm font-semibold text-slate-100 hover:bg-slate-800">
+                Request a Call
+                <TimerReset className="h-4 w-4" />
+              </Link>
+            </div>
           </div>
         </div>
       </section>

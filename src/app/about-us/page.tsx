@@ -1,12 +1,18 @@
+import type { Metadata } from 'next';
 import { Shield, Target, Globe, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
+export const metadata: Metadata = {
+  title: 'About',
+  description: 'About GEM CYBER mission, vision, and operating journey.',
+};
+
 export default function AboutPage() {
   const timeline = [
-    { year: '2019', title: 'Foundation', desc: 'GEM Enterprise founded with mission to democratize enterprise security' },
+    { year: '2019', title: 'Foundation', desc: 'GEM CYBER founded with mission to democratize enterprise security' },
     { year: '2020', title: 'SOC Launch', desc: '24/7 Security Operations Center with 99.9% uptime' },
     { year: '2022', title: 'Alliance Trust', desc: 'Merged with Alliance Trust Realty for asset protection' },
-    { year: '2024', title: 'SOC 2 Certified', desc: 'Achieved SOC 2 Type II compliance' },
+    { year: '2024', title: 'SOC 2 Program', desc: 'Implemented SOC 2-ready controls and evidence workflows' },
     { year: '2025', title: 'Global Expansion', desc: 'Protecting 500+ enterprises with $50M+ assets' },
     { year: '2026', title: 'Quantum Security', desc: 'Launched QFS Network and Sentinel Trust' }
   ];
@@ -19,7 +25,7 @@ export default function AboutPage() {
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-6">
               <Shield className="w-4 h-4 text-cyan-500" />
-              <span className="text-sm font-medium text-cyan-500">About GEM Enterprise</span>
+              <span className="text-sm font-medium text-cyan-500">About GEM CYBER</span>
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white">
               Protecting Digital Assets &

@@ -1,107 +1,108 @@
 "use client";
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Shield, Menu, X, Home, Users, Award, BookOpen, Lock, LayoutDashboard, Mail, Network } from 'lucide-react';
+import { Menu, Shield, X } from 'lucide-react';
 
-const navigation = [
-  { name: 'Home', href: '/', icon: Home },
-  { name: 'About', href: '/about-us', icon: Shield },
-  { name: 'Services', href: '/services', icon: LayoutDashboard },
-  { name: 'Intelligence', href: '/news', icon: BookOpen },
-  { name: 'Team', href: '/teams', icon: Users },
-];
-
-const mobileNavigation = [
-  ...navigation,
-  { name: 'Cases', href: '/case-studies', icon: Award },
-  { name: 'Resources', href: '/resources', icon: BookOpen },
-  { name: 'QFS', href: '/qfs', icon: Network },
-  { name: 'Sentinel', href: '/cyber-sentinel-trust', icon: Lock },
-  { name: 'Portfolio', href: '/portfolio', icon: LayoutDashboard },
-  { name: 'Contact', href: '/contact-us', icon: Mail },
+const navItems = [
+  { name: 'Services', href: '/services' },
+  { name: 'Intelligence', href: '/intelligence' },
+  { name: 'Membership', href: '/membership' },
+  { name: 'Leadership', href: '/leadership' },
+  { name: 'About', href: '/about' },
+  { name: 'Admin', href: '/admin' },
 ];
 
 export default function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  const isActive = (path: string) => pathname === path;
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 16);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+
+  const transparent = pathname === '/' && !scrolled;
 
   return (
-    <header className="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-sm border-b border-slate-800">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 ${
+        transparent
+          ? 'border-transparent bg-transparent'
+          : 'border-slate-700/60 bg-slate-950/85 backdrop-blur-md'
+      }`}
+    >
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
-          <Link href="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
-              <Shield className="w-6 h-6 text-white" />
+        <div className="flex h-20 items-center justify-between">
+          <Link href="/" className="inline-flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-400 to-sky-500 shadow-[0_0_18px_rgba(0,212,255,0.35)]">
+              <Shield className="h-5 w-5 text-white" />
             </div>
-            <div className="text-left">
-              <div className="font-bold text-lg text-white">GEM CYBER</div>
-              <div className="text-xs text-slate-400">Enterprise Security</div>
-            </div>
+            <span className="text-sm font-semibold tracking-wide text-white sm:text-base">GEM CYBER</span>
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-2">
-            {navigation.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                    isActive(item.href)
-                      ? 'bg-cyan-500 text-white'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800'
-                  }`}
-                >
-                  <Icon className="w-4 h-4" />
-                  {item.name}
-                </Link>
-              );
-            })}
+          <nav className="hidden items-center gap-6 lg:flex">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={`text-sm font-medium transition hover:text-cyan-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300 ${
+                  pathname === item.href ? 'text-cyan-300' : 'text-slate-200'
+                }`}
+              >
+                {item.name}
+              </Link>
+            ))}
             <Link
               href="/contact-us"
-              className="px-6 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg font-semibold transition-colors ml-2"
+              className="rounded-lg bg-gradient-to-r from-cyan-400 to-sky-500 px-4 py-2 text-sm font-semibold text-slate-950 shadow-[0_0_20px_rgba(0,212,255,0.35)] transition hover:from-cyan-300 hover:to-sky-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-200"
             >
-              Contact
+              Security Audit
             </Link>
           </nav>
 
           <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 hover:bg-slate-800 rounded-lg transition-colors text-white"
+            type="button"
+            onClick={() => setMobileOpen((prev) => !prev)}
+            className="rounded-lg p-2 text-white transition hover:bg-slate-800/70 lg:hidden"
+            aria-expanded={mobileOpen}
+            aria-label="Toggle navigation menu"
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
-
-        {mobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-slate-800">
-            <div className="flex flex-col gap-2">
-              {mobileNavigation.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                      isActive(item.href)
-                        ? 'bg-cyan-500 text-white'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800'
-                    }`}
-                  >
-                    <Icon className="w-4 h-4" />
-                    {item.name}
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        )}
       </div>
+
+      {mobileOpen && (
+        <div className="border-t border-slate-700/60 bg-slate-950/95 px-4 pb-5 pt-3 backdrop-blur-lg lg:hidden">
+          <nav className="container mx-auto flex flex-col gap-2">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                onClick={() => setMobileOpen(false)}
+                className={`rounded-lg px-3 py-2 text-sm font-medium transition hover:bg-slate-800 ${
+                  pathname === item.href ? 'bg-slate-800 text-cyan-300' : 'text-slate-200'
+                }`}
+              >
+                {item.name}
+              </Link>
+            ))}
+            <Link
+              href="/contact-us"
+              onClick={() => setMobileOpen(false)}
+              className="mt-2 inline-flex justify-center rounded-lg bg-gradient-to-r from-cyan-400 to-sky-500 px-4 py-3 text-sm font-semibold text-slate-950"
+            >
+              Security Audit
+            </Link>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
