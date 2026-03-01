@@ -1,9 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import PrimaryDomainNav from "@/components/navigation/PrimaryDomainNav";
-import Footer from "@/components/layout/Footer";
-import LiveSupport from "@/components/layout/LiveSupport";
-import ExtensionErrorGuard from "@/components/layout/ExtensionErrorGuard";
 
 export const metadata: Metadata = {
   title: {
@@ -30,12 +26,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className="antialiased bg-slate-950 text-white min-h-screen">
-        <ExtensionErrorGuard />
-        <PrimaryDomainNav />
-        <main className="pt-20 md:pt-28 pb-24 md:pb-6">{children}</main>
-        <Footer />
-        <LiveSupport />
+      <body className="font-sans antialiased bg-slate-950 text-white">
+        {children}
       </body>
     </html>
   );
