@@ -34,16 +34,16 @@ export default function Navbar() {
       className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 ${
         transparent
           ? 'border-transparent bg-transparent'
-          : 'border-slate-700/60 bg-slate-950/85 backdrop-blur-md'
+          : 'border-slate-600/60 bg-slate-950/90 backdrop-blur-md'
       }`}
     >
       <div className="container mx-auto px-4">
         <div className="flex h-20 items-center justify-between">
           <Link href="/" className="inline-flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-400 to-sky-500 shadow-[0_0_18px_rgba(0,212,255,0.35)]">
+            <div className="flex h-10 w-10 items-center justify-center rounded-md border border-amber-300/50 bg-gradient-to-br from-amber-400 to-orange-500 shadow-[0_0_18px_rgba(245,158,11,0.3)]">
               <Shield className="h-5 w-5 text-white" />
             </div>
-            <span className="text-sm font-semibold tracking-wide text-white sm:text-base">GEM CYBER</span>
+            <span className="text-sm font-semibold tracking-[0.12em] text-slate-100 sm:text-base">GEM CYBER</span>
           </Link>
 
           <nav className="hidden items-center gap-6 lg:flex">
@@ -51,8 +51,8 @@ export default function Navbar() {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`text-sm font-medium transition hover:text-cyan-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300 ${
-                  pathname === item.href ? 'text-cyan-300' : 'text-slate-200'
+                className={`text-sm font-medium transition hover:text-amber-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300 ${
+                  pathname === item.href ? 'text-amber-300' : 'text-slate-200'
                 }`}
               >
                 {item.name}
@@ -60,7 +60,7 @@ export default function Navbar() {
             ))}
             <Link
               href="/contact-us"
-              className="rounded-lg bg-gradient-to-r from-cyan-400 to-sky-500 px-4 py-2 text-sm font-semibold text-slate-950 shadow-[0_0_20px_rgba(0,212,255,0.35)] transition hover:from-cyan-300 hover:to-sky-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-200"
+              className="rounded-md border border-amber-300/60 bg-gradient-to-r from-amber-400 to-orange-500 px-4 py-2 text-sm font-semibold text-slate-950 shadow-[0_0_18px_rgba(245,158,11,0.28)] transition hover:from-amber-300 hover:to-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-200"
             >
               Security Audit
             </Link>
@@ -87,7 +87,7 @@ export default function Navbar() {
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
                 className={`rounded-lg px-3 py-2 text-sm font-medium transition hover:bg-slate-800 ${
-                  pathname === item.href ? 'bg-slate-800 text-cyan-300' : 'text-slate-200'
+                  pathname === item.href ? 'bg-slate-800 text-amber-300' : 'text-slate-200'
                 }`}
               >
                 {item.name}
@@ -96,7 +96,7 @@ export default function Navbar() {
             <Link
               href="/contact-us"
               onClick={() => setMobileOpen(false)}
-              className="mt-2 inline-flex justify-center rounded-lg bg-gradient-to-r from-cyan-400 to-sky-500 px-4 py-3 text-sm font-semibold text-slate-950"
+              className="mt-2 inline-flex justify-center rounded-md border border-amber-300/60 bg-gradient-to-r from-amber-400 to-orange-500 px-4 py-3 text-sm font-semibold text-slate-950"
             >
               Security Audit
             </Link>
