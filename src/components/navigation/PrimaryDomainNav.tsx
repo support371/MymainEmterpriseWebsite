@@ -21,6 +21,7 @@ const primaryTabs: NavItem[] = [
 
 const secondaryLinks = [
   { label: "Services", href: "/services" },
+  { label: "Clients", href: "/clients" },
   { label: "Admin", href: "/admin" },
   { label: "Campaigns", href: "/campaigns" },
 ];

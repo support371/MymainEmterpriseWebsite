@@ -1,7 +1,7 @@
 export type AppRoute = {
   path: string;
   label: string;
-  category: 'core' | 'platform' | 'admin' | 'legal';
+  category: 'core' | 'platform' | 'admin' | 'legal' | 'clients';
   description: string;
 };
 
@@ -56,6 +56,10 @@ export const appRoutes: AppRoute[] = [
   { path: '/qfs', label: 'QFS', category: 'platform', description: 'Quantum-secure financial infrastructure monitoring and compliance.' },
   { path: '/superadmin', label: 'Super Admin', category: 'platform', description: 'Super admin entry point with elevated access controls.' },
 
+  // ── CLIENTS ───────────────────────────────────────────────────────────────
+  { path: '/clients', label: 'Clients', category: 'clients', description: 'Client lifecycle and investment security services surface.' },
+  { path: '/clients/portal', label: 'Client Portal', category: 'clients', description: 'Client portal for investment, security, and compliance reporting.' },
+
   // ── ADMIN ─────────────────────────────────────────────────────────────────
   { path: '/admin', label: 'Admin Center', category: 'admin', description: 'Operations portal for internal admins.' },
   { path: '/admin/login', label: 'Admin Login', category: 'admin', description: 'Role-based admin authentication portal.' },
@@ -74,6 +78,7 @@ export const appRoutes: AppRoute[] = [
 
 export const legacyRedirects: LegacyRedirect[] = [
   { source: '/contact', destination: '/contact-us', permanent: true, reason: 'Legacy renamed URL redirected to contact-us.' },
+  { source: '/client-portal', destination: '/clients/portal', permanent: true, reason: 'Legacy client portal URL redirected to namespaced client route.' },
   { source: '/privacy', destination: '/legal/privacy-policy', permanent: true, reason: 'Legacy privacy URL redirected to legal namespace.' },
   { source: '/terms', destination: '/legal/terms-of-service', permanent: true, reason: 'Legacy terms URL redirected to legal namespace.' },
   { source: '/architecture', destination: '/specs', permanent: true, reason: 'Architecture page now managed by specs route.' },
