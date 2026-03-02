@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Boxes, Command, Home, Radar, Users } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 type NavItem = {
   label: string;
   href: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: LucideIcon;
 };
 
 const primaryTabs: NavItem[] = [

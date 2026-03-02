@@ -14,7 +14,17 @@ export type LegacyRedirect = {
 
 export const appRoutes: AppRoute[] = [
   // ── CORE ──────────────────────────────────────────────────────────────────
-  { path: '/', label: 'Home', category: 'core', description: 'Unified enterprise one-page marketing surface.' },
+  { path: '/', label: 'Root', category: 'core', description: 'Root entrypoint redirecting to /home domain route.' },
+  { path: '/home', label: 'Home Domain', category: 'core', description: 'Primary home domain surface in hub-and-spoke navigation.' },
+  { path: '/intel', label: 'Intel Domain', category: 'core', description: 'Primary intelligence domain surface.' },
+  { path: '/assets', label: 'Assets Domain', category: 'core', description: 'Primary asset protection domain surface.' },
+  { path: '/community', label: 'Community Domain', category: 'core', description: 'Primary community and engagement domain surface.' },
+  { path: '/hub', label: 'Hub Domain', category: 'core', description: 'Primary orchestration hub domain surface.' },
+  { path: '/hub/soc', label: 'Hub SOC', category: 'core', description: 'SOC operations module under the Hub domain.' },
+  { path: '/hub/research', label: 'Hub Research', category: 'core', description: 'Research module under the Hub domain.' },
+  { path: '/hub/compliance', label: 'Hub Compliance', category: 'core', description: 'Compliance module under the Hub domain.' },
+  { path: '/hub/portfolio', label: 'Hub Portfolio', category: 'core', description: 'Portfolio module under the Hub domain.' },
+  { path: '/hub/real-estate', label: 'Hub Real Estate', category: 'core', description: 'Real-estate trust module under the Hub domain.' },
   { path: '/about', label: 'About', category: 'core', description: 'About GEM CYBER mission, history, and operating principles.' },
   { path: '/about-us', label: 'About Us', category: 'core', description: 'Extended about page with team, vision, and timeline.' },
   { path: '/contact-us', label: 'Contact', category: 'core', description: 'Lead capture and support contact entry point.' },
@@ -63,7 +73,6 @@ export const appRoutes: AppRoute[] = [
 ];
 
 export const legacyRedirects: LegacyRedirect[] = [
-  { source: '/home', destination: '/', permanent: true, reason: 'Legacy alias consolidated into root homepage.' },
   { source: '/contact', destination: '/contact-us', permanent: true, reason: 'Legacy renamed URL redirected to contact-us.' },
   { source: '/privacy', destination: '/legal/privacy-policy', permanent: true, reason: 'Legacy privacy URL redirected to legal namespace.' },
   { source: '/terms', destination: '/legal/terms-of-service', permanent: true, reason: 'Legacy terms URL redirected to legal namespace.' },
