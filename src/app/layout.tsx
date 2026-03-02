@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import Navbar from "@/components/layout/Navbar";
+import PrimaryDomainNav from "@/components/navigation/PrimaryDomainNav";
 import Footer from "@/components/layout/Footer";
 import LiveSupport from "@/components/layout/LiveSupport";
 import ExtensionErrorGuard from "@/components/layout/ExtensionErrorGuard";
@@ -32,8 +32,8 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className="antialiased bg-slate-950 text-white min-h-screen">
         <ExtensionErrorGuard />
-        <Navbar />
-        <main>{children}</main>
+        <PrimaryDomainNav />
+        <main className="pt-20 md:pt-28 pb-24 md:pb-6">{children}</main>
         <Footer />
         <LiveSupport />
       </body>
