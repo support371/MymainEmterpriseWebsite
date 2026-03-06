@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Shield, Wallet, Users, LayoutGrid } from 'lucide-react';
+import { Home, Shield, Wallet, Users, LayoutGrid, Briefcase } from 'lucide-react';
 
 const tabs = [
   { name: 'Home', href: '/home', icon: Home },
+  { name: 'Services', href: '/services', icon: Briefcase },
   { name: 'Intel', href: '/intel', icon: Shield },
   { name: 'Assets', href: '/assets', icon: Wallet },
   { name: 'Community', href: '/community', icon: Users },
@@ -28,14 +29,14 @@ export default function BottomTabBar() {
             <Link
               key={tab.name}
               href={tab.href}
-              className={`flex flex-col items-center justify-center gap-1 flex-1 h-full transition-colors ${
+              className={`flex h-full flex-1 flex-col items-center justify-center gap-1 px-1 transition-colors ${
                 active
                   ? 'text-cyan-400'
                   : 'text-slate-500 hover:text-slate-300'
               }`}
             >
               <Icon className="w-5 h-5" />
-              <span className="text-[10px] font-medium">{tab.name}</span>
+              <span className="text-[9px] font-medium leading-none">{tab.name}</span>
             </Link>
           );
         })}

@@ -16,24 +16,26 @@ describe('BottomTabBar', () => {
     setMockPathname('/home');
   });
 
-  it('renders all 5 tab labels', () => {
+  it('renders all 6 tab labels', () => {
     render(<BottomTabBar />);
     expect(screen.getByText('Home')).toBeInTheDocument();
+    expect(screen.getByText('Services')).toBeInTheDocument();
     expect(screen.getByText('Intel')).toBeInTheDocument();
     expect(screen.getByText('Assets')).toBeInTheDocument();
     expect(screen.getByText('Community')).toBeInTheDocument();
     expect(screen.getByText('Hub')).toBeInTheDocument();
   });
 
-  it('renders 5 tab links with correct hrefs', () => {
+  it('renders 6 tab links with correct hrefs', () => {
     render(<BottomTabBar />);
     const links = screen.getAllByRole('link');
-    expect(links).toHaveLength(5);
+    expect(links).toHaveLength(6);
     expect(links[0]).toHaveAttribute('href', '/home');
-    expect(links[1]).toHaveAttribute('href', '/intel');
-    expect(links[2]).toHaveAttribute('href', '/assets');
-    expect(links[3]).toHaveAttribute('href', '/community');
-    expect(links[4]).toHaveAttribute('href', '/hub');
+    expect(links[1]).toHaveAttribute('href', '/services');
+    expect(links[2]).toHaveAttribute('href', '/intel');
+    expect(links[3]).toHaveAttribute('href', '/assets');
+    expect(links[4]).toHaveAttribute('href', '/community');
+    expect(links[5]).toHaveAttribute('href', '/hub');
   });
 
   it('highlights active tab based on pathname', () => {
