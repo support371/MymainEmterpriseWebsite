@@ -1,1 +1,5 @@
-export { default, metadata } from '../about-us/page';
+import { redirect } from 'next/navigation';
+
+export default function AboutRedirect() {
+  redirect('/home/about');
+}

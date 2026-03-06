@@ -19,7 +19,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white pt-20">
+    <div className="min-h-screen bg-slate-950 text-white">
       <div className="border-b border-slate-800 bg-slate-900/80 backdrop-blur">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-3">
           <div>

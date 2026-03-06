@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 import { MessageSquare, X, Mail, Shield, Building2, CreditCard, Activity } from 'lucide-react';
 
 const departments = [
@@ -32,79 +31,68 @@ const departments = [
 ];
 
 export default function LiveSupport() {
-  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const [showLauncher, setShowLauncher] = useState(pathname !== '/');
-
-  useEffect(() => {
-    const updateLauncher = () => {
-      if (pathname !== '/') {
-        setShowLauncher(true);
-        return;
-      }
-      setShowLauncher(window.scrollY > 520);
-    };
-
-    updateLauncher();
-    window.addEventListener('scroll', updateLauncher, { passive: true });
-    return () => window.removeEventListener('scroll', updateLauncher);
-  }, [pathname]);
 
   return (
     <>
-      {showLauncher ? (
+      {/* Trigger Button — raised on mobile to clear BottomTabBar */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed right-4 z-30 flex items-center gap-2 rounded-full bg-cyan-500 p-3 text-white shadow-2xl transition-all hover:scale-105 hover:bg-cyan-400 sm:right-6 sm:p-4"
-        style={{ bottom: 'calc(1rem + env(safe-area-inset-bottom))' }}
-        aria-label="Open live support panel"
+        className="fixed bottom-20 right-6 lg:bottom-6 z-40 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-2xl transition-all transform hover:scale-110 flex items-center gap-2 group"
       >
-        <MessageSquare className="h-5 w-5 sm:h-6 sm:w-6" />
-        <span className="hidden text-sm font-bold md:inline">Live Support</span>
+        <MessageSquare className="w-6 h-6" />
+        <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 font-bold">
+          Live Support
+        </span>
       </button>
-      ) : null}
 
+      {/* Sidebar Overlay */}
       {isOpen && (
         <div className="fixed inset-0 z-50 overflow-hidden">
           <div className="absolute inset-0 bg-slate-950/40 backdrop-blur-sm" onClick={() => setIsOpen(false)} />
 
-          <div className="absolute bottom-0 right-0 top-0 flex w-full max-w-sm flex-col border-l border-slate-800 bg-slate-900 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-800 bg-slate-900/50 p-6">
+          <div className="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-slate-900 border-l border-slate-800 shadow-2xl flex flex-col">
+            {/* Header */}
+            <div className="p-6 border-b border-slate-800 flex items-center justify-between bg-slate-900/50">
               <div>
                 <h2 className="text-xl font-bold text-white">Department Hub</h2>
-                <p className="mt-1 text-xs text-slate-400">Direct enterprise support channels</p>
+                <p className="text-xs text-slate-400 mt-1">Direct enterprise support channels</p>
               </div>
-              <button onClick={() => setIsOpen(false)} className="rounded-lg p-2 text-slate-400 transition-colors hover:bg-slate-800">
-                <X className="h-6 w-6" />
+              <button onClick={() => setIsOpen(false)} className="p-2 hover:bg-slate-800 rounded-lg text-slate-400 transition-colors">
+                <X className="w-6 h-6" />
               </button>
             </div>
 
-            <div className="flex-1 space-y-4 overflow-y-auto p-6">
+            {/* Department List */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-4">
               {departments.map((dept, idx) => (
-                <div key={idx} className="group rounded-xl border border-slate-800 bg-slate-950 p-4 transition-all hover:border-cyan-500/50">
-                  <div className="mb-3 flex items-start justify-between">
-                    <div className="rounded-lg bg-cyan-500/10 p-2 text-cyan-400">
-                      <dept.icon className="h-5 w-5" />
+                <div key={idx} className="bg-slate-950 border border-slate-800 rounded-xl p-4 hover:border-blue-500/50 transition-all group">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500">
+                      <dept.icon className="w-5 h-5" />
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <div className="h-2 w-2 animate-pulse rounded-full bg-emerald-500" />
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-500">{dept.status}</span>
+                      <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">{dept.status}</span>
                     </div>
                   </div>
-                  <h3 className="mb-1 font-bold text-white">{dept.name}</h3>
+                  <h3 className="font-bold text-white mb-1">{dept.name}</h3>
                   <a
                     href={`mailto:${dept.email}`}
-                    className="flex items-center gap-2 break-all text-sm text-slate-400 transition-colors hover:text-cyan-300"
+                    className="text-sm text-slate-400 hover:text-blue-400 flex items-center gap-2 transition-colors break-all"
                   >
-                    <Mail className="h-3 w-3 flex-shrink-0" />
+                    <Mail className="w-3 h-3 flex-shrink-0" />
                     {dept.email}
                   </a>
                 </div>
               ))}
             </div>
 
-            <div className="border-t border-slate-800 bg-slate-950/50 p-6" style={{ paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom))' }}>
-              <div className="text-center text-xs text-slate-500">Response SLA: Under 2 Minutes for Enterprise Tier</div>
+            {/* Footer */}
+            <div className="p-6 border-t border-slate-800 bg-slate-950/50">
+              <div className="text-xs text-slate-500 text-center">
+                Response SLA: Under 2 Minutes for Enterprise Tier
+              </div>
             </div>
           </div>
         </div>
