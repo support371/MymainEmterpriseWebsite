@@ -5,11 +5,15 @@ describe('next.config.ts redirects', () => {
   let redirects: Array<{ source: string; destination: string; permanent: boolean }>;
 
   beforeAll(async () => {
-    redirects = await (nextConfig as any).redirects();
+    const redirectsFn = nextConfig.redirects;
+    if (!redirectsFn) {
+      throw new Error('redirects function is not defined in next.config.ts');
+    }
+    redirects = await redirectsFn();
   });
 
-  it('defines exactly 18 redirect rules', () => {
-    expect(redirects).toHaveLength(18);
+  it('defines exactly 17 redirect rules', () => {
+    expect(redirects).toHaveLength(17);
   });
 
   it('all redirects are permanent (308)', () => {
@@ -22,7 +26,6 @@ describe('next.config.ts redirects', () => {
     ['/news', '/intel'],
     ['/intelligence', '/intel'],
     ['/about-us', '/home/about'],
-    ['/services', '/hub'],
     ['/services/threat-monitoring', '/hub/soc'],
     ['/services/incident-response', '/hub/soc/incident-response'],
     ['/services/compliance-management', '/hub/compliance'],

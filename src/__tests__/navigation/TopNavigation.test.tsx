@@ -21,9 +21,10 @@ describe('TopNavigation', () => {
     expect(screen.getByText('GEM CYBER')).toBeInTheDocument();
   });
 
-  it('renders all 5 tab links', () => {
+  it('renders all 6 tab links', () => {
     render(<TopNavigation />);
     expect(screen.getByText('Home')).toBeInTheDocument();
+    expect(screen.getByText('Services')).toBeInTheDocument();
     expect(screen.getByText('Intel')).toBeInTheDocument();
     expect(screen.getByText('Assets')).toBeInTheDocument();
     expect(screen.getByText('Community')).toBeInTheDocument();

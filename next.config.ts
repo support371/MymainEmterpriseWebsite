@@ -6,7 +6,6 @@ const nextConfig: NextConfig = {
       { source: '/news', destination: '/intel', permanent: true },
       { source: '/intelligence', destination: '/intel', permanent: true },
       { source: '/about-us', destination: '/home/about', permanent: true },
-      { source: '/services', destination: '/hub', permanent: true },
       { source: '/services/threat-monitoring', destination: '/hub/soc', permanent: true },
       { source: '/services/incident-response', destination: '/hub/soc/incident-response', permanent: true },
       { source: '/services/compliance-management', destination: '/hub/compliance', permanent: true },

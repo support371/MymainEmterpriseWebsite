@@ -82,6 +82,15 @@ Tailwind is configured through the Next.js build pipeline (no CDN dependency):
 5. Enable previews for branch pushes.
 6. Keep production deployment mapped to `main`.
 
+### Build readiness note
+
+If builds fail with `ERR_WORKER_INVALID_EXEC_ARGV` and a message similar to
+`--tls-cipher-list= is not allowed in NODE_OPTIONS`, the failure is caused by
+the deployment environment injecting an invalid `NODE_OPTIONS` value.
+
+- Do not set custom `NODE_OPTIONS` values that include `--tls-cipher-list=`.
+- Re-run `npm run build` with a clean `NODE_OPTIONS` value (or unset it) in CI/Vercel.
+
 ### Suggested branch workflow
 
 ```bash

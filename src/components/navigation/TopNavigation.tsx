@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Shield, Home, Wallet, Users, LayoutGrid } from 'lucide-react';
+import { Shield, Home, Wallet, Users, LayoutGrid, Briefcase } from 'lucide-react';
 
 const tabs = [
   { name: 'Home', href: '/home', icon: Home },
+  { name: 'Services', href: '/services', icon: Briefcase },
   { name: 'Intel', href: '/intel', icon: Shield },
   { name: 'Assets', href: '/assets', icon: Wallet },
   { name: 'Community', href: '/community', icon: Users },
