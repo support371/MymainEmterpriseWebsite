@@ -4,6 +4,10 @@ import { getCurrentAdminSession } from '@/lib/adminAuth';
 
 const baseNavItems = [
   { href: '/admin/inbox', label: 'Inbox' },
+  { href: '/admin/intel', label: 'Intel' },
+  { href: '/admin/assets', label: 'Assets' },
+  { href: '/admin/incidents', label: 'Incidents' },
+  { href: '/admin/clients', label: 'Clients' },
   { href: '/admin/teams', label: 'Teams' },
   { href: '/admin/organizations', label: 'Organizations' },
   { href: '/admin/grants', label: 'Grants' },
