@@ -1,17 +1,45 @@
 # Claude Code Local Orchestration Bridge
 
-Run Claude Code CLI tasks unattended from a single task file or command queue — with automatic logging, retries, and optional GitHub/Vercel CLI integration.
+A production-grade autonomous executor that lets you run Claude Code tasks
+unattended from a single command — with multi-task files, retries, dry-run,
+watch mode, JSONL logs, GitHub CLI, and Vercel CLI integration.
+
+---
+
+## Quick Start
+
+```bash
+# 1. Install Claude Code CLI
+npm install -g @anthropic-ai/claude-code
+claude auth login
+
+# 2. Make the runner executable
+chmod +x claude-run
+
+# 3. Run your first task file
+./claude-run task.txt
+
+# 4. Or an inline task
+./claude-run "List all TypeScript files in src/ and describe each one"
+```
 
 ---
 
 ## Files
 
-| File | Purpose |
-|---|---|
-| `run-claude-task.sh` | Bash runner (zero Python dependency) |
-| `run-claude-task.py` | Python runner (structured JSON logs, retries, parallel execution) |
-| `task.txt` | Example task file |
-| `claude-logs/` | Auto-created log directory |
+```
+claude-run              ← main entrypoint (Python, no external deps)
+run-claude-task.sh      ← legacy bash runner (zero Python needed)
+run-claude-task.py      ← Python runner (subset of claude-run features)
+task.txt                ← example task file
+tasks/
+  cleanup.txt           ← GitHub housekeeping examples
+  deploy.txt            ← build, test, and Vercel deploy examples
+  audit.txt             ← dependency and security audit examples
+  done/                 ← completed task files (watch mode)
+  failed/               ← failed task files (watch mode)
+logs/                   ← timestamped stdout/stderr + JSONL logs
+```
 
 ---
 
@@ -20,80 +48,94 @@ Run Claude Code CLI tasks unattended from a single task file or command queue �
 ### Required
 
 ```bash
-# Claude Code CLI (npm)
 npm install -g @anthropic-ai/claude-code
-
-# Authenticate once
 claude auth login
 ```
 
-### Optional (auto-detected at runtime)
+### Optional (auto-detected)
 
 ```bash
-# GitHub CLI — for PR/issue tasks
-brew install gh        # macOS
-sudo apt install gh    # Ubuntu/Debian
+# GitHub CLI
+brew install gh          # macOS
+sudo apt install gh      # Ubuntu/Debian
 gh auth login
 
-# Vercel CLI — for deployment tasks
+# Vercel CLI
 npm install -g vercel
 vercel login
 ```
 
----
-
-## Quick Start
-
-### 1. Make scripts executable
-
-```bash
-chmod +x run-claude-task.sh run-claude-task.py
-```
-
-### 2. Run a task file
-
-```bash
-./run-claude-task.sh task.txt
-```
-
-### 3. Run an inline task
-
-```bash
-./run-claude-task.sh "List all TypeScript files in src/ and summarise each one"
-```
-
-### 4. Run a directory queue
-
-```bash
-# Put multiple *.txt task files in a folder
-mkdir -p tasks/
-cp task.txt tasks/01-audit.txt
-./run-claude-task.sh --queue tasks/
-```
+Both tools are auto-detected at startup. Claude is told which ones are present
+so it can use or skip them appropriately.
 
 ---
 
-## Task File Format
+## Usage
+
+### Run a task file
+
+```bash
+./claude-run task.txt
+```
+
+### Run an inline task
+
+```bash
+./claude-run "Summarise every file in src/ in one line each"
+```
+
+### Multi-task file with `---` separators
 
 ```text
-# Lines starting with # are comments — they are ignored.
-# Tasks are separated by lines containing only ---
-# Without any --- the entire file is treated as a single task.
-
-List all TypeScript source files in src/ and describe each one.
+# my-tasks.txt
+Audit all dependencies in package.json
 
 ---
 
-# Task 2
-Review package.json scripts and suggest missing standard scripts.
+Check all open GitHub issues and label them by priority
 
 ---
 
-# Task 3 — uses gh CLI if available
-List any open GitHub issues in this repository.
+Run the test suite and report failing tests
 ```
 
-Save it as any `.txt` file and pass it to the runner.
+```bash
+./claude-run my-tasks.txt
+```
+
+### Run all `.txt` files in a directory (queue mode)
+
+```bash
+./claude-run --queue tasks/
+```
+
+### Watch a directory for new task files (daemon mode)
+
+```bash
+./claude-run --watch tasks/
+```
+
+Drop any `.txt` file into `tasks/` and it is picked up automatically.
+After execution the file is moved to `tasks/done/` or `tasks/failed/`.
+
+---
+
+## Flags Reference
+
+| Flag | Description |
+|---|---|
+| `--retry N` | Retry failed tasks up to N times with exponential back-off (2s, 4s, 8s …) |
+| `--dry-run` | Preview tasks without executing them |
+| `--dangerously-skip-permissions` | Pass `--dangerously-skip-permissions` to Claude CLI (no interactive confirmations) |
+| `--parallel N` | Run N tasks concurrently |
+| `--fail-fast` | Stop after the first task failure |
+| `--model MODEL` | Claude model to use (default: `claude-sonnet-4-6`) |
+| `--timeout SECS` | Per-task timeout in seconds (default: 300) |
+| `--workdir PATH` | Repository root Claude operates in (default: current dir) |
+| `--log-dir PATH` | Log directory (default: `./logs`) |
+| `--watch DIR` | Watch DIR for incoming `.txt` task files |
+| `--queue DIR` | Process every `.txt` in DIR once, then exit |
+| `--poll SECS` | Watch poll interval (default: 2s) |
 
 ---
 
@@ -101,80 +143,151 @@ Save it as any `.txt` file and pass it to the runner.
 
 | Variable | Default | Description |
 |---|---|---|
-| `CLAUDE_LOG_DIR` | `./claude-logs` | Directory where logs are written |
-| `CLAUDE_WORKDIR` | current directory | Repository root Claude operates in |
-| `CLAUDE_MODEL` | `claude-sonnet-4-6` | Claude model to use |
-| `CLAUDE_TIMEOUT` | `300` | Per-task timeout in seconds |
-| `CLAUDE_RETRIES` | `2` | Max retries on failure (Python only) |
-
-Example:
+| `CLAUDE_MODEL` | `claude-sonnet-4-6` | Model override |
+| `CLAUDE_TIMEOUT` | `300` | Per-task timeout (seconds) |
+| `CLAUDE_RETRIES` | `2` | Retry count |
+| `CLAUDE_WORKDIR` | current dir | Repository root |
+| `CLAUDE_LOG_DIR` | `./logs` | Log directory |
 
 ```bash
-CLAUDE_MODEL=claude-opus-4-6 CLAUDE_TIMEOUT=600 ./run-claude-task.sh task.txt
+CLAUDE_MODEL=claude-opus-4-6 CLAUDE_TIMEOUT=600 ./claude-run task.txt
 ```
 
 ---
 
-## Bash Runner Reference
+## Logging
+
+Every session produces files in `logs/`:
 
 ```
-Usage:
-  ./run-claude-task.sh <task-file.txt>         Run tasks from a file
-  ./run-claude-task.sh "inline task string"    Run a single inline task
-  ./run-claude-task.sh --queue <directory>     Run all *.txt files in a directory
-  ./run-claude-task.sh --help                  Show help
+logs/
+  session-20260308-143012-12345.log       ← full human-readable session log
+  session-20260308-143012-12345.jsonl     ← machine-readable JSONL events
+  task-20260308-143012-001-task_name.log  ← per-task stdout/stderr
+  task-20260308-143012-002-task_name.log
+  …
 ```
 
-**Key behaviour:**
-- Uses `claude -p --no-interactive` so Claude never stops to ask for confirmation.
-- Detects `gh` and `vercel` and tells Claude they are available.
-- Writes a plain-text log to `claude-logs/session-<timestamp>.log`.
-- Prints a summary table at the end with pass/fail/duration per task.
-- Returns a non-zero exit code if any task fails — suitable for CI pipelines.
+### JSONL event types
 
----
-
-## Python Runner Reference
-
-```
-Usage:
-  python run-claude-task.py task.txt
-  python run-claude-task.py "inline task string"
-  python run-claude-task.py --queue tasks/
-  python run-claude-task.py task.txt --parallel 3
-  python run-claude-task.py task.txt --retries 3 --timeout 600
-```
-
-**Extra features over the bash version:**
-
-| Feature | Detail |
+| Event | Description |
 |---|---|
-| Retries | Exponential back-off: 2 s, 4 s, 8 s … up to `--retries` attempts |
-| Parallel | `--parallel N` runs N tasks concurrently via `ThreadPoolExecutor` |
-| JSON logs | Every result written as a JSON line to `session-<id>.jsonl` for machine parsing |
-| Rich summary | Colour-coded table with icons, duration, retry count |
+| `session_start` | Session opened with config snapshot |
+| `task_result` | Result for each executed task |
+| `session_end` | Aggregated pass/fail counts |
+| `watch_start` | Watch daemon activated |
+| `file_picked` | New file detected |
+| `file_processed` | File processed and moved |
+| `watch_stop` | Watch daemon stopped |
+
+### Querying JSONL logs with jq
+
+```bash
+# All failed tasks
+jq 'select(.status == "failed")' logs/*.jsonl
+
+# Task durations
+jq '{label, duration_s, status}' logs/*.jsonl
+
+# Session summary
+jq 'select(.event == "session_end")' logs/*.jsonl
+```
 
 ---
 
-## Logs
-
-After each session two files are created inside `claude-logs/`:
-
-```
-claude-logs/
-  session-20260308-143012-12345.log     # plain-text, human readable
-  session-20260308-143012-12345.jsonl   # structured JSON lines (Python only)
-  summary-20260308-143012-12345.txt     # one-line per task (bash only)
-```
-
-### Reading the JSONL log with jq
+## Example: GitHub Cleanup
 
 ```bash
-# Show all failed tasks
-jq 'select(.status != "ok")' claude-logs/*.jsonl
+./claude-run tasks/cleanup.txt
+```
 
-# Show total duration per task
-jq '{label, duration_s, status}' claude-logs/*.jsonl
+Tasks included:
+1. List all open issues with age
+2. Audit stale branches (no delete)
+3. Report merged-PR branches as deletion candidates
+4. Health check all open PRs (draft / review / CI status)
+
+---
+
+## Example: Build and Deploy
+
+```bash
+./claude-run tasks/deploy.txt
+```
+
+Tasks included:
+1. Run Next.js build — stop if it fails
+2. Run test suite
+3. Check Vercel deployment history
+4. Create a preview deployment
+5. Post preview URL as a PR comment via gh
+
+---
+
+## Example: Code Audit
+
+```bash
+./claude-run tasks/audit.txt
+```
+
+Tasks included:
+1. Unused dependency detection
+2. TypeScript strict-mode gap report
+3. Environment variable coverage check
+4. Security pattern scan (eval, innerHTML, dangerouslySetInnerHTML …)
+5. Large file report
+
+---
+
+## Watch Mode Walk-through
+
+```bash
+# Start the watcher
+./claude-run --watch tasks/ &
+
+# Drop a task file in
+cp tasks/audit.txt tasks/my-audit-run.txt
+
+# claude-run picks it up, executes it, then:
+#   success → tasks/done/my-audit-run.txt
+#   failure → tasks/failed/my-audit-run.txt
+
+# Stop the watcher
+kill %1   # or Ctrl-C in the foreground
+```
+
+---
+
+## Dry Run
+
+Preview what tasks would be sent to Claude — without executing anything:
+
+```bash
+./claude-run tasks/deploy.txt --dry-run
+```
+
+---
+
+## Retry and Fail-Fast
+
+```bash
+# Retry each task up to 3 times on failure
+./claude-run task.txt --retry 3
+
+# Stop immediately after the first failure
+./claude-run task.txt --fail-fast
+
+# Both together
+./claude-run task.txt --retry 2 --fail-fast
+```
+
+---
+
+## Parallel Execution
+
+```bash
+# Run all tasks in a queue concurrently (3 at a time)
+./claude-run --queue tasks/ --parallel 3
 ```
 
 ---
@@ -189,11 +302,11 @@ on:
   workflow_dispatch:
     inputs:
       task_file:
-        description: "Task file to run"
-        default: "task.txt"
+        description: Task file to run
+        default: task.txt
 
 jobs:
-  run-tasks:
+  run:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -201,39 +314,55 @@ jobs:
       - name: Install Claude Code
         run: npm install -g @anthropic-ai/claude-code
 
-      - name: Authenticate
+      - name: Run tasks
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: echo "ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY" >> $GITHUB_ENV
-
-      - name: Run tasks
         run: |
-          chmod +x run-claude-task.sh
-          ./run-claude-task.sh "${{ github.event.inputs.task_file }}"
+          chmod +x claude-run
+          ./claude-run "${{ github.event.inputs.task_file }}" \
+            --dangerously-skip-permissions \
+            --retry 2
 
       - name: Upload logs
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: claude-logs
-          path: claude-logs/
+          path: logs/
+```
+
+---
+
+## Task File Format
+
+```text
+# Lines starting with # are comments — ignored
+# Tasks are separated by --- on its own line
+# Without any --- the whole file is one task
+
+First task text here.
+Can span multiple lines.
+
+---
+
+# Second task
+Second task text here.
+
+---
+
+Third task.
 ```
 
 ---
 
 ## Troubleshooting
 
-### `claude: command not found`
-Install Claude Code CLI: `npm install -g @anthropic-ai/claude-code`
-
-### Tasks hang or time out
-Increase `CLAUDE_TIMEOUT`: `CLAUDE_TIMEOUT=600 ./run-claude-task.sh task.txt`
-
-### Authentication errors
-Run `claude auth login` once in your terminal before using the bridge.
-
-### `--no-interactive` flag not recognised
-You may be on an older version of Claude Code. Update with: `npm update -g @anthropic-ai/claude-code`
-
-### Tasks fail silently
-Check the log file: `cat claude-logs/session-*.log | tail -100`
+| Problem | Fix |
+|---|---|
+| `claude: command not found` | `npm install -g @anthropic-ai/claude-code` |
+| `--no-interactive` not recognised | `npm update -g @anthropic-ai/claude-code` |
+| Tasks time out | Increase `--timeout 600` or `CLAUDE_TIMEOUT=600` |
+| Auth errors | `claude auth login` |
+| `gh` commands fail | `gh auth login` |
+| Watch mode misses files | Reduce `--poll 1` or check filesystem events |
+| Silent failures | `cat logs/session-*.log | tail -100` |

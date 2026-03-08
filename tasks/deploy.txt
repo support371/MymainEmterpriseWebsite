@@ -1,0 +1,49 @@
+# deploy.txt — Build, verify, and deploy tasks
+# Run with: claude-run tasks/deploy.txt
+# Requires: node, npm/pnpm, vercel CLI (for deploy tasks)
+
+Check the current build status of this Next.js project.
+Run `npm run build` (or `pnpm build` if pnpm-lock.yaml exists) and report:
+  - whether the build succeeded
+  - any TypeScript or lint errors
+  - total output size from the build summary
+Do NOT proceed to the next task if the build fails — stop here and report the errors.
+
+---
+
+# Task 2: run tests
+Run the project test suite with `npm test` or `pnpm test`.
+Report:
+  - total tests run
+  - passing count
+  - failing count (with failing test names if any)
+If no test command exists in package.json, say so.
+
+---
+
+# Task 3: check Vercel deployment status
+If the Vercel CLI is installed and authenticated:
+  Run `vercel ls` to list the 5 most recent deployments.
+  For each deployment show: URL, status (Ready/Error), created date, git branch.
+  Flag any deployments with status != Ready.
+If Vercel CLI is not installed, print "Vercel CLI not available — skipping" and stop.
+
+---
+
+# Task 4: preview deployment
+If Vercel CLI is installed:
+  Run `vercel --yes` to create a preview deployment of the current working tree.
+  Report the deployment URL when complete.
+  Do NOT promote to production (do not use `vercel --prod`).
+If Vercel CLI is not installed, skip this step.
+
+---
+
+# Task 5: post-deploy GitHub status comment
+If both gh and vercel CLIs are available, and the previous deployment succeeded:
+  Find the most recent open PR targeting the main branch with
+  `gh pr list --base main --state open --json number,title --limit 1`.
+  Post a comment on that PR:
+    "Preview deployment ready: <vercel_url>"
+  Use `gh pr comment <number> --body "..."`.
+If neither tool is available, skip this step.

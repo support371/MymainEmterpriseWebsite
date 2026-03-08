@@ -1,0 +1,36 @@
+# cleanup.txt — GitHub housekeeping tasks
+# Run with: claude-run tasks/cleanup.txt
+# Requires: gh CLI installed and authenticated
+
+List all open GitHub issues in this repository.
+For each issue, show: number, title, labels, and how many days it has been open.
+Use `gh issue list --json number,title,labels,createdAt` to fetch the data.
+If gh is not available, say so clearly and stop.
+
+---
+
+# Task 2: stale branch audit
+List all git branches (local and remote) that have not had a commit in the last 30 days.
+Use `git branch -a` and `git log --format="%ci" -1 <branch>` to check dates.
+Print a table: branch name | last commit date | author.
+Do NOT delete anything — report only.
+
+---
+
+# Task 3: merged PR branch cleanup (dry-run report)
+Use `gh pr list --state merged --json headRefName,mergedAt,number,title` to find
+all merged pull requests whose head branches still exist remotely.
+List them as candidates for deletion.
+Do NOT delete — print the `git push origin --delete <branch>` command for each
+so the user can review and run manually.
+
+---
+
+# Task 4: open PR health check
+Use `gh pr list --state open --json number,title,isDraft,reviewDecision,checksUrl`
+to list all open PRs.
+For each PR report:
+  - draft status
+  - review decision
+  - whether all checks are passing (use `gh pr checks <number>`)
+Print a health matrix table.

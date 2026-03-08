@@ -1,0 +1,778 @@
+#!/usr/bin/env python3
+"""
+claude-run — Production-grade local orchestration bridge for Claude Code
+========================================================================
+
+Single-command entrypoint:
+
+    claude-run task.txt                         # run a task file
+    claude-run "describe all files in src/"     # inline task
+    claude-run task.txt --retry 3               # with retry
+    claude-run task.txt --dry-run               # preview only, no execution
+    claude-run --watch tasks/                   # daemon: watch folder for new tasks
+    claude-run --queue tasks/                   # one-shot: run all *.txt in folder
+
+Flags:
+    --retry N                       Retry failed tasks up to N times (exponential back-off)
+    --dry-run                       Print tasks without executing them
+    --dangerously-skip-permissions  Pass --dangerously-skip-permissions to Claude CLI
+    --parallel N                    Run N tasks concurrently
+    --model MODEL                   Claude model (default: claude-sonnet-4-6)
+    --timeout SECS                  Per-task timeout (default: 300)
+    --workdir PATH                  Repository root for Claude to operate in
+    --log-dir PATH                  Log directory (default: ./logs)
+    --watch DIR                     Watch a directory for incoming *.txt task files
+    --queue DIR                     Process every *.txt in DIR once, then exit
+    --fail-fast                     Stop after first task failure
+
+Environment variables:
+    CLAUDE_MODEL        Model override
+    CLAUDE_TIMEOUT      Timeout override (seconds)
+    CLAUDE_RETRIES      Retry count override
+    CLAUDE_WORKDIR      Working directory override
+    CLAUDE_LOG_DIR      Log directory override (default: ./logs)
+"""
+
+from __future__ import annotations
+
+import argparse
+import glob
+import json
+import logging
+import os
+import re
+import shutil
+import signal
+import subprocess
+import sys
+import threading
+import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from dataclasses import asdict, dataclass
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Optional
+
+# ---------------------------------------------------------------------------
+# Defaults (overridable via env)
+# ---------------------------------------------------------------------------
+_DEFAULT_MODEL   = "claude-sonnet-4-6"
+_DEFAULT_TIMEOUT = 300
+_DEFAULT_RETRIES = 2
+_DEFAULT_LOG_DIR = "./logs"
+
+MODEL      = os.environ.get("CLAUDE_MODEL",   _DEFAULT_MODEL)
+TIMEOUT    = int(os.environ.get("CLAUDE_TIMEOUT",  str(_DEFAULT_TIMEOUT)))
+MAX_RETRY  = int(os.environ.get("CLAUDE_RETRIES",  str(_DEFAULT_RETRIES)))
+WORKDIR    = Path(os.environ.get("CLAUDE_WORKDIR",  ".")).resolve()
+LOG_DIR    = Path(os.environ.get("CLAUDE_LOG_DIR",  _DEFAULT_LOG_DIR))
+
+SESSION_TS = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
+SESSION_ID = f"{SESSION_TS}-{os.getpid()}"
+
+# ---------------------------------------------------------------------------
+# Colour helpers
+# ---------------------------------------------------------------------------
+_IS_TTY = sys.stdout.isatty()
+
+def _c(code: str, text: str) -> str:
+    return f"\033[{code}m{text}\033[0m" if _IS_TTY else text
+
+def green(t):  return _c("32", t)
+def red(t):    return _c("31", t)
+def yellow(t): return _c("33", t)
+def cyan(t):   return _c("36", t)
+def bold(t):   return _c("1",  t)
+def dim(t):    return _c("90", t)
+
+# ---------------------------------------------------------------------------
+# Logging — stdout + file
+# ---------------------------------------------------------------------------
+LOG_DIR.mkdir(parents=True, exist_ok=True)
+_log_file  = LOG_DIR / f"session-{SESSION_ID}.log"
+_jsonl_file = LOG_DIR / f"session-{SESSION_ID}.jsonl"
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s  %(levelname)-7s  %(message)s",
+    datefmt="%H:%M:%S",
+    handlers=[
+        logging.StreamHandler(sys.stdout),
+        logging.FileHandler(_log_file, encoding="utf-8"),
+    ],
+)
+log = logging.getLogger("claude-run")
+
+
+def _emit_jsonl(record: dict) -> None:
+    """Append a JSON line to the structured machine-readable log."""
+    with _jsonl_file.open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps(record, ensure_ascii=False, default=str) + "\n")
+
+
+# ---------------------------------------------------------------------------
+# Data model
+# ---------------------------------------------------------------------------
+@dataclass
+class TaskResult:
+    index:      int
+    label:      str
+    source:     str          # file path or "inline"
+    status:     str          # ok | failed | timeout | skipped | dry-run
+    exit_code:  int
+    duration_s: float
+    stdout:     str
+    stderr:     str
+    retries:    int = 0
+    error:      Optional[str] = None
+    commands:   list[str] = None  # type: ignore[assignment]
+
+    def __post_init__(self):
+        if self.commands is None:
+            self.commands = []
+
+
+# ---------------------------------------------------------------------------
+# Tool detection
+# ---------------------------------------------------------------------------
+_TOOL_CANDIDATES = {
+    "claude":  "claude",
+    "gh":      "gh",
+    "vercel":  "vercel",
+    "node":    "node",
+    "npm":     "npm",
+    "jq":      "jq",
+    "python3": "python3",
+    "git":     "git",
+}
+
+def detect_tools() -> dict[str, str]:
+    found: dict[str, str] = {}
+    for name, cmd in _TOOL_CANDIDATES.items():
+        path = shutil.which(cmd)
+        if path:
+            found[name] = path
+
+    if "claude" not in found:
+        log.error(
+            red("Claude Code CLI not found.")
+            + "  Install: npm install -g @anthropic-ai/claude-code"
+        )
+        sys.exit(1)
+
+    log.info("Tools available: %s", ", ".join(found.keys()))
+
+    for opt in ("gh", "vercel"):
+        if opt not in found:
+            log.warning(yellow(f"Optional tool '{opt}' not found — related tasks will be skipped"))
+
+    return found
+
+
+def _tool_context_block(tools: dict[str, str]) -> str:
+    lines = [
+        f"Working directory: {WORKDIR}",
+        f"Available CLI tools: {', '.join(tools.keys())}",
+    ]
+    if "gh" in tools:
+        lines.append("  - GitHub CLI (gh): use for PR, issue, and release operations")
+    else:
+        lines.append("  - GitHub CLI (gh): NOT installed — skip any gh commands")
+    if "vercel" in tools:
+        lines.append("  - Vercel CLI: use for deployment, alias, and env inspection")
+    else:
+        lines.append("  - Vercel CLI: NOT installed — skip any vercel commands")
+    return "\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
+# Task file parser
+# ---------------------------------------------------------------------------
+_SEP     = re.compile(r"^\s*---\s*$")
+_COMMENT = re.compile(r"^\s*#")
+
+
+def parse_task_file(path: Path) -> list[str]:
+    """
+    Parse a task file into individual task strings.
+    Tasks are separated by lines containing only ---
+    Lines starting with # are comments.
+    """
+    tasks: list[str] = []
+    current: list[str] = []
+
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if _COMMENT.match(line):
+            continue
+        if _SEP.match(line):
+            chunk = "\n".join(current).strip()
+            if chunk:
+                tasks.append(chunk)
+            current = []
+        else:
+            current.append(line)
+
+    chunk = "\n".join(current).strip()
+    if chunk:
+        tasks.append(chunk)
+
+    log.info("Parsed %d task(s) from %s", len(tasks), path)
+    return tasks
+
+
+# ---------------------------------------------------------------------------
+# Single task executor
+# ---------------------------------------------------------------------------
+def execute_task(
+    task_text: str,
+    index: int,
+    label: str,
+    source: str,
+    tools: dict[str, str],
+    *,
+    retries:    int  = MAX_RETRY,
+    timeout:    int  = TIMEOUT,
+    dry_run:    bool = False,
+    skip_perms: bool = False,
+) -> TaskResult:
+    """
+    Run one task through `claude -p`.
+    Returns a TaskResult regardless of outcome.
+    """
+    if dry_run:
+        log.info(dim(f"[dry-run] Task {index}: {label}"))
+        print(f"\n{bold(cyan(f'--- Task {index}: {label} (DRY RUN) ---'))}")
+        print(task_text)
+        return TaskResult(
+            index=index, label=label, source=source,
+            status="dry-run", exit_code=0, duration_s=0.0,
+            stdout=task_text, stderr="",
+        )
+
+    context = _tool_context_block(tools)
+    full_prompt = f"{context}\n\nTask:\n{task_text}"
+
+    cmd: list[str] = [
+        tools["claude"],
+        "--model",         MODEL,
+        "--output-format", "text",
+        "--no-interactive",
+        "-p",
+        full_prompt,
+    ]
+    if skip_perms:
+        cmd.insert(1, "--dangerously-skip-permissions")
+
+    log.info(bold(f"Task {index}/{label}") + f"  (source: {source})")
+
+    attempt    = 0
+    last_exit  = -1
+    last_out   = ""
+    last_err   = ""
+    last_error: Optional[str] = None
+    t_start    = time.monotonic()
+
+    while attempt <= retries:
+        if attempt > 0:
+            wait = 2 ** attempt
+            log.warning(yellow(f"  Retry {attempt}/{retries} for task {index} — waiting {wait}s"))
+            time.sleep(wait)
+
+        attempt += 1
+        log.info("  Attempt %d …", attempt)
+
+        try:
+            proc = subprocess.run(
+                cmd,
+                cwd=str(WORKDIR),
+                capture_output=True,
+                text=True,
+                timeout=timeout,
+            )
+            last_exit = proc.returncode
+            last_out  = proc.stdout
+            last_err  = proc.stderr
+
+            if last_exit == 0:
+                break
+
+            last_error = f"exit {last_exit}"
+
+        except subprocess.TimeoutExpired:
+            last_exit  = 124
+            last_error = f"timed out after {timeout}s"
+            break   # don't retry timeouts
+
+        except Exception as exc:  # noqa: BLE001
+            last_exit  = -1
+            last_error = str(exc)
+
+    duration = round(time.monotonic() - t_start, 2)
+
+    if last_exit == 124:
+        status = "timeout"
+        log.error(red(f"Task {index} timed out ({label})"))
+    elif last_exit == 0:
+        status = "ok"
+        log.info(green(f"Task {index} OK in {duration}s ({label})"))
+        if last_out:
+            print(last_out, end="")
+    else:
+        status = "failed"
+        log.error(red(f"Task {index} FAILED exit={last_exit} ({label})"))
+        if last_err:
+            print(last_err, file=sys.stderr, end="")
+
+    result = TaskResult(
+        index=index,
+        label=label,
+        source=source,
+        status=status,
+        exit_code=last_exit,
+        duration_s=duration,
+        stdout=last_out,
+        stderr=last_err,
+        retries=attempt - 1,
+        error=last_error,
+        commands=cmd[:4],   # first tokens only (no prompt text in JSONL)
+    )
+
+    # --- Per-task log files ------------------------------------------------
+    task_slug = re.sub(r"[^\w-]", "_", label)[:60]
+    task_log  = LOG_DIR / f"task-{SESSION_TS}-{index:03d}-{task_slug}.log"
+    with task_log.open("w", encoding="utf-8") as fh:
+        fh.write(f"SESSION:   {SESSION_ID}\n")
+        fh.write(f"TASK:      {label}\n")
+        fh.write(f"SOURCE:    {source}\n")
+        fh.write(f"STATUS:    {status}\n")
+        fh.write(f"EXIT:      {last_exit}\n")
+        fh.write(f"DURATION:  {duration}s\n")
+        fh.write(f"RETRIES:   {attempt - 1}\n")
+        fh.write(f"TIMESTAMP: {datetime.now(timezone.utc).isoformat()}\n")
+        fh.write("\n--- PROMPT ---\n")
+        fh.write(task_text + "\n")
+        fh.write("\n--- STDOUT ---\n")
+        fh.write(last_out)
+        fh.write("\n--- STDERR ---\n")
+        fh.write(last_err)
+
+    # --- JSONL emission ----------------------------------------------------
+    _emit_jsonl({
+        "event":      "task_result",
+        "session":    SESSION_ID,
+        "timestamp":  datetime.now(timezone.utc).isoformat(),
+        "repo":       str(WORKDIR),
+        **{k: v for k, v in asdict(result).items() if k not in ("stdout", "stderr")},
+        "stdout_len": len(last_out),
+        "stderr_len": len(last_err),
+        "log_file":   str(task_log),
+    })
+
+    return result
+
+
+# ---------------------------------------------------------------------------
+# Batch execution
+# ---------------------------------------------------------------------------
+def run_batch(
+    tasks:      list[str],
+    labels:     list[str],
+    sources:    list[str],
+    tools:      dict[str, str],
+    *,
+    parallel:   int  = 1,
+    dry_run:    bool = False,
+    skip_perms: bool = False,
+    fail_fast:  bool = False,
+    retries:    int  = MAX_RETRY,
+    timeout:    int  = TIMEOUT,
+) -> list[TaskResult]:
+    results: list[TaskResult] = []
+
+    kwargs = dict(dry_run=dry_run, skip_perms=skip_perms, retries=retries, timeout=timeout)
+
+    if parallel > 1:
+        log.info("Parallel mode: %d workers", parallel)
+        ordered: list[Optional[TaskResult]] = [None] * len(tasks)
+        with ThreadPoolExecutor(max_workers=parallel) as pool:
+            fmap = {
+                pool.submit(
+                    execute_task, task, i + 1, label, source, tools, **kwargs
+                ): i
+                for i, (task, label, source)
+                in enumerate(zip(tasks, labels, sources))
+            }
+            for future in as_completed(fmap):
+                idx = fmap[future]
+                ordered[idx] = future.result()
+                if fail_fast and ordered[idx].status in ("failed", "timeout"):
+                    log.error(red("--fail-fast: aborting after first failure"))
+                    pool.shutdown(wait=False, cancel_futures=True)
+                    break
+        results = [r for r in ordered if r is not None]
+    else:
+        for i, (task, label, source) in enumerate(zip(tasks, labels, sources), start=1):
+            r = execute_task(task, i, label, source, tools, **kwargs)
+            results.append(r)
+            if fail_fast and r.status in ("failed", "timeout"):
+                log.error(red("--fail-fast: aborting after first failure"))
+                break
+
+    return results
+
+
+# ---------------------------------------------------------------------------
+# Summary
+# ---------------------------------------------------------------------------
+_ICONS = {"ok": "✔", "failed": "✘", "timeout": "⏱", "dry-run": "○", "skipped": "–"}
+_CLRS  = {"ok": green, "failed": red, "timeout": yellow, "dry-run": dim, "skipped": dim}
+
+
+def print_summary(results: list[TaskResult]) -> int:
+    ok      = sum(1 for r in results if r.status == "ok")
+    skipped = sum(1 for r in results if r.status in ("dry-run", "skipped"))
+    failed  = sum(1 for r in results if r.status in ("failed", "timeout"))
+    total_t = sum(r.duration_s for r in results)
+
+    print()
+    print(bold("=" * 70))
+    print(bold(f"  Execution Summary  —  Session {SESSION_ID}"))
+    print(bold("=" * 70))
+    print(f"  {'#':<4}  {'Status':<10}  {'Dur':>7}  {'Retry':>5}  Label")
+    print(f"  {'─'*4}  {'─'*10}  {'─'*7}  {'─'*5}  {'─'*35}")
+    for r in results:
+        icon   = _ICONS.get(r.status, "?")
+        colour = _CLRS.get(r.status, lambda x: x)
+        print(
+            f"  {r.index:<4}  "
+            f"{colour(icon + ' ' + r.status):<21}  "
+            f"{r.duration_s:>6.1f}s  "
+            f"{r.retries:>5}  "
+            f"{r.label[:40]}"
+        )
+    print(bold("=" * 70))
+    print(f"  {ok} passed  {failed} failed  {skipped} skipped  |  total {total_t:.1f}s")
+    print(f"  Logs:  {LOG_DIR}/")
+    print(f"    session log:  {_log_file.name}")
+    print(f"    jsonl log:    {_jsonl_file.name}")
+    if failed == 0:
+        print(f"  {green('✔ ALL TASKS PASSED')}")
+    else:
+        print(f"  {red(f'✘ {failed} TASK(S) FAILED')}")
+    print(bold("=" * 70))
+    print()
+
+    return 0 if failed == 0 else 1
+
+
+# ---------------------------------------------------------------------------
+# Watch mode
+# ---------------------------------------------------------------------------
+_DONE_DIR   = "done"
+_FAILED_DIR = "failed"
+_STOP_EVENT = threading.Event()
+
+
+def _sig_handler(*_):
+    log.info(yellow("Signal received — stopping watch mode …"))
+    _STOP_EVENT.set()
+
+
+def watch_dir(
+    watch_path: Path,
+    tools: dict[str, str],
+    *,
+    poll_interval: float = 2.0,
+    dry_run:    bool = False,
+    skip_perms: bool = False,
+    retries:    int  = MAX_RETRY,
+    timeout:    int  = TIMEOUT,
+    fail_fast:  bool = False,
+) -> None:
+    done_dir   = watch_path / _DONE_DIR
+    failed_dir = watch_path / _FAILED_DIR
+    done_dir.mkdir(parents=True, exist_ok=True)
+    failed_dir.mkdir(parents=True, exist_ok=True)
+
+    signal.signal(signal.SIGINT,  _sig_handler)
+    signal.signal(signal.SIGTERM, _sig_handler)
+
+    log.info(cyan(f"Watch mode active — monitoring {watch_path}"))
+    log.info(f"  done   → {done_dir}")
+    log.info(f"  failed → {failed_dir}")
+    log.info("  Press Ctrl-C to stop\n")
+
+    processed: set[str] = set()
+
+    _emit_jsonl({
+        "event":     "watch_start",
+        "session":   SESSION_ID,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "watch_dir": str(watch_path),
+    })
+
+    while not _STOP_EVENT.is_set():
+        candidates = sorted(
+            p for p in watch_path.glob("*.txt")
+            if p.name not in processed
+            and p.parent == watch_path  # top-level only
+        )
+
+        for task_file in candidates:
+            processed.add(task_file.name)
+            log.info(cyan(f"Picked up: {task_file.name}"))
+
+            _emit_jsonl({
+                "event":     "file_picked",
+                "session":   SESSION_ID,
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "file":      str(task_file),
+            })
+
+            try:
+                tasks = parse_task_file(task_file)
+            except Exception as exc:
+                log.error(red(f"Failed to parse {task_file.name}: {exc}"))
+                shutil.move(str(task_file), str(failed_dir / task_file.name))
+                continue
+
+            if not tasks:
+                log.warning(yellow(f"{task_file.name} has no tasks — skipping"))
+                shutil.move(str(task_file), str(done_dir / task_file.name))
+                continue
+
+            labels  = [f"{task_file.name}:{i+1}" for i in range(len(tasks))]
+            sources = [str(task_file)] * len(tasks)
+
+            results = run_batch(
+                tasks, labels, sources, tools,
+                dry_run=dry_run, skip_perms=skip_perms,
+                retries=retries, timeout=timeout, fail_fast=fail_fast,
+            )
+
+            all_ok = all(r.status in ("ok", "dry-run") for r in results)
+            dest   = done_dir if all_ok else failed_dir
+            dest_f = dest / task_file.name
+            # Avoid collision if same name already exists
+            if dest_f.exists():
+                stem = dest_f.stem
+                sfx  = dest_f.suffix
+                dest_f = dest / f"{stem}-{SESSION_TS}{sfx}"
+
+            shutil.move(str(task_file), str(dest_f))
+            log.info(
+                (green("→ moved to done/") if all_ok else red("→ moved to failed/"))
+                + f"  ({dest_f.name})"
+            )
+
+            _emit_jsonl({
+                "event":     "file_processed",
+                "session":   SESSION_ID,
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "file":      task_file.name,
+                "dest":      str(dest_f),
+                "all_ok":    all_ok,
+            })
+
+        time.sleep(poll_interval)
+
+    log.info("Watch mode stopped.")
+
+    _emit_jsonl({
+        "event":     "watch_stop",
+        "session":   SESSION_ID,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    })
+
+
+# ---------------------------------------------------------------------------
+# CLI
+# ---------------------------------------------------------------------------
+def build_parser() -> argparse.ArgumentParser:
+    p = argparse.ArgumentParser(
+        prog="claude-run",
+        description="Production-grade local orchestration bridge for Claude Code.",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Examples:\n"
+            "  claude-run task.txt\n"
+            "  claude-run task.txt --retry 3 --dry-run\n"
+            "  claude-run --watch tasks/\n"
+            "  claude-run --queue tasks/ --parallel 2\n"
+            '  claude-run "List all TypeScript files in src/"\n'
+        ),
+    )
+
+    # Positional
+    p.add_argument(
+        "input",
+        nargs="?",
+        metavar="TASK_FILE_OR_STRING",
+        help="Path to a .txt task file, or an inline task string",
+    )
+
+    # Modes
+    mode = p.add_argument_group("modes (mutually exclusive with positional)")
+    mode.add_argument("--watch",  metavar="DIR", help="Watch DIR for incoming *.txt task files")
+    mode.add_argument("--queue",  metavar="DIR", help="Run every *.txt in DIR once, then exit")
+
+    # Execution controls
+    ex = p.add_argument_group("execution controls")
+    ex.add_argument("--retry",      dest="retries", type=int, default=MAX_RETRY,
+                    metavar="N", help=f"Retries on failure (default {MAX_RETRY})")
+    ex.add_argument("--dry-run",    action="store_true",
+                    help="Print tasks without executing them")
+    ex.add_argument("--dangerously-skip-permissions", dest="skip_perms",
+                    action="store_true",
+                    help="Pass --dangerously-skip-permissions to Claude CLI")
+    ex.add_argument("--parallel",   type=int, default=1, metavar="N",
+                    help="Run N tasks concurrently (default 1)")
+    ex.add_argument("--fail-fast",  action="store_true",
+                    help="Abort on first task failure")
+
+    # Tuning
+    tune = p.add_argument_group("tuning")
+    tune.add_argument("--model",   default=MODEL,   help=f"Claude model (default {MODEL})")
+    tune.add_argument("--timeout", type=int, default=TIMEOUT, metavar="SECS",
+                      help=f"Per-task timeout seconds (default {TIMEOUT})")
+    tune.add_argument("--workdir", default=str(WORKDIR), metavar="PATH",
+                      help="Repository root for Claude to operate in")
+    tune.add_argument("--log-dir", default=str(LOG_DIR), metavar="PATH",
+                      help=f"Log directory (default {LOG_DIR})")
+
+    # Watch tuning
+    w = p.add_argument_group("watch mode")
+    w.add_argument("--poll", type=float, default=2.0, metavar="SECS",
+                   help="Watch poll interval in seconds (default 2)")
+
+    return p
+
+
+def main() -> None:
+    global MODEL, TIMEOUT, MAX_RETRY, WORKDIR, LOG_DIR  # noqa: PLW0603
+    global _log_file, _jsonl_file                        # noqa: PLW0603
+
+    parser = build_parser()
+    args   = parser.parse_args()
+
+    # Apply overrides
+    MODEL     = args.model
+    TIMEOUT   = args.timeout
+    MAX_RETRY = args.retries
+    WORKDIR   = Path(args.workdir).resolve()
+    LOG_DIR   = Path(args.log_dir)
+    LOG_DIR.mkdir(parents=True, exist_ok=True)
+
+    # Re-point log files if log-dir changed
+    _log_file   = LOG_DIR / f"session-{SESSION_ID}.log"
+    _jsonl_file = LOG_DIR / f"session-{SESSION_ID}.jsonl"
+
+    # Reinitialise file handler with correct path
+    root_logger = logging.getLogger()
+    for h in list(root_logger.handlers):
+        if isinstance(h, logging.FileHandler):
+            root_logger.removeHandler(h)
+    root_logger.addHandler(logging.FileHandler(_log_file, encoding="utf-8"))
+
+    log.info("claude-run session %s  |  workdir: %s", SESSION_ID, WORKDIR)
+
+    _emit_jsonl({
+        "event":     "session_start",
+        "session":   SESSION_ID,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "workdir":   str(WORKDIR),
+        "model":     MODEL,
+        "timeout":   TIMEOUT,
+        "retries":   MAX_RETRY,
+        "dry_run":   args.dry_run,
+        "parallel":  args.parallel,
+    })
+
+    tools = detect_tools()
+
+    # ------------------------------------------------------------------
+    # Dispatch
+    # ------------------------------------------------------------------
+    if args.watch:
+        watch_path = Path(args.watch)
+        if not watch_path.is_dir():
+            log.error(red(f"Watch directory not found: {watch_path}"))
+            sys.exit(1)
+        watch_dir(
+            watch_path, tools,
+            poll_interval=args.poll,
+            dry_run=args.dry_run,
+            skip_perms=args.skip_perms,
+            retries=args.retries,
+            timeout=args.timeout,
+            fail_fast=args.fail_fast,
+        )
+        sys.exit(0)
+
+    # Collect tasks
+    all_tasks:   list[str] = []
+    all_labels:  list[str] = []
+    all_sources: list[str] = []
+
+    if args.queue:
+        queue_dir = Path(args.queue)
+        if not queue_dir.is_dir():
+            log.error(red(f"Queue directory not found: {queue_dir}"))
+            sys.exit(1)
+        task_files = sorted(queue_dir.glob("*.txt"))
+        if not task_files:
+            log.error(red(f"No *.txt files in {queue_dir}"))
+            sys.exit(1)
+        for tf in task_files:
+            parsed = parse_task_file(tf)
+            all_tasks.extend(parsed)
+            all_labels.extend([f"{tf.name}:{i+1}" for i in range(len(parsed))])
+            all_sources.extend([str(tf)] * len(parsed))
+
+    elif args.input:
+        inp = Path(args.input)
+        if inp.is_file():
+            parsed = parse_task_file(inp)
+            all_tasks.extend(parsed)
+            all_labels.extend([f"{inp.name}:{i+1}" for i in range(len(parsed))])
+            all_sources.extend([str(inp)] * len(parsed))
+        else:
+            # Inline task string
+            all_tasks.append(args.input)
+            all_labels.append("inline")
+            all_sources.append("inline")
+
+    else:
+        parser.print_help()
+        sys.exit(0)
+
+    if not all_tasks:
+        log.error(red("No tasks to execute."))
+        sys.exit(1)
+
+    log.info("Tasks to execute: %d", len(all_tasks))
+
+    results = run_batch(
+        all_tasks, all_labels, all_sources, tools,
+        parallel=args.parallel,
+        dry_run=args.dry_run,
+        skip_perms=args.skip_perms,
+        retries=args.retries,
+        timeout=args.timeout,
+        fail_fast=args.fail_fast,
+    )
+
+    _emit_jsonl({
+        "event":     "session_end",
+        "session":   SESSION_ID,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "total":     len(results),
+        "ok":        sum(1 for r in results if r.status == "ok"),
+        "failed":    sum(1 for r in results if r.status in ("failed", "timeout")),
+    })
+
+    sys.exit(print_summary(results))
+
+
+if __name__ == "__main__":
+    main()

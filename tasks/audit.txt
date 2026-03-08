@@ -1,0 +1,52 @@
+# audit.txt — Code and dependency audit tasks
+# Run with: claude-run tasks/audit.txt
+
+Audit the direct dependencies listed in package.json.
+For each dependency in "dependencies" (not devDependencies):
+  1. Check whether it is actually imported anywhere in src/
+     by searching for `require('<pkg>')` or `from '<pkg>'` patterns.
+  2. Mark it as USED or UNUSED.
+Print a two-column table: Package | Status.
+Do NOT remove anything — report only.
+
+---
+
+# Task 2: TypeScript strict-mode check
+Read tsconfig.json and report which strict-mode options are enabled or missing.
+The full strict set is:
+  strict, noImplicitAny, strictNullChecks, strictFunctionTypes,
+  strictBindCallApply, strictPropertyInitialization,
+  noImplicitThis, alwaysStrict, useUnknownInCatchVariables.
+For each option, show: option | current value (or "not set").
+Recommend enabling any that are missing.
+
+---
+
+# Task 3: environment variable audit
+Scan all files in src/ for references to `process.env.` or `import.meta.env.`.
+Collect every unique variable name referenced.
+Then check whether each variable is declared in any of these files:
+  .env, .env.local, .env.example, .env.development, .env.production
+Print a table: Variable | Found in source | Declared in .env file.
+Flag any variables that are referenced in code but missing from all .env files.
+
+---
+
+# Task 4: security surface scan
+Scan src/ for the following patterns and report any matches with file + line number:
+  - eval(
+  - innerHTML =
+  - dangerouslySetInnerHTML
+  - document.write(
+  - crypto.createHash('md5')  or  crypto.createHash("md5")
+  - console.log( containing what looks like a token or secret key
+Report each match as: FILE | LINE | PATTERN | SNIPPET.
+Do NOT fix anything — report only.
+
+---
+
+# Task 5: large file report
+List every file in the repository (excluding node_modules, .git, .next) that is
+larger than 100 KB.
+For each file show: path | size in KB | file type.
+Suggest whether any of them should be gitignored, compressed, or moved to a CDN.
