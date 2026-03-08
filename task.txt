@@ -1,0 +1,30 @@
+# Example task file for run-claude-task.sh
+# Lines starting with # are comments and are ignored.
+# Tasks are separated by lines containing only ---
+# If there are no --- separators the whole file is one task.
+
+List all TypeScript source files in src/ and give me a one-line description of what each file does.
+
+---
+
+# Task 2: code quality check
+Review the package.json scripts section and suggest any missing standard scripts
+(test, lint, build, dev). If any are missing, add them.
+
+---
+
+# Task 3: GitHub integration (uses gh CLI if available)
+Check if there are any open GitHub issues in this repository.
+If gh CLI is not available, skip this step and say so.
+
+---
+
+# Task 4: dependency audit
+Run a quick check: list any direct dependencies in package.json that appear to be
+unused in the src/ directory. Just list them — do not delete anything.
+
+---
+
+# Task 5: Vercel deployment info (uses vercel CLI if available)
+If the Vercel CLI is installed, run `vercel ls` to list recent deployments.
+If it is not available, skip and note it.
