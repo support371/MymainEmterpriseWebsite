@@ -1,6 +1,3 @@
-import fs from 'node:fs';
-import path from 'node:path';
-
 export interface AuditEntry {
   id: string;
   timestamp: string;
@@ -13,33 +10,10 @@ export interface AuditEntry {
 }
 
 /**
- * Local-file audit persistence (preview mode).
- *
- * PRODUCTION BLOCKER: Replace with database writes (Prisma AuditLog model)
- * or a managed audit service. This file-based approach is not suitable
- * for production due to concurrency and durability concerns.
+ * In-memory audit store. Entries persist for the lifetime of the
+ * server process. Replace with a database-backed store for production.
  */
-const AUDIT_FILE = path.join(process.cwd(), 'data', 'audit-log.json');
-
-function ensureFile() {
-  const dir = path.dirname(AUDIT_FILE);
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  if (!fs.existsSync(AUDIT_FILE)) fs.writeFileSync(AUDIT_FILE, '[]', 'utf8');
-}
-
-function readAll(): AuditEntry[] {
-  ensureFile();
-  try {
-    return JSON.parse(fs.readFileSync(AUDIT_FILE, 'utf8')) as AuditEntry[];
-  } catch {
-    return [];
-  }
-}
-
-function writeAll(entries: AuditEntry[]) {
-  ensureFile();
-  fs.writeFileSync(AUDIT_FILE, JSON.stringify(entries, null, 2), 'utf8');
-}
+const auditEvents: AuditEntry[] = [];
 
 export async function writeAuditEntry(
   entry: Omit<AuditEntry, 'id' | 'timestamp'>,
@@ -49,10 +23,9 @@ export async function writeAuditEntry(
     timestamp: new Date().toISOString(),
     ...entry,
   };
-  const entries = readAll();
-  entries.unshift(full);
-  // Keep last 10 000 entries in preview
-  writeAll(entries.slice(0, 10_000));
+  auditEvents.unshift(full);
+  // Cap at 10 000 entries in memory
+  if (auditEvents.length > 10_000) auditEvents.length = 10_000;
   return full;
 }
 
@@ -61,7 +34,7 @@ export async function getAuditEntries(opts?: {
   offset?: number;
   action?: string;
 }): Promise<{ entries: AuditEntry[]; total: number }> {
-  let entries = readAll();
+  let entries = auditEvents;
   if (opts?.action) {
     entries = entries.filter((e) => e.action === opts.action);
   }
@@ -72,5 +45,22 @@ export async function getAuditEntries(opts?: {
 }
 
 export async function exportAuditLog(): Promise<AuditEntry[]> {
-  return readAll();
+  return [...auditEvents];
+}
+
+export function audit(event: Record<string, unknown>) {
+  auditEvents.push({
+    id: `aud_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+    timestamp: new Date().toISOString(),
+    actorUserId: (event.actorUserId as string) ?? null,
+    actorEmail: (event.actorEmail as string) ?? null,
+    action: (event.action as string) ?? 'unknown',
+    target: (event.target as string) ?? '',
+    meta: event,
+    result: (event.result as 'success' | 'failure' | 'denied') ?? 'success',
+  });
+}
+
+export function getAuditEvents() {
+  return auditEvents;
 }

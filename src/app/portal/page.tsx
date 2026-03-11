@@ -1,6 +1,8 @@
 import { getCurrentPortalSession } from '@/lib/auth/session';
 import { writeAuditEntry } from '@/lib/audit';
 
+export const metadata = { title: 'Portal' };
+
 export default async function PortalDashboard({
   searchParams,
 }: {
