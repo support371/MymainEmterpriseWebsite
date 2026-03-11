@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import type { PortalRole } from './session';
+import type { PortalRole } from './types';
 
 export interface PortalUser {
   id: string;

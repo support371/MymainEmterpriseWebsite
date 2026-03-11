@@ -1,17 +1,10 @@
 import crypto from 'node:crypto';
 import { cookies } from 'next/headers';
+import type { PortalSession } from './types';
+
+export type { PortalRole, PortalSession } from './types';
 
 export const PORTAL_COOKIE = 'gem_portal_session';
-
-export type PortalRole = 'admin' | 'analyst' | 'client' | 'viewer';
-
-export interface PortalSession {
-  userId: string;
-  email: string;
-  name: string;
-  role: PortalRole;
-  exp: number;
-}
 
 function authSecret(): string {
   return process.env.PORTAL_AUTH_SECRET || process.env.ADMIN_AUTH_SECRET || 'change-me-portal-secret';

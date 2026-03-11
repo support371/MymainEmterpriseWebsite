@@ -1,7 +1,24 @@
 import { getCurrentPortalSession } from '@/lib/auth/session';
+import { writeAuditEntry } from '@/lib/audit';
 
-export default async function PortalDashboard() {
+export default async function PortalDashboard({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const session = await getCurrentPortalSession();
+  const params = await searchParams;
+
+  if (params.denied === '1' && session) {
+    await writeAuditEntry({
+      actorUserId: session.userId,
+      actorEmail: session.email,
+      action: 'route_denied',
+      target: '/portal',
+      meta: { reason: 'rbac_denied', role: session.role },
+      result: 'denied',
+    });
+  }
 
   const stats = [
     { label: 'Active Incidents', value: '3', change: '-2 this week' },

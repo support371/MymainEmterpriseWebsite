@@ -1,8 +1,8 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { PORTAL_COOKIE, getCurrentPortalSession } from '@/lib/auth/session';
 import { writeAuditEntry } from '@/lib/audit';
 
-export async function POST() {
+export async function POST(request: NextRequest) {
   const session = await getCurrentPortalSession();
 
   if (session) {
@@ -16,7 +16,7 @@ export async function POST() {
     });
   }
 
-  const response = NextResponse.redirect(new URL('/login', process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'));
+  const response = NextResponse.redirect(new URL('/login', request.url));
   response.cookies.set(PORTAL_COOKIE, '', {
     httpOnly: true,
     sameSite: 'lax',

@@ -1,4 +1,4 @@
-import type { PortalRole } from './session';
+import type { PortalRole } from './types';
 
 /** Route-level permission matrix */
 const routePermissions: Record<string, PortalRole[]> = {

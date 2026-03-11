@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import type { PortalRole } from '@/lib/auth/session';
+import type { PortalRole } from '@/lib/auth/types';
 import { getAllowedNavItems } from '@/lib/auth/rbac';
 
 interface SidebarProps {
