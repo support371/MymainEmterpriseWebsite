@@ -44,3 +44,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 dev_output.log
+
+# runtime audit data
+data/audit-log.json
+
+# npm lockfile (pnpm only)
+package-lock.json
