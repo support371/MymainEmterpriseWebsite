@@ -1,7 +1,9 @@
 import { getCurrentPortalSession } from '@/lib/auth/session';
-import { writeAuditEntry } from '@/lib/audit';
+import { audit } from '@/lib/audit';
 
-export const metadata = { title: 'Portal' };
+export const metadata = {
+  title: "Client Portal"
+};
 
 export default async function PortalDashboard({
   searchParams,
@@ -12,14 +14,7 @@ export default async function PortalDashboard({
   const params = await searchParams;
 
   if (params.denied === '1' && session) {
-    await writeAuditEntry({
-      actorUserId: session.userId,
-      actorEmail: session.email,
-      action: 'route_denied',
-      target: '/portal',
-      meta: { reason: 'rbac_denied', role: session.role },
-      result: 'denied',
-    });
+    audit({ action: 'route_denied', user: session.email, route: '/portal' });
   }
 
   const stats = [

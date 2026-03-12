@@ -1,6 +1,8 @@
 import LoginForm from './LoginForm';
 
-export const metadata = { title: 'Portal' };
+export const metadata = {
+  title: "Client Portal"
+};
 
 export default function LoginPage() {
   return (

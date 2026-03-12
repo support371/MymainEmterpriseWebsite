@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { PORTAL_COOKIE, createPortalToken } from '@/lib/auth/session';
 import { authenticatePortalUser } from '@/lib/auth/users';
-import { writeAuditEntry } from '@/lib/audit';
+import { audit } from '@/lib/audit';
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => ({}));
@@ -11,14 +11,7 @@ export async function POST(request: Request) {
   const user = await authenticatePortalUser(email, password);
 
   if (!user) {
-    await writeAuditEntry({
-      actorUserId: null,
-      actorEmail: email || null,
-      action: 'login_failed',
-      target: '/api/auth/login',
-      meta: { reason: 'invalid_credentials' },
-      result: 'failure',
-    });
+    audit({ action: 'login_failed', user: email || undefined, route: '/api/auth/login' });
     return NextResponse.json({ message: 'Invalid credentials' }, { status: 401 });
   }
 
@@ -29,14 +22,7 @@ export async function POST(request: Request) {
     role: user.role,
   });
 
-  await writeAuditEntry({
-    actorUserId: user.id,
-    actorEmail: user.email,
-    action: 'login_success',
-    target: '/api/auth/login',
-    meta: { role: user.role },
-    result: 'success',
-  });
+  audit({ action: 'login_success', user: user.email, route: '/api/auth/login' });
 
   const response = NextResponse.json({ success: true, role: user.role, name: user.name });
   response.cookies.set(PORTAL_COOKIE, token, {

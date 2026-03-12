@@ -1,14 +1,14 @@
-import { getAuditEntries } from '@/lib/audit';
+import { listAuditEvents } from '@/lib/audit';
 
 export default async function AuditPage() {
-  const { entries, total } = await getAuditEntries({ limit: 50 });
+  const entries = listAuditEvents();
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold">Audit Log</h1>
-          <p className="text-sm text-slate-400">{total} total entries</p>
+          <p className="text-sm text-slate-400">{entries.length} total entries</p>
         </div>
         <a
           href="/api/portal/audit/export"
@@ -24,35 +24,27 @@ export default async function AuditPage() {
               <th className="text-left px-4 py-3 font-medium text-slate-300">Timestamp</th>
               <th className="text-left px-4 py-3 font-medium text-slate-300">Actor</th>
               <th className="text-left px-4 py-3 font-medium text-slate-300">Action</th>
-              <th className="text-left px-4 py-3 font-medium text-slate-300">Target</th>
-              <th className="text-left px-4 py-3 font-medium text-slate-300">Result</th>
+              <th className="text-left px-4 py-3 font-medium text-slate-300">Route</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800">
             {entries.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-slate-500">
+                <td colSpan={4} className="px-4 py-8 text-center text-slate-500">
                   No audit entries yet. Actions will be logged as users interact with the portal.
                 </td>
               </tr>
             )}
-            {entries.map((entry) => (
-              <tr key={entry.id} className="hover:bg-slate-800/30">
+            {entries.map((entry, i) => (
+              <tr key={i} className="hover:bg-slate-800/30">
                 <td className="px-4 py-3 text-xs text-slate-400 font-mono">
                   {new Date(entry.timestamp).toLocaleString()}
                 </td>
-                <td className="px-4 py-3 text-xs">{entry.actorEmail || 'system'}</td>
+                <td className="px-4 py-3 text-xs">{entry.user || 'system'}</td>
                 <td className="px-4 py-3">
                   <span className="px-2 py-0.5 rounded text-xs bg-slate-700 text-slate-300">{entry.action}</span>
                 </td>
-                <td className="px-4 py-3 text-xs text-slate-400 font-mono">{entry.target}</td>
-                <td className="px-4 py-3">
-                  <span className={`text-xs ${
-                    entry.result === 'success' ? 'text-emerald-400' :
-                    entry.result === 'denied' ? 'text-amber-400' :
-                    'text-rose-400'
-                  }`}>{entry.result}</span>
-                </td>
+                <td className="px-4 py-3 text-xs text-slate-400 font-mono">{entry.route || '-'}</td>
               </tr>
             ))}
           </tbody>

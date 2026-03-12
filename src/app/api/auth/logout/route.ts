@@ -1,19 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PORTAL_COOKIE, getCurrentPortalSession } from '@/lib/auth/session';
-import { writeAuditEntry } from '@/lib/audit';
+import { audit } from '@/lib/audit';
 
 export async function POST(request: NextRequest) {
   const session = await getCurrentPortalSession();
 
   if (session) {
-    await writeAuditEntry({
-      actorUserId: session.userId,
-      actorEmail: session.email,
-      action: 'logout',
-      target: '/api/auth/logout',
-      meta: {},
-      result: 'success',
-    });
+    audit({ action: 'logout', user: session.email, route: '/api/auth/logout' });
   }
 
   const response = NextResponse.redirect(new URL('/login', request.url));

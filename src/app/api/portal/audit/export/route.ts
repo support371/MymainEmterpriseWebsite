@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getCurrentPortalSession } from '@/lib/auth/session';
-import { exportAuditLog, writeAuditEntry } from '@/lib/audit';
+import { audit, listAuditEvents } from '@/lib/audit';
 
 export async function GET() {
   const session = await getCurrentPortalSession();
@@ -8,20 +8,13 @@ export async function GET() {
     return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
   }
 
-  const entries = await exportAuditLog();
+  const entries = listAuditEvents();
 
-  await writeAuditEntry({
-    actorUserId: session.userId,
-    actorEmail: session.email,
-    action: 'audit_export',
-    target: '/api/portal/audit/export',
-    meta: { count: entries.length },
-    result: 'success',
-  });
+  audit({ action: 'audit_export', user: session.email, route: '/api/portal/audit/export' });
 
-  const header = 'id,timestamp,actorEmail,action,target,result\n';
+  const header = 'action,user,route,timestamp\n';
   const rows = entries.map((e) =>
-    [e.id, e.timestamp, e.actorEmail || '', e.action, e.target, e.result].join(',')
+    [e.action, e.user || '', e.route || '', new Date(e.timestamp).toISOString()].join(',')
   ).join('\n');
 
   return new NextResponse(header + rows, {

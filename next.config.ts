@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  compress: true,
+  poweredByHeader: false,
   async redirects() {
     return [
       { source: '/news', destination: '/intel', permanent: true },
