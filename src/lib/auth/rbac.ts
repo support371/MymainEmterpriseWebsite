@@ -19,6 +19,7 @@ const routePermissions: Record<string, PortalRole[]> = {
   '/portal/requests': ['admin', 'analyst', 'client'],
   '/portal/users': ['admin'],
   '/portal/audit': ['admin'],
+  '/portal/support': ['admin', 'analyst', 'client', 'viewer'],
 };
 
 export function isRouteAllowed(pathname: string, role: PortalRole): boolean {
@@ -47,5 +48,6 @@ export function getAllowedNavItems(role: PortalRole) {
     { href: '/portal/requests', label: 'Requests', roles: ['admin', 'analyst', 'client'] },
     { href: '/portal/users', label: 'Users', roles: ['admin'] },
     { href: '/portal/audit', label: 'Audit Log', roles: ['admin'] },
+    { href: '/portal/support', label: 'Support', roles: ['admin', 'analyst', 'client', 'viewer'] },
   ].filter((item) => (item.roles as PortalRole[]).includes(role));
 }

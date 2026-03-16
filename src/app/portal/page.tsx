@@ -1,5 +1,6 @@
 import { getCurrentPortalSession } from '@/lib/auth/session';
 import { audit } from '@/lib/audit';
+import PortalSupportEntry from '@/components/support/PortalSupportEntry';
 
 export const metadata = {
   title: "Client Portal"
@@ -82,6 +83,8 @@ export default async function PortalDashboard({
           </div>
         </div>
       </div>
+
+      <PortalSupportEntry />
     </div>
   );
 }

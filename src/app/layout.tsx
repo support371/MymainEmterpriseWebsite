@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -26,6 +27,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
+      <head>
+        {/* Google Analytics — gemcybersecurityassist.com */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-5MJXJ5FYG8"
+          strategy="afterInteractive"
+        />
+        <Script id="ga-init" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-5MJXJ5FYG8');`}
+        </Script>
+      </head>
       <body className="font-sans antialiased bg-slate-950 text-white">
         {children}
       </body>
