@@ -34,21 +34,28 @@ export default function DomainSurfacePage({
   filters,
   cards,
 }: DomainSurfacePageProps) {
-  const [activeFilter, setActiveFilter] = useState(filters[0] || "All");
+  const [activeFilter, setActiveFilter] = useState(() => {
+    if (typeof window === "undefined") {
+      return filters[0] || "All";
+    }
+
+    const savedFilter = window.localStorage.getItem(`${storageKey}:filter`);
+    if (savedFilter && filters.includes(savedFilter)) {
+      return savedFilter;
+    }
+
+    return filters[0] || "All";
+  });
 
   useEffect(() => {
-    const savedFilter = window.localStorage.getItem(`${storageKey}:filter`);
     const savedScroll = window.localStorage.getItem(`${storageKey}:scroll`);
-    if (savedFilter && filters.includes(savedFilter)) {
-      setActiveFilter(savedFilter);
-    }
     if (savedScroll) {
       const y = Number(savedScroll);
       if (!Number.isNaN(y)) {
         window.requestAnimationFrame(() => window.scrollTo({ top: y }));
       }
     }
-  }, [filters, storageKey]);
+  }, [storageKey]);
 
   useEffect(() => {
     window.localStorage.setItem(`${storageKey}:filter`, activeFilter);

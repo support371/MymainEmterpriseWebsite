@@ -101,6 +101,15 @@ git push -u origin feat/master-onepage-rebrand
 After preview validation in Vercel, open a PR into `main`.
 
 
+
+## Production branch and domains
+
+- Production branch: `main`
+- Production domains:
+  - `gemcybersecurityassist.com`
+  - `www.gemcybersecurityassist.com`
+- Deployment consolidation checklist: `docs/deployment-stabilization-checklist.md`
+
 ## Deployment smoke checks
 
 After deployment, verify canonical routes and redirects:
