@@ -3,9 +3,9 @@ import Link from "next/link";
 const links = [
   { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
-  { href: "/intelligence", label: "Intelligence" },
-  { href: "/contact", label: "Contact" },
-  { href: "/app/intelligence", label: "Command Center" },
+  { href: "/intel", label: "Intelligence" },
+  { href: "/home/contact", label: "Contact" },
+  { href: "/intel", label: "Command Center" },
 ];
 
 export function PublicNav() {

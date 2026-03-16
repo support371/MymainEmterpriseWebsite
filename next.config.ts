@@ -22,6 +22,7 @@ const nextConfig: NextConfig = {
       { source: '/resources', destination: '/intel/resources', permanent: true },
       { source: '/pricing', destination: '/home/pricing', permanent: true },
       { source: '/contact-us', destination: '/home/contact', permanent: true },
+      { source: '/contact', destination: '/home/contact', permanent: true },
 
       // Dashboard → Portal redirects
       { source: '/dashboard', destination: '/portal', permanent: true },

@@ -30,6 +30,7 @@ describe('next.config.ts redirects', () => {
     ['/resources', '/intel/resources'],
     ['/pricing', '/home/pricing'],
     ['/contact-us', '/home/contact'],
+    ['/contact', '/home/contact'],
     ['/dashboard', '/portal'],
     ['/dashboard/services', '/portal/services'],
     ['/dashboard/cybersecurity', '/portal/cybersecurity'],
