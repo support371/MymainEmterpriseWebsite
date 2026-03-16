@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import {
   ChevronRight,
@@ -17,17 +17,21 @@ import {
   X,
   Share2,
   Bookmark,
+  BookmarkCheck,
   ExternalLink,
   Server,
   BellRing,
   CalendarClock,
   Newspaper,
-  RefreshCcw
+  RefreshCcw,
+  Search,
+  Clock,
+  Copy,
+  Check
 } from 'lucide-react';
 
 // --- Mock Data ---
 const MOCK_DATA = [
-  // TECH
   {
     id: 1,
     title: "Gartner Warnings: Organizations urged to block 'Agentic' AI Browsers immediately",
@@ -36,7 +40,8 @@ const MOCK_DATA = [
     category: "Tech",
     imageUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800",
     excerpt: "New report highlights security risks as AI-driven browsers can expose sensitive enterprise data.",
-    content: "Organizations are facing a new wave of security challenges as 'Agentic' AI browsers gain popularity. Gartner's latest report suggests that these tools, while powerful, often bypass traditional security perimeters, allowing for unauthorized data exfiltration. CISOs are advised to update their CASB policies immediately to detect and block these autonomous agents until a secure framework is established."
+    content: "Organizations are facing a new wave of security challenges as 'Agentic' AI browsers gain popularity. Gartner's latest report suggests that these tools, while powerful, often bypass traditional security perimeters, allowing for unauthorized data exfiltration. CISOs are advised to update their CASB policies immediately to detect and block these autonomous agents until a secure framework is established.",
+    readMinutes: 4,
   },
   {
     id: 2,
@@ -45,7 +50,8 @@ const MOCK_DATA = [
     time: "4h ago",
     category: "Tech",
     imageUrl: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?auto=format&fit=crop&q=80&w=800",
-    excerpt: "The dual-hinge system promises a tablet-sized experience that fits in your pocket."
+    excerpt: "The dual-hinge system promises a tablet-sized experience that fits in your pocket.",
+    readMinutes: 3,
   },
   {
     id: 3,
@@ -54,10 +60,9 @@ const MOCK_DATA = [
     time: "6h ago",
     category: "Tech",
     imageUrl: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&q=80&w=800",
-    excerpt: "New compiler technology could open the door to broader hardware adoption in AI training."
+    excerpt: "New compiler technology could open the door to broader hardware adoption in AI training.",
+    readMinutes: 6,
   },
-
-  // FINANCE & BUSINESS
   {
     id: 4,
     title: "Market Rally: S&P 500 hits new record as inflation data cools",
@@ -65,7 +70,8 @@ const MOCK_DATA = [
     time: "1h ago",
     category: "Finance",
     imageUrl: "https://images.unsplash.com/photo-1611974765270-ca1258634369?auto=format&fit=crop&q=80&w=800",
-    excerpt: "Fed policymaker floats further rate cuts as economy stays on the 'golden path'."
+    excerpt: "Fed policymaker floats further rate cuts as economy stays on the 'golden path'.",
+    readMinutes: 3,
   },
   {
     id: 5,
@@ -74,7 +80,8 @@ const MOCK_DATA = [
     time: "3h ago",
     category: "Business",
     imageUrl: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&q=80&w=800",
-    excerpt: "The controversial compensation package is back in play following a supreme court ruling."
+    excerpt: "The controversial compensation package is back in play following a supreme court ruling.",
+    readMinutes: 4,
   },
   {
     id: 6,
@@ -83,10 +90,9 @@ const MOCK_DATA = [
     time: "5h ago",
     category: "Business",
     imageUrl: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80&w=800",
-    excerpt: "Major automaker drops $242M to rebuild workforce as demand for hybrids surges."
+    excerpt: "Major automaker drops $242M to rebuild workforce as demand for hybrids surges.",
+    readMinutes: 5,
   },
-
-  // CRYPTO
   {
     id: 7,
     title: "Bitcoin Holds at $88k: Market muted after CPI Data",
@@ -94,7 +100,8 @@ const MOCK_DATA = [
     time: "30m ago",
     category: "Crypto",
     imageUrl: "https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&q=80&w=800",
-    excerpt: "Traders await next Fed move as institutional inflows stabilize."
+    excerpt: "Traders await next Fed move as institutional inflows stabilize.",
+    readMinutes: 3,
   },
   {
     id: 8,
@@ -103,10 +110,9 @@ const MOCK_DATA = [
     time: "8h ago",
     category: "Crypto",
     imageUrl: "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&q=80&w=800",
-    excerpt: "Parliament overrides presidential veto to standardize crypto asset oversight."
+    excerpt: "Parliament overrides presidential veto to standardize crypto asset oversight.",
+    readMinutes: 4,
   },
-
-  // REAL ESTATE
   {
     id: 9,
     title: "US Home Sales Tick Up: First monthly rise in 2025",
@@ -114,7 +120,8 @@ const MOCK_DATA = [
     time: "10h ago",
     category: "Real Estate",
     imageUrl: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=800",
-    excerpt: "Despite elevated prices, buyers are returning as mortgage rates stabilize near 6%."
+    excerpt: "Despite elevated prices, buyers are returning as mortgage rates stabilize near 6%.",
+    readMinutes: 4,
   },
   {
     id: 10,
@@ -123,10 +130,9 @@ const MOCK_DATA = [
     time: "12h ago",
     category: "Real Estate",
     imageUrl: "https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&q=80&w=800",
-    excerpt: "Record number of homes pulled off market as seller expectations clash with buyer reality."
+    excerpt: "Record number of homes pulled off market as seller expectations clash with buyer reality.",
+    readMinutes: 5,
   },
-
-  // CYBERSECURITY
   {
     id: 11,
     title: "Critical UEFI Flaw: Millions of Motherboards at Risk",
@@ -134,7 +140,8 @@ const MOCK_DATA = [
     time: "1h ago",
     category: "Cybersecurity",
     imageUrl: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800",
-    excerpt: "ASRock, ASUS, and MSI boards vulnerable to early-boot DMA attacks."
+    excerpt: "ASRock, ASUS, and MSI boards vulnerable to early-boot DMA attacks.",
+    readMinutes: 5,
   },
   {
     id: 12,
@@ -144,7 +151,8 @@ const MOCK_DATA = [
     category: "Cybersecurity",
     imageUrl: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=800",
     excerpt: "Program managers are being advised to shift from reactive maintenance to proactive lifecycle governance aligned with BOD 26-02.",
-    content: `Best Approach: Proactive Lifecycle Management\n\nBy aligning with CISA Binding Operational Directive (BOD) 26-02, organizations can reduce exposure to imminent exploitation tied to end-of-support edge devices.\n\nPhase 1 — Asset Inventory (0-3 months)\n• Catalog all internet-facing edge devices (firewalls, routers, VPN appliances).\n• Flag devices already at end-of-support (EOS).\n\nPhase 2 — Decommissioning Schedule (12-18 months)\n• Establish and approve a replacement plan for EOS equipment.\n• Prioritize high-value systems and externally exposed management interfaces.\n\nPhase 3 — Continuous Discovery (ongoing)\n• Maintain a recurring process to identify devices that will become end-of-life in the next 12 months.\n• Tie lifecycle triggers to budget and procurement planning.\n\nStrategic Access Points Provided by CISA\n• Intelligence Access: Threat advisories with early warnings on actively exploited vulnerabilities.\n• Operational Access: Regional Cybersecurity Advisors (CSAs) across 10 regions for tailored support.\n• Technical Access: Cyber Hygiene scanning for internet-facing systems.\n• Evaluation Access: Cyber Resilience Review (CRR) to benchmark resilience against federal practices.\n\nProject Manager Takeaway\n"Practicing good cyber hygiene starts with eliminating unsupported edge devices."\n\nRecommendation\nBuild a project risk register that tracks EOS assets, replacement deadlines, and control owners so lifecycle risk is managed before incidents occur.`
+    content: `Best Approach: Proactive Lifecycle Management\n\nBy aligning with CISA Binding Operational Directive (BOD) 26-02, organizations can reduce exposure to imminent exploitation tied to end-of-support edge devices.\n\nPhase 1 — Asset Inventory (0-3 months)\n• Catalog all internet-facing edge devices (firewalls, routers, VPN appliances).\n• Flag devices already at end-of-support (EOS).\n\nPhase 2 — Decommissioning Schedule (12-18 months)\n• Establish and approve a replacement plan for EOS equipment.\n• Prioritize high-value systems and externally exposed management interfaces.\n\nPhase 3 — Continuous Discovery (ongoing)\n• Maintain a recurring process to identify devices that will become end-of-life in the next 12 months.\n• Tie lifecycle triggers to budget and procurement planning.\n\nStrategic Access Points Provided by CISA\n• Intelligence Access: Threat advisories with early warnings on actively exploited vulnerabilities.\n• Operational Access: Regional Cybersecurity Advisors (CSAs) across 10 regions for tailored support.\n• Technical Access: Cyber Hygiene scanning for internet-facing systems.\n• Evaluation Access: Cyber Resilience Review (CRR) to benchmark resilience against federal practices.\n\nProject Manager Takeaway\n"Practicing good cyber hygiene starts with eliminating unsupported edge devices."\n\nRecommendation\nBuild a project risk register that tracks EOS assets, replacement deadlines, and control owners so lifecycle risk is managed before incidents occur.`,
+    readMinutes: 8,
   },
 ];
 
@@ -175,8 +183,10 @@ interface Article {
   imageUrl: string;
   excerpt: string;
   content?: string;
+  readMinutes: number;
 }
 
+// --- Detail View ---
 const DetailView = ({ article, onClose }: { article: Article, onClose: () => void }) => {
   const [loading, setLoading] = useState(true);
 
@@ -213,11 +223,13 @@ const DetailView = ({ article, onClose }: { article: Article, onClose: () => voi
           </div>
         ) : (
           <div className="max-w-3xl mx-auto px-6 py-10">
-            <div className="mb-6 flex items-center gap-2">
+            <div className="mb-6 flex items-center gap-2 flex-wrap">
               <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
                 {article.category}
               </span>
-              <span className="text-slate-400 text-sm">• {article.source}</span>
+              <span className="text-slate-400 text-sm">{article.source}</span>
+              <span className="text-slate-600">•</span>
+              <span className="text-slate-400 text-sm flex items-center gap-1"><Clock size={12}/> {article.readMinutes} min read</span>
             </div>
 
             <h1 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white mb-6 leading-tight">
@@ -257,14 +269,16 @@ const DetailView = ({ article, onClose }: { article: Article, onClose: () => voi
   );
 };
 
+// --- NavPill with count ---
 interface NavPillProps {
   active: boolean;
   label: string;
   icon: React.ElementType;
+  count: number;
   onClick: () => void;
 }
 
-const NavPill = ({ active, label, icon: Icon, onClick }: NavPillProps) => (
+const NavPill = ({ active, label, icon: Icon, count, onClick }: NavPillProps) => (
   <button
     onClick={onClick}
     className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold transition-all duration-200 whitespace-nowrap ${
@@ -275,58 +289,148 @@ const NavPill = ({ active, label, icon: Icon, onClick }: NavPillProps) => (
   >
     {Icon && <Icon size={14} />}
     {label}
+    <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded-full ${
+      active ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-500 dark:bg-slate-700 dark:text-slate-400'
+    }`}>
+      {count}
+    </span>
   </button>
 );
 
-const NewsCard = ({ article, onClick }: { article: Article, onClick: (a: Article) => void }) => (
-  <div onClick={() => onClick(article)} className="group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-800 flex flex-col h-full cursor-pointer relative top-0 hover:-top-1">
-    <div className="relative h-48 overflow-hidden">
-      <Image
-        src={article.imageUrl}
-        alt={article.title}
-        fill
-        className="object-cover transform group-hover:scale-105 transition-transform duration-500"
-        unoptimized
-      />
-      <div className="absolute top-3 left-3">
-        <span className="px-2 py-1 bg-slate-900/90 backdrop-blur text-xs font-bold rounded-md shadow-sm uppercase tracking-wide text-white flex items-center gap-1">
-          {article.category === 'Cybersecurity' && <Shield size={10} className="text-emerald-400"/>}
-          {article.category}
-        </span>
+// --- NewsCard with read time, working share/bookmark ---
+const NewsCard = ({ article, onClick }: { article: Article, onClick: (a: Article) => void }) => {
+  const [bookmarked, setBookmarked] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const handleShare = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(article.title + ' — via GEM Intel');
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }, [article.title]);
+
+  const handleBookmark = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    setBookmarked(prev => !prev);
+  }, []);
+
+  return (
+    <div onClick={() => onClick(article)} className="group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-800 flex flex-col h-full cursor-pointer relative top-0 hover:-top-1">
+      <div className="relative h-48 overflow-hidden">
+        <Image
+          src={article.imageUrl}
+          alt={article.title}
+          fill
+          className="object-cover transform group-hover:scale-105 transition-transform duration-500"
+          unoptimized
+        />
+        <div className="absolute top-3 left-3">
+          <span className="px-2 py-1 bg-slate-900/90 backdrop-blur text-xs font-bold rounded-md shadow-sm uppercase tracking-wide text-white flex items-center gap-1">
+            {article.category === 'Cybersecurity' && <Shield size={10} className="text-emerald-400"/>}
+            {article.category}
+          </span>
+        </div>
+        <div className="absolute top-3 right-3">
+          <span className="px-2 py-1 bg-slate-900/80 backdrop-blur text-[10px] font-medium rounded-md text-slate-300 flex items-center gap-1">
+            <Clock size={10} /> {article.readMinutes} min
+          </span>
+        </div>
+      </div>
+      <div className="p-5 flex flex-col flex-1">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-500">
+            {article.source[0]}
+          </div>
+          <span className="text-xs font-semibold text-slate-500 uppercase">{article.source}</span>
+          <span className="text-slate-300">•</span>
+          <span className="text-xs text-slate-400">{article.time}</span>
+        </div>
+
+        <h3 className="text-lg font-bold text-slate-900 dark:text-white leading-tight mb-3 group-hover:text-blue-600 dark:group-hover:text-emerald-400 transition-colors">
+          {article.title}
+        </h3>
+
+        <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mb-4 flex-1">
+          {article.excerpt}
+        </p>
+
+        <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+          <div className="flex gap-2">
+            <button
+              onClick={handleShare}
+              className="text-slate-400 hover:text-blue-500 transition-colors p-1 rounded"
+              title="Copy to clipboard"
+            >
+              {copied ? <Check size={16} className="text-emerald-400" /> : <Share2 size={16} />}
+            </button>
+            <button
+              onClick={handleBookmark}
+              className="text-slate-400 hover:text-blue-500 transition-colors p-1 rounded"
+              title={bookmarked ? 'Remove bookmark' : 'Bookmark'}
+            >
+              {bookmarked ? <BookmarkCheck size={16} className="text-emerald-400" /> : <Bookmark size={16} />}
+            </button>
+          </div>
+          <span className="text-blue-600 dark:text-emerald-400 text-xs font-bold flex items-center gap-1 group-hover:gap-2 transition-all">
+            Read Story <ChevronRight size={14} />
+          </span>
+        </div>
       </div>
     </div>
-    <div className="p-5 flex flex-col flex-1">
+  );
+};
+
+// --- Featured Hero Card ---
+const FeaturedCard = ({ article, onClick }: { article: Article, onClick: (a: Article) => void }) => (
+  <div
+    onClick={() => onClick(article)}
+    className="group relative rounded-2xl overflow-hidden cursor-pointer mb-8 border border-slate-800 hover:border-emerald-500/50 transition-colors"
+  >
+    <div className="relative h-64 md:h-80">
+      <Image src={article.imageUrl} alt={article.title} fill className="object-cover" unoptimized />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent" />
+    </div>
+    <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
       <div className="flex items-center gap-2 mb-3">
-        <div className="w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-500">
-          {article.source[0]}
-        </div>
-        <span className="text-xs font-semibold text-slate-500 uppercase">{article.source}</span>
-        <span className="text-slate-300">•</span>
-        <span className="text-xs text-slate-400">{article.time}</span>
-      </div>
-
-      <h3 className="text-lg font-bold text-slate-900 dark:text-white leading-tight mb-3 group-hover:text-blue-600 dark:group-hover:text-emerald-400 transition-colors">
-        {article.title}
-      </h3>
-
-      <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mb-4 flex-1">
-        {article.excerpt}
-      </p>
-
-      <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
-        <div className="flex gap-2">
-           <button className="text-slate-400 hover:text-blue-500 transition-colors"><Share2 size={16} /></button>
-           <button className="text-slate-400 hover:text-blue-500 transition-colors"><Bookmark size={16} /></button>
-        </div>
-        <span className="text-blue-600 dark:text-emerald-400 text-xs font-bold flex items-center gap-1 group-hover:gap-2 transition-all">
-          Read Story <ChevronRight size={14} />
+        <span className="px-2 py-1 bg-emerald-500 text-xs font-bold rounded-md uppercase tracking-wide text-white">
+          Featured
         </span>
+        <span className="px-2 py-1 bg-slate-900/80 backdrop-blur text-xs font-bold rounded-md uppercase tracking-wide text-white">
+          {article.category}
+        </span>
+        <span className="text-slate-400 text-xs flex items-center gap-1"><Clock size={10} /> {article.readMinutes} min read</span>
+      </div>
+      <h2 className="text-2xl md:text-3xl font-black text-white leading-tight mb-2 group-hover:text-emerald-300 transition-colors">
+        {article.title}
+      </h2>
+      <p className="text-sm text-slate-300 max-w-2xl line-clamp-2">{article.excerpt}</p>
+      <div className="flex items-center gap-3 mt-3 text-xs text-slate-400">
+        <span className="font-semibold uppercase">{article.source}</span>
+        <span>•</span>
+        <span>{article.time}</span>
       </div>
     </div>
   </div>
 );
 
+// --- Loading Skeleton ---
+const CardSkeleton = () => (
+  <div className="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 animate-pulse">
+    <div className="h-48 bg-slate-800" />
+    <div className="p-5 space-y-3">
+      <div className="flex gap-2">
+        <div className="w-5 h-5 rounded-full bg-slate-800" />
+        <div className="h-3 w-20 bg-slate-800 rounded" />
+      </div>
+      <div className="h-5 bg-slate-800 rounded w-full" />
+      <div className="h-5 bg-slate-800 rounded w-3/4" />
+      <div className="h-3 bg-slate-800 rounded w-full" />
+      <div className="h-3 bg-slate-800 rounded w-2/3" />
+    </div>
+  </div>
+);
 
+// --- Automation Panel ---
 const AutomationPanel = () => (
   <section className="mb-8 rounded-3xl border border-emerald-400/20 bg-gradient-to-br from-slate-900 via-slate-900 to-emerald-950/70 p-6 shadow-xl">
     <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
@@ -346,7 +450,7 @@ const AutomationPanel = () => (
       </div>
     </div>
 
-    <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+    <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {DAILY_FEED_STATUS.map(({ label, value, note, icon: Icon }) => (
         <div key={label} className="rounded-2xl border border-slate-700/80 bg-slate-900/80 p-4">
           <div className="mb-3 flex items-center justify-between">
@@ -361,28 +465,89 @@ const AutomationPanel = () => (
   </section>
 );
 
+// --- Category counts ---
+function getCategoryCounts(data: Article[]): Record<string, number> {
+  const counts: Record<string, number> = { all: data.length };
+  for (const item of data) {
+    counts[item.category] = (counts[item.category] || 0) + 1;
+  }
+  // Finance includes Business
+  if (counts['Business']) {
+    counts['Finance'] = (counts['Finance'] || 0) + (counts['Business'] || 0);
+  }
+  return counts;
+}
+
 export default function IntelPage() {
   const [activeCategory, setActiveCategory] = useState('all');
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showSearch, setShowSearch] = useState(false);
+  const [initialLoad, setInitialLoad] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setInitialLoad(false), 600);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const categoryCounts = useMemo(() => getCategoryCounts(MOCK_DATA), []);
 
   const filteredNews = useMemo(() => {
-    if (activeCategory === 'all') return MOCK_DATA;
-    return MOCK_DATA.filter(item => item.category === activeCategory || (activeCategory === 'Finance' && item.category === 'Business'));
-  }, [activeCategory]);
+    let items = MOCK_DATA as Article[];
+    if (activeCategory !== 'all') {
+      items = items.filter(item => item.category === activeCategory || (activeCategory === 'Finance' && item.category === 'Business'));
+    }
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      items = items.filter(item =>
+        item.title.toLowerCase().includes(q) ||
+        item.excerpt.toLowerCase().includes(q) ||
+        item.source.toLowerCase().includes(q) ||
+        item.category.toLowerCase().includes(q)
+      );
+    }
+    return items;
+  }, [activeCategory, searchQuery]);
+
+  const featuredArticle = filteredNews[0];
+  const remainingArticles = filteredNews.slice(1);
 
   return (
     <div className="min-h-screen w-full flex flex-col bg-slate-950">
+      {/* Category bar + search */}
       <div className="bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 py-3 px-6 overflow-x-auto scrollbar-hide sticky top-0 lg:top-20 z-10 shadow-sm">
-        <div className="flex gap-2 min-w-max">
+        <div className="flex items-center gap-2 min-w-max">
           {CATEGORIES.map(cat => (
             <NavPill
               key={cat.id}
               active={activeCategory === cat.id}
               label={cat.label}
               icon={cat.icon}
+              count={categoryCounts[cat.id] || 0}
               onClick={() => setActiveCategory(cat.id)}
             />
           ))}
+          <div className="ml-auto pl-4 flex items-center gap-2">
+            {showSearch && (
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search articles..."
+                autoFocus
+                className="w-48 md:w-64 px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-emerald-500"
+              />
+            )}
+            <button
+              onClick={() => {
+                setShowSearch(prev => !prev);
+                if (showSearch) setSearchQuery('');
+              }}
+              className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            >
+              {showSearch ? <X size={16} /> : <Search size={16} />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -396,24 +561,58 @@ export default function IntelPage() {
                 <CheckCircle size={12}/> System Operational
               </p>
               <h2 className="text-2xl font-black text-slate-900 dark:text-white">
-                {activeCategory === 'all' ? 'Live GEM Intelligence Feed' : `${activeCategory} Briefing`}
+                {searchQuery
+                  ? `Results for "${searchQuery}"`
+                  : activeCategory === 'all'
+                    ? 'Live GEM Intelligence Feed'
+                    : `${activeCategory} Briefing`
+                }
               </h2>
+              {searchQuery && (
+                <p className="text-xs text-slate-400 mt-1">{filteredNews.length} article{filteredNews.length !== 1 ? 's' : ''} found</p>
+              )}
             </div>
-            <button className="text-xs font-bold text-slate-500 hover:text-emerald-500 flex items-center gap-1 transition-colors">
-              Filter View <Filter size={12}/>
+            <button
+              onClick={() => { setShowSearch(true); }}
+              className="text-xs font-bold text-slate-500 hover:text-emerald-500 flex items-center gap-1 transition-colors"
+            >
+              <Filter size={12}/> Filter
             </button>
           </div>
 
-          {filteredNews.length > 0 ? (
+          {initialLoad ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-12">
-              {filteredNews.map(article => (
-                <NewsCard key={article.id} article={article} onClick={setSelectedArticle} />
-              ))}
+              {Array.from({ length: 6 }).map((_, i) => <CardSkeleton key={i} />)}
             </div>
+          ) : filteredNews.length > 0 ? (
+            <>
+              {!searchQuery && featuredArticle && (
+                <FeaturedCard article={featuredArticle} onClick={setSelectedArticle} />
+              )}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-12">
+                {(searchQuery ? filteredNews : remainingArticles).map(article => (
+                  <NewsCard key={article.id} article={article} onClick={setSelectedArticle} />
+                ))}
+              </div>
+            </>
           ) : (
             <div className="flex flex-col items-center justify-center py-20 text-slate-400">
-              <Filter size={48} className="mb-4 opacity-20" />
-              <p>No stories found in this category.</p>
+              <Search size={48} className="mb-4 opacity-20" />
+              <p className="text-lg font-semibold mb-1">No stories found</p>
+              <p className="text-sm">
+                {searchQuery
+                  ? `No articles match "${searchQuery}". Try a different search term.`
+                  : 'No stories found in this category.'
+                }
+              </p>
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="mt-4 text-sm text-emerald-400 hover:underline"
+                >
+                  Clear search
+                </button>
+              )}
             </div>
           )}
         </div>
